@@ -8,5 +8,4 @@
 int main(void)
 {
 	Led_On();
-	return 0;
 }
