@@ -24,6 +24,8 @@ void Led_Dimmer(void)
  	TCCR3A=TCCRA_MASK;
 	TCCR3B=TCCRB_MASK;
 	//Set Compare Register
+	OCR3AH=0;
+	OCR3BH=0;
 	OCR3CH=0;
 	OCR3CL=1;
 	//PIN 6 porta E, collegato all'OSC3
@@ -32,7 +34,7 @@ void Led_Dimmer(void)
 	uint8_t intensity=0;
 	while(1)
 	{
-		OCR1CL=intensity; 
+		OCR3CL=intensity; 
 		intensity+=8;
 		_delay_ms(1000);
 	}
