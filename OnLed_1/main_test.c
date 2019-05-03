@@ -7,5 +7,5 @@
 
 int main(void)
 {
-	Led_Dimmer();
+	Led_On();
 }
