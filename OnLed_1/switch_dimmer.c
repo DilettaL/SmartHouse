@@ -31,8 +31,10 @@ void Led_Dimmer(void)
 	DDRE |= mask;
 
 	uint8_t intensity=0;
-	while(1){
+	while(1)
+	{
 		OCR1CL=intensity; 
 		intensity+=8;
+		_delay_ms(1000);
 	}
 }
