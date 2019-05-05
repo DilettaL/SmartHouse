@@ -53,7 +53,7 @@ void DigitalInput(void)
 	while(1)
 	{	
 		int result=(PINE&mask)==0;
-/*DEBUG*/	printf("Risultato:\t%d\n", ~result);	
+/*DEBUG*/	printf("Risultato:\t%d\n", result);	
 		_delay_ms(1000);
 
 	}	

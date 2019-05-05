@@ -7,5 +7,5 @@
 #include "uart.h"
 int main(void)
 {
-	Led_Dimmer();
+	DigitalInput();
 }
