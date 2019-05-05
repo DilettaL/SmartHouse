@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include "switch_dimmer.h"
+#include "uart.h"
 
 #define TCCRA_MASK (1<<WGM30)|(1<<COM3B0)|(1<<COM3B1)
 #define TCCRB_MASK ((1<<WGM32)|(1<<CS30))   
@@ -20,7 +21,7 @@ void Led_On(void)
 
 void Led_Dimmer(void)
 {
-	//Set TCCR3 and channel B
+	//Set TCCR3 and channel B (pag 82)
  	TCCR3A=TCCRA_MASK;
 	TCCR3B=TCCRB_MASK;
 	//Set Compare Register
@@ -36,4 +37,24 @@ void Led_Dimmer(void)
 		_delay_ms(100);
 		intensity+=8;
 	}
+}
+
+void DigitalInput(void)
+{
+/*DEBUG*/printf_init();
+	//Pin6 porta E, Pin sulla board di Arduino n.2
+	//configuro mask affinché il pin sia un input (DDRE=0)
+	const uint8_t mask=(1<<4);
+	DDRE  &= ~mask; //tutti i bit 0
+	//Per abilitare il pullup resistor
+	PORTE |= mask;
+	//PINE permette di leggere l'ingresso
+	//si legge l'ingresso ogni secondo
+	int result=0;
+	while(1)
+	{	
+		_delay_ms(1000);
+		result=PINE4;
+/*DEBUG*/	printf("Risultato:\t%d\n", result);	
+	}	
 }
