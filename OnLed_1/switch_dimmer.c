@@ -50,11 +50,16 @@ void DigitalInput(void)
 	PORTE |= mask;
 	//PINE permette di leggere l'ingresso
 	//si legge l'ingresso ogni secondo
-	int result=0;
 	while(1)
 	{	
+		int result=(PINE&mask)==0;
+/*DEBUG*/	printf("Risultato:\t%d\n", ~result);	
 		_delay_ms(1000);
+<<<<<<< HEAD
 		result=PINE.PINE4;
 /*DEBUG*/	printf("Risultato:\t%d\n", result);	
+=======
+
+>>>>>>> f5a1f2dedeb3e7ad7600c148181c43a277a705a6
 	}	
 }
