@@ -54,7 +54,7 @@ void DigitalInput(void)
 	while(1)
 	{	
 		_delay_ms(1000);
-		result=PINE4;
+		result=PINE.PINE4;
 /*DEBUG*/	printf("Risultato:\t%d\n", result);	
 	}	
 }
