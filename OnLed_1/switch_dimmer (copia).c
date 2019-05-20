@@ -41,25 +41,20 @@ void Led_Dimmer(void)
 
 void DigitalInput(void)
 {
+/*DEBUG*/printf_init();
+	//Pin6 porta E, Pin sulla board di Arduino n.2
+	//configuro mask affinché il pin sia un input (DDRE=0)
+	const uint8_t mask=(1<<4);
+	DDRE  &= ~mask; //tutti i bit 0
+	//Per abilitare il pullup resistor
+	PORTE |= mask;
+	//PINE permette di leggere l'ingresso
+	//si legge l'ingresso ogni secondo
+	while(1)
+	{	
+		int result=(PINE&mask)==0;
+/*DEBUG*/	printf("Risultato:\t%d\n", result);	
+		_delay_ms(1000);
 
-//UTILIZZARE SOLO PIN CHE UNANO PIN CHANGE!!
-
-  // this initializes the printf/uart thingies
-  printf_init(); 
-
-  // we connect the switch to pin 12
-  // that is the bit 6 of port b
-  
-  const uint8_t mask=(1<<6);
-  // we configure the pin as input, clearing the bit 6
-  DDRB &= ~mask;
-  
-  // we enable pullup resistor on that pin
-  PORTB |= mask;
-  
-  while(1){
-    int key=(PINB&mask)==0; // we extract the bit value of the 6th bit
-    printf("switch %02x, %d\n", (int) PORTB, key);
-    _delay_ms(500); // from delay.h, wait 1 sec
-  }
+	}	
 }

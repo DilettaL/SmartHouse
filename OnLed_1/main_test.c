@@ -5,6 +5,7 @@
 #include <avr/io.h>
 #include "switch_dimmer.h"
 #include "uart.h"
+
 int main(void)
 {
 	DigitalInput();
