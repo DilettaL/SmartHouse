@@ -10,7 +10,8 @@ typedef struct{
 
  	// timer registers for PWM
   	volatile uint8_t* tcc_register;
-  	volatile uint8_t* oc_register;
+  	volatile uint8_t* oc_register_high;
+  	volatile uint8_t* oc_register_low;
   	const uint8_t com_mask;
 }  Pin;
 
