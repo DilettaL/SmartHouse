@@ -29,7 +29,8 @@
 	////quando ADEN disabilitato non consuma energia, consigliato spegnerlo quando non lo si usa
 	//il risultato è fornito nel ADC Data Registers, ADCH and ADCL.
 	////di default è right adjust, per selezionare left adjust ADMUX.ADLAR bit
-	////right adjust= più piccolo in low
+	////left=8avo bit nel registro più alto di high
+	////right=0-esimo bit nel registro più basso di low
 	////se bastano 8 bit si può usare solo high in modalità left adjust
 	//terminata la conversione l'adc ha un proprio interrupt
 
