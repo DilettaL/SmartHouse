@@ -72,9 +72,69 @@ const Pin pins[] =
 		.com_mask=0
 	},
 	//PinAVR 17 PinBoard 8
+	{
+		.in_register=&PINH,
+		.out_register=&PORTH,
+		.dir_register=&DDRH,
+		.bit=5,
+		//PWM
+		.tcc_register=0,
+		.oc_register=0,
+		.com_mask=0
+	},
 	//PinAVR 18 PinBoard 9
+	{
+		.in_register=&PINH,
+		.out_register=&PORTH,
+		.dir_register=&DDRH,
+		.bit=6,
+		//PWM
+		.tcc_register=0,
+		.oc_register=0,
+		.com_mask=0
+	},
 	//PinAVR 23 PinBoard 10
+	{
+		.in_register=&PINB,
+		.out_register=&PORTB,
+		.dir_register=&DDRB,
+		.bit=4,
+		//PWM
+		.tcc_register=0,
+		.oc_register=0,
+		.com_mask=0
+	},
 	//PinAVR 24 PinBoard 11
+	{
+		.in_register=&PINB,
+		.out_register=&PORTB,
+		.dir_register=&DDRB,
+		.bit=5,
+		//PWM
+		.tcc_register=0,
+		.oc_register=0,
+		.com_mask=0
+	},
 	//PinAVR 25 PinBoard 12
+	{
+		.in_register=&PINB,
+		.out_register=&PORTB,
+		.dir_register=&DDRB,
+		.bit=6,
+		//PWM
+		.tcc_register=0,
+		.oc_register=0,
+		.com_mask=0
+	},
 	//PinAVR 26 PinBoard 13
+	{
+		.in_register=&PINB,
+		.out_register=&PORTB,
+		.dir_register=&DDRB,
+		.bit=7,
+		//PWM
+		.tcc_register=0,
+		.oc_register=0,
+		.com_mask=0
+	}
 };
