@@ -4,13 +4,17 @@
 #include <avr/io.h>
 #include "adc.h"
 #include "uart.h"
+#include "pins.h"
 
 //pin adc arduino da 82 a 97
 //pin adc board da 0 a 15 tutti analog input
 
-void adc(void)
+void adc_init(void) 
 {
-	//Configurazione
-	//Conversion starts ADCSRA.ADSC=1 tutta durata conversione
-	//Questa modalità perché decide il pc quando prelevare il valore
+	//Set right adjust mode
+	
+}
+
+void run_adc(void)
+{
 }

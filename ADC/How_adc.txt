@@ -1,0 +1,93 @@
+/*	ADC_INIT
+->ADMUX
+	si sceglie l'alimentazione->HYP: alimentazione interna
+	scegliere tra 1.1 O 2.56 delle alimentazioni interne
+	ADMUX = (REFS0) | (<<REFS1)
+	
+	ADLAR->HYP: right adjust
+	ADMUX.ADLAR=0 di default non cambiarlo
+
+	ADMUX MUXn + ->ADCSRB.MUX5 indicano la combinazione degli ingressi utilizzati, sia il numero che il tipo di riferimento
+	ovvero differenziale e single ended.
+	Visto che con single ended si hanno tutti gli ingressi indipendenti scegliamo questa per ora
+	
+*/
+/*	ADC_RUN
+->	ADCSRA
+*/
+
+
+	//Configurazione
+	//Conversion starts ADCSRA.ADSC=1 tutta durata conversione
+	//Questa modalità perché decide il pc quando prelevare il valore
+
+	/*SET ADC*/
+
+	//ADMUX and ADCSRB configurano il mux per scegliere il canale di ingresso	
+	//ADMUX sceglie
+	//Abilita ADCn seleziona n-esimo bit ADEN in ADCSRA	
+	////quando ADEN disabilitato non consuma energia, consigliato spegnerlo quando non lo si usa
+	//il risultato è fornito nel ADC Data Registers, ADCH and ADCL.
+	////di default è right adjust, per selezionare left adjust ADMUX.ADLAR bit
+	////right adjust= più piccolo in low
+	////se bastano 8 bit si può usare solo high in modalità left adjust
+	//terminata la conversione l'adc ha un proprio interrupt
+
+	/*RUN ADC*/
+	//Start conversione settando a 1 ADC Start Conversion bit, ADSC
+	////viene pulito automaticamente via hw quando termina la conversione
+	//ALTERNATIVA
+	//Una conversione può essere triggerata in automatico con varie sorgenti:
+		//Auto trigger si abilita con ADC Auto Trigger Enable bit, ADATE in ADCSRA
+		//La sorgente è selezionata in ADC Trigger selezionando ADCSRB.ADTS bit (ADTS lista dei bit delle sorgenti)
+	//Su un fronte positivo si ha il trigger, il prescaler dell'ADC si resetta e inizia la conversione
+	//Se è ancora alto il trigger la nuova conversione non si avvia
+	//Gli interrupt degli adc sono indipendi dal global interrupt enable, quindi non possono essere interrotti, ma devono essere
+	////puliti per iniziare una nuova conversione
+	//Free running modo per avere ADC interrupt flag come sorgente di trigger e iniziare una nuova conversione appena finisce
+	////la precedente
+	//1a conversione= settare a 1 in ADCSRA.ADCS, performa le conversioni successive in modo indipendete dal flag di interrupt
+	
+	/*PRESCALER E TIMING*/
+	//Settare il prescaler in ADCSRA.ADPS
+	//Il prescaler conta quando ADCSRA.ADEN=1
+	//Il prescaler si resetta quando ADCSRA.ADEN=0
+	//pag 271 tempi di stabilità TABELLA 26-1
+	//Conversione terminata ADIF=1
+	//Single Conversion Mode: ADSC viene pulito e deve essere settato nuovamente via software. Rinizia al nuovo fronte di ck
+	//Auto triggering: si resetta il prescaler ogni trigger (ritardo tra evento e inizio conversione (tempo in più circa 3 cy)
+	//Free running mode: la nuova conversione inizia immediatamente, ADCS rimane alto
+	/*DIFFERENTI CANALI*/
+	//Differenti conversioni sono sincronizzate in automatico al ck interno (CKADC2)=ADCck/2
+	
+
+	/*Cambiare canale*/
+	//Single mode: aspettare fine conversione
+	//Free running mode:
+	/**/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
