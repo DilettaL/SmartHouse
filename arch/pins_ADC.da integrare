@@ -1,0 +1,25 @@
+//Pin analogici (ADC)
+//Ogni pin identifica un campo MUX di ADMUX MUXn + ->ADCSRB.MUX5
+	//PinAVR 97 PinBoard 0
+	{
+		//MUX5:0
+	}
+	//PinAVR 96 PinBoard 1
+	{
+		//MUX5:0
+	}
+	//PinAVR 95 PinBoard 2
+	//PinAVR 94 PinBoard 3
+	//PinAVR 93 PinBoard 4
+	//PinAVR 92 PinBoard 5
+	//PinAVR 91 PinBoard 6
+	//PinAVR 90 PinBoard 7
+	//PinAVR 89 PinBoard 8
+	//PinAVR 88 PinBoard 9
+	//PinAVR 87 PinBoard 10
+	//PinAVR 86 PinBoard 11
+	//PinAVR 85 PinBoard 12
+	//PinAVR 84 PinBoard 13
+	//PinAVR 83 PinBoard 14
+	//PinAVR 82 PinBoard 15
+
