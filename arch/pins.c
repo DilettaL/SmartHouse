@@ -65,6 +65,7 @@ const Pin pins[] =
 		.bit=5,
 		//PWM
 		.tcc_register=&TCRR0B,//&TCRR0B
+		.oc_register_high=0,
 		.oc_register_low=&OCR0B, //&OCR0B
 		.com_mask=(1<<COM0B0)|(1<<COM0B1)	//settano TCRR0A
 	},
