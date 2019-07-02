@@ -1,4 +1,4 @@
 #pragma once
 #include <stdint.h>
 
-void ledOn();
+void ledOn(uint8_t);
