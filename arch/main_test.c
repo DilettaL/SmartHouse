@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
 	while(1)
 	{
-		ledOn(13);
+		ledOn(12);
 	}
 	return 0;
 }
