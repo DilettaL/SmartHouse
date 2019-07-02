@@ -64,7 +64,7 @@ const Pin pins[] =
 		.dir_register=&DDRG,
 		.bit=5,
 		//PWM
-		.tcc_register=&TCRR0B,//&TCRR0B
+		.tcc_register=&TCCR0B,//&TCRR0B
 		.oc_register_high=0,
 		.oc_register_low=&OCR0B, //&OCR0B
 		.com_mask=(1<<COM0B0)|(1<<COM0B1)	//settano TCRR0A
@@ -125,8 +125,8 @@ const Pin pins[] =
 		.bit=6,
 		//PWM
 		.tcc_register=&TCCR2B,
-		.oc_register_high=&OCR2BH,	//OCRnXH
-		.oc_register_low=&OCR2BL,	//OCRnXL
+		.oc_register_high=0,	//OCRnXH
+		.oc_register_low=&OCR2B,	//OCRnXL
 		.com_mask=(1<<COM2B0)|(1<<COM2B1)
 	},
 	//PinAVR 23 PinBoard 10
@@ -137,8 +137,8 @@ const Pin pins[] =
 		.bit=4,
 		//PWM
 		.tcc_register=&TCCR2A,
-		.oc_register_high=&OCR2AH,	//OCRnXH
-		.oc_register_low=&OCR2AL,	//OCRnXL
+		.oc_register_high=0,	//OCRnXH
+		.oc_register_low=&OCR2A,	//OCRnXL
 		.com_mask=(1<<COM2A0)|(1<<COM2A1)
 	},
 	//PinAVR 24 PinBoard 11
