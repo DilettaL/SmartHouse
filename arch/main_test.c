@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
 	while(1)
 	{
-		ledOn(11);
+		ledDimmer(11, 0);
 	}
 	return 0;
 }
