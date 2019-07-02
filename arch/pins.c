@@ -6,6 +6,33 @@
 const Pin pins[] =
   {
 //Pin digitali i/o
+	//PinAVR 2 PinBoard 0
+	{
+	      .in_register=&PINE,
+	      .out_register=&PORTE,
+	      .dir_register=&DDRE,
+	      .bit=0,
+		//PWM
+		.tcc_register=0, 		//TCCRnX
+		.oc_register_high=0,	//OCRnXH
+		.oc_register_low=0,	//OCRnXL
+		.com_mask=0	  		//bit in others registers
+	
+        },
+   	//PinAVR 3 PinBoard 1
+ 	{
+	      .in_register=&PINE,
+	      .out_register=&PORTE,
+	      .dir_register=&DDRE,
+	      .bit=1,
+		//PWM
+		.tcc_register=0, 		//TCCRnX
+		.oc_register_high=0,	//OCRnXH
+		.oc_register_low=0,	//OCRnXL
+		.com_mask=0	  		//bit in others registers
+	
+	},
+	
 	//PinAVR 6 PinBoard 2
 	{
 		.in_register=&PINE,
