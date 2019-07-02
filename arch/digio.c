@@ -4,9 +4,10 @@
 
 void ledOn(uint8_t pin)
 {
-	uint8_t mask=1<<pins[pin].bit;
-	*pins[pin].in_register |= mask;
-	*pins[pin].out_register |= mask;
+	const Pin* mapping=pins+pin;
+	uint8_t mask=1<<mapping->bit;
+	*(mapping->in_register) |= mask;
+	*(mapping->out_register) |= mask;
 /*
 	//PIN 6 della porta E, comandato dal bit 4 di ogni registro
 	//PINE non lo usiamo perché serve per l'ingresso
