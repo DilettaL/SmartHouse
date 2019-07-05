@@ -1,16 +1,14 @@
 BASSO LIVELLO:
-Led
-DigitalInput
-ADC
-File impostazione pin pins.c in orazio
-Realizzare file: pins.c digio.c adc.c in arch 
-Un main di test per 
-UART:
-Basso livello
-Alto livello
+Testare: Led-LedDimmer-DigitalInput
+Terminare: ADC-EEPROM-UART
 
-SHELL:
+MEDIO LIVELLO:
+Common
+
+ALTO LIVELLO:
 
 DOMANDE: 
 -Uart basso/alto livello come comunicano
 -Uart alto livello/shell come comunicano
+
+
