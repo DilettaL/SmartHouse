@@ -11,6 +11,14 @@ void ledOn(uint8_t pin)
 	*(mapping->out_register) |= mask;
 }
 
+void ledOff(uint8_t pin)
+{
+	const Pin* mapping=pins+pin;
+	uint8_t mask=1<<mapping->bit;
+	*(mapping->dir_register) |= mask;
+	*(mapping->out_register) &=~ mask;
+}
+
 void ledDimmer(uint8_t pin, uint8_t intensity)
 {
 	const Pin* mapping=pins+pin;
