@@ -1,15 +1,16 @@
 #include <avr/io.h>
 #include "digio.h"
-#include "delay.h"
+#include <util/delay.h>
 
 int main(int argc, char *argv[])
 {
 	while(1)
 	{
-		for(int i=2; i<13; i++)
+	int i;
+		for(i=3; i<13; i++)
 		{
 			ledOn(i);
-			_delay_ms(1000);
+			_delay_ms(500);
 			ledOff(i);
 			if(i==12)
 			{i=2;}
