@@ -3,7 +3,7 @@
 PREFIX=../
 ARCH=arch/
 CC=avr-gcc
-INCLUDE_DIRS=-I$(PREFIX)/src/common -I$(PREFIX)/src/arch/include -I$(PREFIX)/src/orazio_firmware
+INCLUDE_DIRS=-I$(PREFIX)/src/common -I$(PREFIX)/src/include -I$(PREFIX)/src/orazio_firmware
 CC_OPTS=-Wall -std=gnu99 -DF_CPU=16000000UL    -O3 -funsigned-char -funsigned-bitfields  -fshort-enums -Wall -Wstrict-prototypes -mmcu=atmega2560 -D_ARDUINO_MEGA_2560_ $(INCLUDE_DIRS) 
 
 
