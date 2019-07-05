@@ -33,7 +33,7 @@ void ledDimmer(uint8_t pin, uint8_t intensity)
 	}
 }
 
-void digitalInput(void)
+void digitalInput(uint8_t pin)
 {
 
 //UTILIZZARE SOLO PIN CHE UNANO PIN CHANGE!!
@@ -48,7 +48,7 @@ void digitalInput(void)
 	while(1)
 	{
 		//uint8_t result= *(mapping->in_register);		
-		int key=(PINB&mask)==0; // we extract the bit value of the 6th bit
+//		int key=(PINB&mask)==0; // we extract the bit value of the 6th bit
 		//printf("switch %02x, %d\n", (int) PORTB, key);
 		//_delay_ms(500); // from delay.h, wait 1 sec
 	}
