@@ -4,11 +4,12 @@
 
 int main(int argc, char *argv[])
 {
-	while(1)
+	ledOn(4);	
+//	ledDimmer(4, );
+	/*while(1)
 	{
 	int i;
-		ledDimmer(4, 10);
-		/*for(i=3; i<13; i++)
+		for(i=3; i<13; i++)
 		{
 			ledOn(i);
 			_delay_ms(500);

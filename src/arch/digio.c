@@ -24,14 +24,13 @@ void ledDimmer(uint8_t pin, uint8_t intensity)
 	uint8_t light=0;
 	const Pin* mapping=pins+pin;
 	*(mapping->oc_register_high)=0;
-/*TEST*/*(mapping->oc_register_low)=1;
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |= mask;
 	while(1)
 	{
 		*(mapping->oc_register_low)=light;
-		_delay_ms(100);
 		light+=8;
+		_delay_ms(100);
 	}
 }
 
