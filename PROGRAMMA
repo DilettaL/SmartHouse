@@ -1,7 +1,11 @@
 BASSO LIVELLO:
-Testare: Led-LedDimmer-DigitalInput
+Testare: 
+Led()non funziona il 2 tutto il resto ok
+LedDimmer
+DigitalInput
 Terminare: ADC-EEPROM-UART
-
+inizializzare ogni .c per ogni eeprom
+ 
 MEDIO LIVELLO:
 Common
 
