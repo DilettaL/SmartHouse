@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 			ledOff(i);
 			if(i==12)
 			{i=2;}
-		}*/
-	}
+		}
+	}*/
 	return 0;
 }
