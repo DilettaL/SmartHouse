@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 	while(1)
 	{
 	int i;
-		ledDimmer(3, 100000000);
+		ledDimmer(4, 10);
 		/*for(i=3; i<13; i++)
 		{
 			ledOn(i);
