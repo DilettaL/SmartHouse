@@ -30,7 +30,7 @@ void ledDimmer(uint8_t pin, uint8_t intensity)
 	while(light<intensity)
 	{
 		_delay_ms(100);
-		light+=1;
+		light+=8;
 	}
 }
 
