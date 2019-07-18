@@ -4,8 +4,8 @@
 
 int main(int argc, char *argv[])
 {
-	ledOn(4);	
-//	ledDimmer(4, );
+//	ledOn(4);	
+	ledDimmer(2, );
 	/*while(1)
 	{
 	int i;

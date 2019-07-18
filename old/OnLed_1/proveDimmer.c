@@ -19,7 +19,7 @@ void Led_On(void)
 	PORTE |=mask;
 }
 
-void Led_Dimmer(void)
+void Led_Dimmer(uint8_t intensity)
 {
 	//Set TCCR3 and channel B (pag 82)
  	TCCR3A=TCCRA_MASK;
@@ -30,13 +30,11 @@ void Led_Dimmer(void)
 	//PIN 6 porta E, collegato all'OSC3
 	const uint8_t mask=(1<<4);
 	DDRE |= mask;
-	uint8_t intensity=0;
-	while(1)
-	{
+//	while(1)
+//	{
 		OCR3BL=intensity; 
-		_delay_ms(100);
-		intensity+=8;
-	}
+//		_delay_ms(100);
+//	}
 }
 
 void DigitalInput(void)
