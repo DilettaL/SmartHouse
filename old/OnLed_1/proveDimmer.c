@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <avr/io.h>
-#include "switch_dimmer.h"
+#include "proveDimmer.h"
 #include "uart.h"
 
 #define TCCRA_MASK (1<<WGM30)|(1<<COM3B0)|(1<<COM3B1)
@@ -26,15 +26,15 @@ void Led_Dimmer(uint8_t intensity)
 	TCCR3B=TCCRB_MASK;
 	//Set Compare Register
 	OCR3BH=0;
-	OCR3BL=1;
+	OCR3BL=0;
 	//PIN 6 porta E, collegato all'OSC3
 	const uint8_t mask=(1<<4);
 	DDRE |= mask;
-//	while(1)
-//	{
+	while(1)
+	{
 		OCR3BL=intensity; 
-//		_delay_ms(100);
-//	}
+		_delay_ms(100);
+	}
 }
 
 void DigitalInput(void)

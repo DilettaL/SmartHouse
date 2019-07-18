@@ -8,5 +8,5 @@
 
 int main(void)
 {
-	Led_Dimmer(200);
+	Led_Dimmer(10);
 }
