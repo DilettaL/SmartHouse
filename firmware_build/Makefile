@@ -29,7 +29,7 @@ HEADERS=pins.h\
 	eeprom.h\
 	digio.h\
 
-BINS= main_test.elf\
+BINS= digio_test.elf\
 
 .phony:	clean all
 
