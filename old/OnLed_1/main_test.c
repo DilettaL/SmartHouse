@@ -8,5 +8,5 @@
 
 int main(void)
 {
-	DigitalInput();
+	Led_Dimmer();
 }

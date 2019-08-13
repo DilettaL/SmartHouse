@@ -30,12 +30,12 @@ void Led_Dimmer(void)
 	//PIN 6 porta E, collegato all'OSC3
 	const uint8_t mask=(1<<4);
 	DDRE |= mask;
-	uint8_t intensity=0;
+	uint8_t intensity=200;
 	while(1)
 	{
 		OCR3BL=intensity; 
 		_delay_ms(100);
-		intensity+=8;
+		//intensity+=8;
 	}
 }
 
