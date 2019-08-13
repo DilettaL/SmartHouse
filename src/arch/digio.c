@@ -25,6 +25,7 @@ void ledDimmer(uint8_t pin, uint8_t intensity)
 	uint8_t light=0;
 	const Pin* mapping=pins+pin;
 	*(mapping->oc_register_high)=0;
+//TCCRA=*(mapping->com_mask);
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |= mask;
 	while(1)
