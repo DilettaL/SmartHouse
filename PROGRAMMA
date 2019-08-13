@@ -2,6 +2,7 @@ BASSO LIVELLO:
 Testare:
 LedDimmer
 DigitalInput
+
 Terminare: ADC-EEPROM-UART
 inizializzare ogni .c per ogni eeprom
  
@@ -13,5 +14,6 @@ ALTO LIVELLO:
 DOMANDE: 
 -Uart basso/alto livello come comunicano
 -Uart alto livello/shell come comunicano
+
 
 
