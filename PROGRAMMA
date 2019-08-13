@@ -1,6 +1,5 @@
 BASSO LIVELLO:
-Testare: 
-Led()non funziona il 2 tutto il resto ok
+Testare:
 LedDimmer
 DigitalInput
 Terminare: ADC-EEPROM-UART
