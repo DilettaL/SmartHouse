@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include "digio.h"
 #include "pins.h"
+#include "uart.h"
 
 void ledOn(uint8_t pin)
 {
@@ -40,7 +41,7 @@ void digitalInput(uint8_t pin)
 //UTILIZZARE SOLO PIN CHE UNANO PIN CHANGE!!
 
   // this initializes the printf/uart thingies
-//  printf_init(); 
+	printf_init(); 
 
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
