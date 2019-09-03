@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "digio.h"
 #include "pins.h"
-#include "../include/uart.h"
+#include "uart.h"
 
 void ledOn(uint8_t pin)
 {
@@ -50,9 +50,9 @@ void digitalInput(uint8_t pin)
 	{
 		_delay_ms(1000);
 /*Potrebbe non funzionarci perché sono necessarie delle nop per effettuare la sincronizzazione, io per ora ho messo il delay prima*/
-		result= *(mapping->in_register);
+		int key=(*(mapping->in_register) & mask)==0;
 /*dato che il risultato viene messo direttamente in in_register non ho capito perché ha inserito key e le altre cose*/
-		printf("switch: %d\n", result);
+		printf("switch: %d\n", key);
 	}
 /*
 ****************************************************
