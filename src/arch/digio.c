@@ -4,6 +4,8 @@
 #include "digio.h"
 #include "pins.h"
 #include "uart.h"
+/*TEST*/
+#include <avr/interrupt.h>
 
 void ledOn(uint8_t pin)
 {
@@ -23,18 +25,32 @@ void ledOff(uint8_t pin)
 
 void ledDimmer(uint8_t pin, uint8_t intensity)
 {
-	uint8_t light=0;
+/*TEST*/printf_init();
+	//PWM_init
+	//TCCR0A=(1<<WGM00)|(1<<WGM01);
+ 	//TCCR0B=(1<<CS00);
 	const Pin* mapping=pins+pin;
-	*(mapping->oc_register_high)=0;
-//TCCRA=*(mapping->com_mask);
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |= mask;
+	//PWM_enable
+		//Settare tutti i timer e i parametri della struct da utilizzare nel caso in cui richieste info
+	//PWM_setOutput
+	//PWM_dutyCycle
+	while(1)
+	{
+/*TEST*/	printf("v %u\n", (int) OCR1CL);
+	}
+
+/*	uint8_t light=0;
+	*(mapping->oc_register_high)=0;
+TCCRA=*(mapping->com_mask);
 	while(1)
 	{
 		*(mapping->oc_register_low)=light;
 		light+=8;
 		_delay_ms(100);
 	}
+*/
 }
 
 void digitalInput(uint8_t pin)
@@ -54,25 +70,5 @@ void digitalInput(uint8_t pin)
 /*dato che il risultato viene messo direttamente in in_register non ho capito perché ha inserito key e le altre cose*/
 		printf("switch: %d\n", key);
 	}
-/*
-****************************************************
-//UTILIZZARE SOLO PIN CHE UNANO PIN CHANGE!!
-
-  // this initializes the printf/uart thingies
-	printf_init(); 
-
-	const Pin* mapping=pins+pin;
-	uint8_t mask=1<<mapping->bit;
-	*(mapping->dir_register)&=~ mask;
-	*(mapping->out_register)|= mask;
-	while(1)
-	{
-		//uint8_t result= *(mapping->in_register);		
-//		int key=(PINB&mask)==0; // we extract the bit value of the 6th bit
-		//printf("switch %02x, %d\n", (int) PORTB, key);
-		//_delay_ms(500); // from delay.h, wait 1 sec
-	}
-****************************************************
-*/
 }
 
