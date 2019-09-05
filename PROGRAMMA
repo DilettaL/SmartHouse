@@ -1,10 +1,8 @@
-BASSO LIVELLO: togliere tutti i while
-Testare: LedDimmer
-
+BASSO LIVELLO: togliere while da digital input
 
 Terminare: ADC-EEPROM-UART
 inizializzare ogni .c per ogni eeprom
- 
+
 MEDIO LIVELLO:
 Common
 
