@@ -7,6 +7,33 @@
 /*TEST*/
 #include <avr/interrupt.h>
 
+
+void initDimmer(void)
+{
+	//PWM_init
+	//interrupt
+	TIMSK0=0;
+	TIMSK1=0;
+	TIMSK2=0;
+	TIMSK3=0;
+	TIMSK4=0;
+	//Timer0
+	TCCR0A=(1<<WGM00)|(1<<WGM01);
+	TCCR0B=(1<<CS00);
+	//Timer1 (fast pwm, no inverted, 16MHz)
+	TCCR1A=(1<<WGM10);
+ 	TCCR1B=(1<<WGM12)|(1<<CS10);
+	//Timer2
+	TCCR2A=TCCR0A;
+  	TCCR2B=TCCR0B;
+	//Timer3
+	TCCR3A=TCCR1A;
+  	TCCR3B=TCCR1B;
+	//Timer4
+	//Timer5
+	
+}
+
 void ledOn(uint8_t pin)
 {
 	const Pin* mapping=pins+pin;
@@ -26,31 +53,19 @@ void ledOff(uint8_t pin)
 void ledDimmer(uint8_t pin, uint8_t intensity)
 {
 /*TEST*/printf_init();
-	//PWM_init
-	//TCCR0A=(1<<WGM00)|(1<<WGM01);
- 	//TCCR0B=(1<<CS00);
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
-	*(mapping->dir_register) |= mask;
-	//PWM_enable
-		//Settare tutti i timer e i parametri della struct da utilizzare nel caso in cui richieste info
 	//PWM_setOutput
+	*(mapping->dir_register) |= mask;
+	*(mapping->tcc_register) |= *(mapping->com_mask);
 	//PWM_dutyCycle
+	*(mapping->oc_register)=0;
 	while(1)
 	{
-/*TEST*/	printf("v %u\n", (int) OCR1CL);
-	}
-
-/*	uint8_t light=0;
-	*(mapping->oc_register_high)=0;
-TCCRA=*(mapping->com_mask);
-	while(1)
-	{
-		*(mapping->oc_register_low)=light;
-		light+=8;
+/*TEST*/	printf("v %u\n", int *(mapping->oc_register));
 		_delay_ms(100);
+		*(mapping->oc_register)+=intensty;
 	}
-*/
 }
 
 void digitalInput(uint8_t pin)
