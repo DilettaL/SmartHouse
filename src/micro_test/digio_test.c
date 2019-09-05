@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
 */
 
 //Test ledDimmer
-	ledDimmer(12, 100);
+	initDimmer();
+	ledDimmer(13, 10);
 //Test Digital In
 	//digitalInput(12);
 	return 0;

@@ -57,15 +57,16 @@ void ledDimmer(uint8_t pin, uint8_t intensity)
 	uint8_t mask=1<<mapping->bit;
 	//PWM_setOutput
 	*(mapping->dir_register) |= mask;
-	*(mapping->tcc_register) |= *(mapping->com_mask);
+	*(mapping->tcc_register) |= (mapping->com_mask);
 	//PWM_dutyCycle
-	*(mapping->oc_register)=0;
-	while(1)
+	*(mapping->oc_register)=intensity;
+/*	while(1)
 	{
-/*TEST*/	printf("v %u\n", int *(mapping->oc_register));
-		_delay_ms(100);
-		*(mapping->oc_register)+=intensty;
+test	printf("v %u\n", *(mapping->oc_register));
+		_delay_ms(1000);
+		*(mapping->oc_register)+=intensity;
 	}
+*/
 }
 
 void digitalInput(uint8_t pin)
@@ -73,7 +74,6 @@ void digitalInput(uint8_t pin)
 	// this initializes the printf/uart thingies
 	printf_init(); 
 	const Pin* mapping=pins+pin;
-	uint8_t result; //inizializzo il valore di lettura qua in modo da non definirlo ogni volta
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |=mask; //dovrebbe essere equivalente a &=~
 	*(mapping->out_register) |=mask; //in questo caso si attiva il resistore di pull up essendo il pin un ingresso	
