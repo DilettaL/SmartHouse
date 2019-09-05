@@ -1,6 +1,5 @@
-BASSO LIVELLO:
-Testare:
-LedDimmer
+BASSO LIVELLO: togliere tutti i while
+Testare: LedDimmer
 
 
 Terminare: ADC-EEPROM-UART
