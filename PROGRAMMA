@@ -1,6 +1,8 @@
 BASSO LIVELLO: togliere while da digital input
 
-Terminare: ADC-EEPROM-UART
+-UART
+
+Terminare: ADC-EEPROM
 inizializzare ogni .c per ogni eeprom
 
 MEDIO LIVELLO:
