@@ -14,6 +14,10 @@ typedef struct{
   	const uint8_t com_mask;
 }  Pin;
 
-
-
 extern const Pin pins[];
+
+typedef struct{
+	const uint8_t select_adc;
+} Pin_analog;
+
+extern const Pin_analog pins_analog[];
