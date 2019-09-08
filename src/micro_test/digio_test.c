@@ -21,6 +21,11 @@ int main(int argc, char *argv[])
 	initDimmer();
 	ledDimmer(13, 10);
 //Test Digital In
-	//digitalInput(12);
+/*
+	while(1){
+		digitalInput(12);
+		_delay_ms(1000);
+	}
+*/
 	return 0;
 }
