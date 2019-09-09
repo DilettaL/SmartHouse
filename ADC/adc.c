@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include "adc.h"
 #include "uart.h"
-#include "pins_adc.h"
+#include "pins.h"
 
 //ADMUX è stato completamente configurato in modo provvisorio
 //ADCSRA è stato completamente configurato in modo provvisorio
@@ -24,16 +24,20 @@ void adc_init()
 /*PROVVISORIO*///ADCSRA=(<<ADPS2)|(<<ADPS1)|(<<ADPS0);
 }
 //In ingresso alla funzione adc run dovrà esere presente il valore del pin che per ora inseriamo nella prima riga di codice
-void adc_run()
+void adc_run(uint8_t pin)
 {
 	//Define input adc channel
-/*PROVVISORIO*/int pin_input=0;
+	const Pin_analog* mapping=pins_analog+pin;
+	//pins set MUX5:0 of ADMUX and ADCSRB register
+//DUBBIO
+	ADMUX |= (pins_analog[mapping]->select_adc);
+	ADCSRB |= (pins_analog[mapping]->select_adc);
+//fine dubbio
+
 /*PROVVISORIO*/int numb_samples=10;
 	//Each data is converts with 10 sample
 	float result[10];
 	int count;
-	//pins set MUX5:0 of ADMUX and ADCSRB register
-	pins[pin_input].select_adc;
 	//Configurare eventuali trigger
 //Se si è nella modalità autotrigger bisogna abilitare questo bit a 1
 /*PROVVISORIO*///ADCSRA=(1<<ADATE);
