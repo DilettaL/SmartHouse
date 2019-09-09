@@ -77,13 +77,9 @@ void digitalInput(uint8_t pin)
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |=mask; //dovrebbe essere equivalente a &=~
 	*(mapping->out_register) |=mask; //in questo caso si attiva il resistore di pull up essendo il pin un ingresso	
-	while(1)
-	{
-		_delay_ms(1000);
-/*Potrebbe non funzionarci perché sono necessarie delle nop per effettuare la sincronizzazione, io per ora ho messo il delay prima*/
+
 		int key=(*(mapping->in_register) & mask)==0;
 /*dato che il risultato viene messo direttamente in in_register non ho capito perché ha inserito key e le altre cose*/
 		printf("switch: %d\n", key);
-	}
 }
 
