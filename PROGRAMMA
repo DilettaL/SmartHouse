@@ -1,8 +1,9 @@
-BASSO LIVELLO: togliere while da digital input
+BASSO LIVELLO:
+-UART: 
+-ADC->Diletta
++Test Luca
+-EEPROM (uguale a grisetti?) Test
 
--UART
-
-Terminare: ADC-EEPROM
 inizializzare ogni .c per ogni eeprom
 
 MEDIO LIVELLO:
