@@ -1,8 +1,12 @@
 BASSO LIVELLO:
--UART: 
--ADC->Diletta
-+Test Luca
--EEPROM (uguale a grisetti?) Test
+
+Luca:
+-Test Digio
+-Test EEPROM
+
+Diletta:
+-ADC
+-UART: Isr e ultime due funzioni
 
 inizializzare ogni .c per ogni eeprom
 
