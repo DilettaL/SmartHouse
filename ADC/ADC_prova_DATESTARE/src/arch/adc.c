@@ -23,8 +23,8 @@ void adc_init()
 //Si configura il prescaler (per ora non si definisce un valore)
 /*PROVVISORIO*///ADCSRA=(<<ADPS2)|(<<ADPS1)|(<<ADPS0);
 }
-//In ingresso alla funzione adc run dovrà esere presente il valore del pin che per ora inseriamo nella prima riga di codice
-void adc_run(uint8_t pin)
+
+float* adc_run(uint8_t pin, uint8_t numb_samples)
 {
 	//Define input adc channel
 	const Pin_analog* mapping=pins_analog+pin;
@@ -33,18 +33,17 @@ void adc_run(uint8_t pin)
 	ADMUX |= (pins_analog[mapping]->select_adc);
 	ADCSRB |= (pins_analog[mapping]->select_adc);
 //fine dubbio
-
-/*PROVVISORIO*/int numb_samples=10;
-	//Each data is converts with 10 sample
-	float result[10];
-	int count;
+	//uint8_t numb_samples
+	//Each data is converts with n samples
+	float *result[numb_samples];
+	uint8_t count, i;
 	//Configurare eventuali trigger
 //Se si è nella modalità autotrigger bisogna abilitare questo bit a 1
 /*PROVVISORIO*///ADCSRA=(1<<ADATE);
 	//ADC Enable
 	ADCSRA=(1<<ADEN);
 //Non so se va applicato qui, si abilita l'interrupt che definisce il termine della conversione
-/*PROVVISORIO*///ADCSRA=(1<<ADIE);
+/*PROVVISORIO*/ADCSRA=(1<<ADIE);
 	//start conversion
 //se si è in free running mode (lo si abilita una volta e poi va in automatico)
 /*PROVVISORIO*///ADCSRA=(1<<ADSC);
@@ -53,28 +52,26 @@ void adc_run(uint8_t pin)
 	{
 		//start conversion
 //si posiziona qui se conversione in single mode ogni volta deve essere riabilitato
-/*PROVVISORIO*///ADCSRA=(1<<ADSC);
+/*PROVVISORIO*/	ADCSRA=(1<<ADSC);
 		//Check conversion end
 		while(ADCSRA.ADIF==1)
 		{
+			result[count]=0;
+			result[count]+=ADCL;
+			result[count]+=ADCH;
 			//Conversion is complete, now we can read and save the data
 			//ADCL register
-			for(count=0; count<=7; count++)
-			{
+			
 				//Operations for single mode conversion and right adjust configuration
 //Per differential mode conversion o left adjust mode ----> operazioni diverse nel caso (pag 280)
-/*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///result[count]=ADCL[count]*1024/(1.1);
-			}
+/*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///
 			//ADCH register
-			for(count=8; count<=9; count++);
-			{
 				//Operations for single mode conversion and right adjust configuration
 //Per differential mode conversion o left adjust mode ----> operazioni diverse nel caso (pag 280)
-/*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///result[count]=ADCH[count]*1024/(1.1);
-			}
+/*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///
 		}
 	//Pulizia eventuali registri
 	}
-	
+	return *result;	
 }
 
