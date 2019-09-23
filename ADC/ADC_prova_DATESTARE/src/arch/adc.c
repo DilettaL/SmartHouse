@@ -5,6 +5,7 @@
 #include "adc.h"
 #include "uart.h"
 #include "pins.h"
+#include <avr/interrupt.h>
 
 //ADMUX è stato completamente configurato in modo provvisorio
 //ADCSRA è stato completamente configurato in modo provvisorio
@@ -12,6 +13,7 @@
 
 void adc_init()
 {
+	SREG |= (1<<7); 
 	//Defalut right adjust mode
 /*PROVVISORIO*/	//Reference selection (supply) =1.1V internal e capacità esterna su AREF
 	ADMUX= (1<<REFS1)|(0<<REFS0);
@@ -54,8 +56,8 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 //si posiziona qui se conversione in single mode ogni volta deve essere riabilitato
 /*PROVVISORIO*/	ADCSRA=(1<<ADSC);
 		//Check conversion end
-		while(ADIF==1)
-		{
+		while(ADIF!=1);
+		//{
 			result[count]=0;
 			result[count]+=ADCL;
 			result[count]+=ADCH;
@@ -72,7 +74,7 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 		}
 	printf("result[%d]= %f\n", count, result[count]);
 	//Pulizia eventuali registri
-	}
+//	}
 	return result[numb_samples];	
 }
 

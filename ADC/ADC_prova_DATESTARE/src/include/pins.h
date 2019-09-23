@@ -17,7 +17,7 @@ typedef struct{
 extern const Pin pins[];
 
 typedef struct{
-	const uint8_t select_adc_admux;
+	const uint8_t select_adc_mux;
 	const uint8_t select_adc_adcsrb;
 
 } Pin_analog;
