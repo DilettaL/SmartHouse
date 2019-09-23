@@ -24,19 +24,19 @@ void adc_init()
 /*PROVVISORIO*///ADCSRA=(<<ADPS2)|(<<ADPS1)|(<<ADPS0);
 }
 
-float* adc_run(uint8_t pin, uint8_t numb_samples)
+float adc_run(uint8_t pin, uint8_t numb_samples)
 {
 	//Define input adc channel
 	const Pin_analog* mapping=pins_analog+pin;
 	//pins set MUX5:0 of ADMUX and ADCSRB register
 //DUBBIO
-	ADMUX |= (pins_analog[mapping]->select_adc);
-	ADCSRB |= (pins_analog[mapping]->select_adc);
+	ADMUX |= (mapping->select_adc);
+	ADCSRB |= (mapping->select_adc);
 //fine dubbio
 	//uint8_t numb_samples
 	//Each data is converts with n samples
-	float *result[numb_samples];
-	uint8_t count, i;
+	float result[numb_samples];
+	uint8_t count;
 	//Configurare eventuali trigger
 //Se si è nella modalità autotrigger bisogna abilitare questo bit a 1
 /*PROVVISORIO*///ADCSRA=(1<<ADATE);
@@ -54,7 +54,7 @@ float* adc_run(uint8_t pin, uint8_t numb_samples)
 //si posiziona qui se conversione in single mode ogni volta deve essere riabilitato
 /*PROVVISORIO*/	ADCSRA=(1<<ADSC);
 		//Check conversion end
-		while(ADCSRA.ADIF==1)
+		while(ADIF==1)
 		{
 			result[count]=0;
 			result[count]+=ADCL;
@@ -70,8 +70,9 @@ float* adc_run(uint8_t pin, uint8_t numb_samples)
 //Per differential mode conversion o left adjust mode ----> operazioni diverse nel caso (pag 280)
 /*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///
 		}
+	printf("result[%d]= %f\n", count, result[count]);
 	//Pulizia eventuali registri
 	}
-	return *result;	
+	return result[numb_samples];	
 }
 

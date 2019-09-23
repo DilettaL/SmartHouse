@@ -6,8 +6,10 @@
 /*Per correttezza questi test andrebbero riscritti facendo in modo di poter leggere su UART i valori attesi senza necessità di dover collegare led ?? */
 int main(int argc, char *argv[])
 {
+	printf_init();
 	adc_init();
+//Inserire pin per pwm
 	//Scelgo il pin 0 con 10 campioni
-	adc_run(0, 0);
+	adc_run(0, 10);
 	return 0;
 }
