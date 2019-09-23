@@ -30,8 +30,8 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 	const Pin_analog* mapping=pins_analog+pin;
 	//pins set MUX5:0 of ADMUX and ADCSRB register
 //DUBBIO
-	ADMUX |= (mapping->select_adc);
-	ADCSRB |= (mapping->select_adc);
+	ADMUX |= (mapping->select_adc_mux);
+	ADCSRB |= (mapping->select_adc_adcsrb);
 //fine dubbio
 	//uint8_t numb_samples
 	//Each data is converts with n samples
