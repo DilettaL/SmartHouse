@@ -42,7 +42,7 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 //fine dubbio
 	//uint8_t numb_samples
 	//Each data is converts with n samples
-	float result[numb_samples];
+	uint16_t result[numb_samples];
 	uint8_t count;
 	//Configurare eventuali trigger
 //Se si è nella modalità autotrigger bisogna abilitare questo bit a 1
