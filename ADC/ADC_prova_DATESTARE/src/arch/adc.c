@@ -18,10 +18,9 @@ void adc_init()
 /*PROVVISORIO*/	//Reference selection (supply) =1.1V internal e capacità esterna su AREF
 	ADMUX= (1<<REFS1)|(0<<REFS0);
 	//ADC Enable
-	ADCSRA=(1<<ADEN);
-
+	ADCSRA=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 //Si configura il prescaler (per ora non si definisce un valore)
-/*PROVVISORIO*///ADCSRA=(<<ADPS2)|(<<ADPS1)|(<<ADPS0);
+/*PROVVISORIO*///ADCSRA=(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 
 
 	//If we use Single Mode Conversion we must delete next lines
@@ -57,31 +56,17 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 //ADCSRA=(1<<ADIE);
 	for(count=0; count<numb_samples; count++)
 	{
+		// start single convertion
+		// write ’1′ to ADSC
+		ADCSRA |= (1<<ADSC);
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
-
-
-
-		//start conversion
-//si posiziona qui se conversione in single mode ogni volta deve essere riabilitato
-/*PROVVISORIO*/	//ADCSRA=(1<<ADSC);
-		//Check conversion end
-		//while(ADIF!=1);
-		//{
-		/*	result[count]=0;
-			result[count]+=ADCL;
-			result[count]+=ADCH;
-		*/	//Conversion is complete, now we can read and save the data
-			//ADCL register
-			
-				//Operations for single mode conversion and right adjust configuration
+		printf("result[%d]:\t%d\n", count, result[count]);
+//Operations for single mode conversion and right adjust configuration
 //Per differential mode conversion o left adjust mode ----> operazioni diverse nel caso (pag 280)
 /*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///
-			//ADCH register
-				//Operations for single mode conversion and right adjust configuration
+//Operations for single mode conversion and right adjust configuration
 //Per differential mode conversion o left adjust mode ----> operazioni diverse nel caso (pag 280)
-/*DA CONTROLLARE ADCL[COUNT]POTREBBE NON ESSERE GIUSTO*///
-		//}
 	//Pulizia eventuali registri
 	}
 	return result[numb_samples];	
