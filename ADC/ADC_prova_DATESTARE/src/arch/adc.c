@@ -59,7 +59,6 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 	{
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
-		printf("result[%d]= %f\n", count, result[count]);
 
 
 
