@@ -30,7 +30,7 @@ void adc_init()
 /*PROVVISORIO*///ADCSRB=(<<ADTS2)|(<<ADTS1)|(<<ADTS0);
 }
 
-float adc_run(uint8_t pin, uint8_t numb_samples)
+uint16_t adc_run(uint8_t pin, uint8_t numb_samples)
 {
 	//Define input adc channel
 	const Pin_analog* mapping=pins_analog+pin;
@@ -69,6 +69,6 @@ float adc_run(uint8_t pin, uint8_t numb_samples)
 //Per differential mode conversion o left adjust mode ----> operazioni diverse nel caso (pag 280)
 	//Pulizia eventuali registri
 	}
-	return result[numb_samples];	
+	return *result;	
 }
 
