@@ -1,22 +1,20 @@
 BASSO LIVELLO:
 
 Luca:
--Test Digio
--Test EEPROM
-
-Diletta:
--ADC
--UART: Isr e ultime due funzioni
-
+-Test unico di Digio-EEPROM-ADC-UART-PINS
 inizializzare ogni .c per ogni eeprom
 
+Diletta:
+-UART: ISR e ultime due funzioni
+
+
 MEDIO LIVELLO:
-Common
+Common-->con struct di uart completarlo
 
 ALTO LIVELLO:
 
-DOMANDE: 
--Uart basso/alto livello come comunicano
+DOMANDE:
+-La nostra common uguale alla sua? 
 -Uart alto livello/shell come comunicano
 
 
