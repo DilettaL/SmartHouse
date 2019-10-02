@@ -30,7 +30,7 @@ void SetBaudRate(uint32_t baud)
 	UBRRL = UBRRL_VALUE;
 }
 
-void uart_init(const char* device __attribute__((unused)), uint32_t baud)
+struct UART* uart_init(const char* device __attribute__((unused)), uint32_t baud)
 {
 	//Initialization Uart_0
 	UART* uart=&uart_0;
@@ -67,7 +67,15 @@ disabled) when doing the initialization*/
 	sei();
 }
 
-void uart_putChar()
+void uart_putChar(struct UART* uart, uint8_t c)
 {
+	while(UCSRA.UDRE0 != 1 ); //forse non giusto così
+	UDR0=c;	
+	UCSR0B |= (1<<UDRIE0); //enable transmit interrupt
+}
 
+uint8_t uart_getChar(void)
+{
+	while (UCSRA.RXC0!=1);// forse è sbagliato conviene metterlo così!(UCSR0A & (1<<RXC0)) );
+	return UDR0;
 }

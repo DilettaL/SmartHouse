@@ -27,8 +27,11 @@ Funzioni che permettono l'invio di un pacchetto
 
 Definiti i vari tipi di pacchetto, che sono poi (FORSE) esplicitati in orazio_globals
 Vengono utilizzate le 2 funzioni di deferred_packet_handler
-
+-->Inoltre è in questo file che viene inclusa la uart.h e viene usata
 deferred_packet_handler:
 2 funzioni:
 ->_initialize (pacchetto inizializzare)
 ->_processPendingPackets (pacchetto in attesa di processo)
+
+Quindi orazio->orazio_comm->uart.h
+
