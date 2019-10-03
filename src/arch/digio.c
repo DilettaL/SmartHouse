@@ -8,7 +8,7 @@
 #include <avr/interrupt.h>
 
 
-void initDigio(void)
+void digio_init(void)
 {
 	//PWM_init
 	//interrupt

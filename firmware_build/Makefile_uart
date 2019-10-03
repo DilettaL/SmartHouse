@@ -31,7 +31,7 @@ HEADERS=pins.h\
 	digio.h\
 	uart.h\
 
-BINS= digio_test.elf\
+BINS= uart.elf\
 
 .phony:	clean all
 
