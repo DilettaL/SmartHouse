@@ -1,5 +1,0 @@
-#pragma once
-
-struct UART* uart_init(const char* device, uint32_t baud);
-void uart_putChar(struct UART*, uint8_t );
-uint8_t uart_getChar(void);

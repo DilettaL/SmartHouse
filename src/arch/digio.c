@@ -52,7 +52,7 @@ void ledOff(uint8_t pin)
 
 void ledDimmer(uint8_t pin, uint8_t intensity)
 {
-/*TEST*/printf_init();
+//	/*TEST*/printf_init();
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
 	//PWM_setOutput
@@ -69,17 +69,18 @@ test	printf("v %u\n", *(mapping->oc_register));
 */
 }
 
-void digitalInput(uint8_t pin)
+uint8_t digitalInput(uint8_t pin)
 {
 	// this initializes the printf/uart thingies
-	printf_init(); 
+//	printf_init(); 
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |=mask; //dovrebbe essere equivalente a &=~
 	*(mapping->out_register) |=mask; //in questo caso si attiva il resistore di pull up essendo il pin un ingresso	
 
-		int key=(*(mapping->in_register) & mask)==0;
+	uint8_t key=(*(mapping->in_register) & mask)==0;
 /*dato che il risultato viene messo direttamente in in_register non ho capito perché ha inserito key e le altre cose*/
-		printf("switch: %d\n", key);
+//		printf("switch: %d\n", key);
+	return key;
 }
 
