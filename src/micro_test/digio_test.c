@@ -11,6 +11,7 @@
 
 uint8_t status_DDR [NUM_DIGITAL_PINS];
 uint8_t status_PORT [NUM_DIGITAL_PINS];
+uint8_t status_PIN [NUM_DIGITAL_PINS]; 
 
 void myRegisterStatus (void){
 //Creo 2 array, uno relativo al registro DDR, l'altro al registro PORT. Ogni bit dell'array corrisonde al valore che è stato settato per il relativo pin
@@ -18,27 +19,65 @@ void myRegisterStatus (void){
 	for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
 		status_DDR [i] = getDDR(i);
 		status_PORT [i] = getPORT(i);
+		status_PIN [i] = getPIN(i);
 	}
+	printf ("DDR:\t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\n");
+	for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+		printf ("\t%d", getDDR(i));
+	}
+	printf ("\n****************\n");
+
+	printf ("PORT:\t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\n");
+	for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+		printf ("\t%d", getPORT(i));
+	}
+	printf ("\n****************\n");
+
+	printf ("PIN:\t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\n");
+	for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+		printf ("\t%d", getPIN(i));
+	}
+	printf ("\n****************\n");
 }
 
 int main(int argc, char *argv[])
 {
 	digio_init();
 	printf_init();
-	printf ("DDRx:\t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\n");
+	uint8_t intensity = 0;
 
-	for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
-		status_DDR [i] = getDDR(i);
-		status_PORT [i] = getPORT(i);
-	}
 	while (1){
-	for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
-		uint8_t regDDR = getDDR(1);
-		printf ("\t%d", regDDR);
-	}
-	printf ("\n");
-//		uint8_t regDDR = getDDR(1);
-//		printf ("\t%d\n", regDDR);
+		printf ("\nFUNC: ledOff()\n");
+		for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+			ledOff(i);
+		}
+		myRegisterStatus();
+		_delay_ms (2000);
+		
+		printf ("\nFUNC: ledOn()\n");
+		for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+			ledOn(i);
+		}
+		myRegisterStatus();
+		_delay_ms (2000);
+
+		printf ("\nFUNC: digitalInput()\n");
+		printf ("*******VALORE LETTO PER OGNI PIN*********\n");
+		printf ("N.Pin \t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\n");
+		for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+			digitalInput(i);
+			printf ("\t%d", digitalInput(i));
+		}
+		printf ("\n\n");
+		myRegisterStatus();
+		_delay_ms (2000);
+
+			printf ("\nFUNC: ledDimmer() - intensity %d\n", intensity);
+			for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+				ledDimmer(i, intensity);
+			}
+		intensity = (intensity + 10) % 255;
+		myRegisterStatus();
 		_delay_ms (2000);
 	}
 	return 0;
