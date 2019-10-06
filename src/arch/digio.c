@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include "digio.h"
 #include "pins.h"
-//#include "uart.h"
+
 /*TEST*/
 #include <avr/interrupt.h>
 #include "uart_ORIGINAL.h"
+#define PINS_NUM 14
 
 void digio_init(void)
 {
@@ -36,6 +37,9 @@ void digio_init(void)
 
 void ledOn(uint8_t pin)
 {
+//Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |= mask;
@@ -44,6 +48,9 @@ void ledOn(uint8_t pin)
 
 void ledOff(uint8_t pin)
 {
+//Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |= mask;
@@ -53,6 +60,10 @@ void ledOff(uint8_t pin)
 void ledDimmer(uint8_t pin, uint8_t intensity)
 {
 //	/*TEST*/printf_init();
+
+//Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
 	//PWM_setOutput
@@ -73,6 +84,10 @@ uint8_t digitalInput(uint8_t pin)
 {
 	// this initializes the printf/uart thingies
 //	printf_init(); 
+
+//Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
 	*(mapping->dir_register) |=mask; //dovrebbe essere equivalente a &=~
@@ -89,8 +104,8 @@ uint8_t digitalInput(uint8_t pin)
 
 uint8_t getDDR (uint8_t pin){
 //Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
-// 	if (pin>=PINS_NUM)
-//		return -1;
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t value=*(mapping->dir_register);
 //in questo modo non devo leggere tutto il byte per vedere se il bit 1 è corretto ma il risultato sarà semplicemente 1 o 0
@@ -99,8 +114,8 @@ uint8_t getDDR (uint8_t pin){
 
 uint8_t getPORT (uint8_t pin){
 //Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
-// 	if (pin>=PINS_NUM)
-//		return -1;
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t value=*(mapping->out_register);	//??? se non funziona si deve usare in_register
 //in questo modo non devo leggere tutto il byte per vedere se il bit 1 è corretto ma il risultato sarà semplicemente 1 o 0
@@ -109,8 +124,8 @@ uint8_t getPORT (uint8_t pin){
 
 uint8_t getPIN (uint8_t pin){
 //Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
-// 	if (pin>=PINS_NUM)
-//		return -1;
+ 	if (pin>=PINS_NUM)
+		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t value=*(mapping->in_register);	//??? se non funziona si deve usare in_register
 //in questo modo non devo leggere tutto il byte per vedere se il bit 1 è corretto ma il risultato sarà semplicemente 1 o 0
