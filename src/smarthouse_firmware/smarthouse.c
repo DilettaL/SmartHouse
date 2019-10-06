@@ -14,7 +14,6 @@ int main (int argc, char argv[])
 	//Inizializzazione funzioni alto livello
 	Smarthouse_comm_init();
 	while(1)
-	{
-
+	{	
 	}
 }

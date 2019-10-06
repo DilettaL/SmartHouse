@@ -90,7 +90,7 @@ uint8_t digitalInput(uint8_t pin)
 		return -1;
 	const Pin* mapping=pins+pin;
 	uint8_t mask=1<<mapping->bit;
-	*(mapping->dir_register) |=mask; //dovrebbe essere equivalente a &=~
+	*(mapping->dir_register) &=~mask; //dovrebbe essere equivalente a &=~
 	*(mapping->out_register) |=mask; //in questo caso si attiva il resistore di pull up essendo il pin un ingresso	
 
 	uint8_t key=(*(mapping->in_register) & mask)==0;
