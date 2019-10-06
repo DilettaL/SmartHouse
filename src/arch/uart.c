@@ -20,11 +20,12 @@ typedef struct UART {
 
 static UART uart_0; //Volendo creare un file con struct tipo pins per le uart
 
-void SetBaud(uint32_t baud)
+void setBaud115200(void)
 {
 	//non c'è altro modo per settare la uart in quanto serve frequency oscillator interna non c'è nel datasheet dovrei definirla con defin
 	//Problema: come setto con define? Va bene così?
-	#define BAUD 115200
+	#undef BAUD
+	#define BAUD 9600
 	#include <util/setbaud.h>
 	UBRR0H = UBRRH_VALUE;
 	UBRR0L = UBRRL_VALUE;
@@ -59,7 +60,7 @@ disabled) when doing the initialization*/
 	#ifdef USE_2X
   	UCSR0A |= (1<<U2X0);
 	#endif
-	SetBaud(baud);
+	setBaud115200();
 /*The frame format used by the USART is set by the UCSZn2:0, UPMn1:0 and USBSn bits in UCSRnB and UCS-RnC. The Receiver and Transmitter use the same setting.*/
 	//No parity Bit and 1 stop bit
 	UCSR0B |= (1<<RXEN0) | (1<<TXEN0);
