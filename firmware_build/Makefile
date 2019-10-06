@@ -22,16 +22,12 @@ AVRDUDE_FLAGS += -c wiring
 
 
 OBJS=	pins.o\
-	eeprom.o\
 	digio.o\
-	adc.o\
-	uart.o\
+	uart_ORIGINAL.o\
 
 HEADERS=pins.h\
-	eeprom.h\
 	digio.h\
-	adc.h\
-	uart.h\
+	uart_ORIGINAL.h\
 
 BINS= digio_test.elf\
 

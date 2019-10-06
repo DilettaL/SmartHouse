@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include "digio.h"
 #include "pins.h"
-#include "uart.h"
+//#include "uart.h"
 /*TEST*/
 #include <avr/interrupt.h>
-
+#include "uart_ORIGINAL.h"
 
 void digio_init(void)
 {

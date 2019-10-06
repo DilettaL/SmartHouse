@@ -1,7 +1,15 @@
 	NOTE PER LA CREAZIONE DEI TEST
 
-******** main_test.c -> digioTest.c ********
-Creare un MAKEFILE nellacartella firmware_build ("Makefile_main_test") per la compilazione del microtest corrispondente: main_test.c. 
-	PER COMPILARE E CARICARE:	$ make -f Makefile_main_test main_test.hex
+******** main_test.c -> digio_test.c ********
+Creare un MAKEFILE nellacartella firmware_build ("Makefile_digio_test") per la compilazione del microtest corrispondente: digio_test.c 
+	PER COMPILARE E CARICARE:	$ make -f Makefile_digio_test digio_test.hex
 
-void initDimmer(void) diventa void digio_init(void). In questo modo includendo ogni.h della cartella "arc" si dovrà SEMPRE richiamare il relativo "init" e non ci si scorda mai!
+void initDimmer(void) diventa void digio_init(void). In questo modo ogni .h dovrà SEMPRE richiamare il relativo "init" e non ci si scorda mai! 
+	---> tutti gli init hanno fotma "nomeHeader_init()"
+
+						
+
+
+							--Sto utilizzando la UART di Grisetti, "uart_ORIGINAL.h"--
+
+

@@ -4,15 +4,13 @@
 #include <util/delay.h>
 #include "digio.h"
 //Per ora utilizziamo quella del prof Grisetti
-#include "uart.h"
+#include "uart_ORIGINAL.h"
 
-//questa funzione restituisce il valore memorizzato nel registro 
-void printMyStatus ()
 
 int main(int argc, char *argv[])
 {
 //Richiamo le inizializzazioni dei PWM contenute in digio.c
-	initDigio();	
+	digio_init();
 
 
 
