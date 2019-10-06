@@ -107,3 +107,13 @@ uint8_t getPORT (uint8_t pin){
 	return (value >> pins[pin].bit)&0x1;
 } 
 
+uint8_t getPIN (uint8_t pin){
+//Controllo del corretto valore del pin inserito. Se > 13(MAX num pin digitali) esce dalla funzione
+// 	if (pin>=PINS_NUM)
+//		return -1;
+	const Pin* mapping=pins+pin;
+	uint8_t value=*(mapping->in_register);	//??? se non funziona si deve usare in_register
+//in questo modo non devo leggere tutto il byte per vedere se il bit 1 è corretto ma il risultato sarà semplicemente 1 o 0
+	return (value >> pins[pin].bit)&0x1;
+} 
+
