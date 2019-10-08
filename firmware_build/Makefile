@@ -21,15 +21,17 @@ AVRDUDE_FLAGS += -D -q -V -C /usr/share/arduino/hardware/tools/avr/../avrdude.co
 AVRDUDE_FLAGS += -c wiring
 
 
-OBJS=	pins.o\
-	digio.o\
-	uart_ORIGINAL.o\
+OBJS=pins.o\
+     eeprom.o\
+     digio.o\
+     uart.o\
 
 HEADERS=pins.h\
+	eeprom.h\
 	digio.h\
-	uart_ORIGINAL.h\
+	uart.h\
 
-BINS= digio_test.elf\
+BINS= uart.elf\
 
 .phony:	clean all
 

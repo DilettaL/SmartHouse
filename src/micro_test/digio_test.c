@@ -72,8 +72,8 @@ int main(int argc, char *argv[])
 		myRegisterStatus();
 		_delay_ms (2000);
 
-			printf ("\nFUNC: ledDimmer() - intensity %d\n", intensity);
-			for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
+		printf ("\nFUNC: ledDimmer() - intensity %d\n", intensity);
+		for (int i = 0; i < NUM_DIGITAL_PINS; ++i){
 				ledDimmer(i, intensity);
 			}
 		intensity = (intensity + 10) % 255;

@@ -22,13 +22,9 @@ AVRDUDE_FLAGS += -c wiring
 
 
 OBJS=pins.o\
-     eeprom.o\
-     digio.o\
      uart.o\
 
 HEADERS=pins.h\
-	eeprom.h\
-	digio.h\
 	uart.h\
 
 BINS= uart.elf\
