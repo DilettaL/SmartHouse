@@ -27,7 +27,7 @@ OBJS=pins.o\
 HEADERS=pins.h\
 	uart.h\
 
-BINS= uart.elf\
+BINS= uart_test.elf\
 
 .phony:	clean all
 
@@ -45,9 +45,9 @@ all:	$(BINS)
 %.o:	$(PREFIX)/src/micro_test/%.c 
 	$(CC) $(CC_OPTS) -c  $<
 
-#orazio server objects
-%.o:	$(PREFIX)/src/orazio_firmware/%.c 
-	$(CC) $(CC_OPTS) -c  $<
+# #orazio server objects
+# %.o:	$(PREFIX)/src/orazio_firmware/%.c 
+# 	$(CC) $(CC_OPTS) -c  $<
 
 %.elf:	%.o $(OBJS)
 	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LIBS)

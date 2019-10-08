@@ -1,8 +1,10 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "uart.h"
+#include <stdio.h>
+#include <string.h>
 
-int main(void)
+int main(int argc, char** argv)
 {
 	uart=UART_init("uart_0",115200);
 	while(1)
@@ -31,4 +33,5 @@ int main(void)
 			_delay_ms(10);
 		}
 	}
+	return 0;
 }

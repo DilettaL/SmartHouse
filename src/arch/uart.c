@@ -2,6 +2,7 @@
 #include <avr/interrupt.h>
 #include "uart.h"
 
+
 #define UART_BUFFER_SIZE 256
 
 typedef struct UART {
