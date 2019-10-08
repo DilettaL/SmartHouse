@@ -14,4 +14,27 @@ FONDAMENTALE PER LA UART SCRITTA DA LUI
 
 "Alto livello"
 Bisogna creare una shell con due thread, uno che è in ascolto della tastiera per inviare le cose e uno che è in ascolto dalla seriale per leggerle.
+La shell si basa sulla definizione dei comandi in "shell_commands.c" in cui la struct permette di impostare il tipo di comandi ed help che l'utente deve digitare.
 
+Per aprire la seriale, e probabilmente anche la tastiera, lui crea una funzione "serial_open" che utilizza la funzione "open"
+
+Il dispositivo deve funzionare sia all'accensione in cui è configurato, sia una volta che è stato battezzato.
+QUINDI:
+creare 2 funzioni, una per la definizione del dispositivo e dei canali (smarthouse_init), e un'altra per l'utilizzo.
+
+Smarthouse_init deve quindi essere richiamata prima del loop
+
+Esempio:
+//Controllo che con la eeprome il dispositivo non sia già stato configurato
+char *var;
+printf("$>insert device name:\n$>smart_house set_name ");
+while(fscanf("%s", var))
+{printf("es. $> smart_house_host set_name kitchen_controller)}
+//scrivere con la eeprom tale nome
+//Questo ripetuto anche per i canali
+
+while(1)
+{
+  //thread che aspetta da tastiera
+  //thread che aspetta da seriale
+}
