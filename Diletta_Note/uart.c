@@ -2,6 +2,7 @@
 #include <avr/interrupt.h>
 #include "uart.h"
 
+
 #define UART_BUFFER_SIZE 256
 
 typedef struct UART {
@@ -16,18 +17,19 @@ typedef struct UART {
   volatile uint8_t rx_size;
   
   int uart_num; // hardware uart;
-};
+}UART;
 
 static UART uart_0; //Volendo creare un file con struct tipo pins per le uart
 
-void SetBaudRate(uint32_t baud)
+void setBaud115200(void)
 {
 	//non c'è altro modo per settare la uart in quanto serve frequency oscillator interna non c'è nel datasheet dovrei definirla con defin
 	//Problema: come setto con define? Va bene così?
-	#define BAUD baud
+	#undef BAUD
+	#define BAUD 9600
 	#include <util/setbaud.h>
-	UBRRH = UBRRH_VALUE;
-	UBRRL = UBRRL_VALUE;
+	UBRR0H = UBRRH_VALUE;
+	UBRR0L = UBRRL_VALUE;
 }
 
 struct UART* uart_init(const char* device __attribute__((unused)), uint32_t baud)
@@ -59,23 +61,24 @@ disabled) when doing the initialization*/
 	#ifdef USE_2X
   	UCSR0A |= (1<<U2X0);
 	#endif
-	SetBaudRate(baud);
+	setBaud115200();
 /*The frame format used by the USART is set by the UCSZn2:0, UPMn1:0 and USBSn bits in UCSRnB and UCS-RnC. The Receiver and Transmitter use the same setting.*/
 	//No parity Bit and 1 stop bit
-	UCSR0B |= (1<<RXEN) | (1<<TXEN);
-	UCSR0C |= (1<<UCSZ01) | (1<<UCSZ00)|; //8bit
+	UCSR0B |= (1<<RXEN0) | (1<<TXEN0);
+	UCSR0C |= (1<<UCSZ01) | (1<<UCSZ00); //8bit
 	sei();
+	return uart;
 }
 
 void uart_putChar(struct UART* uart, uint8_t c)
 {
-	while(UCSRA.UDRE0 != 1 ); //forse non giusto così
+	while ( !(UCSR0A & (1<<UDRE0)) );	//	(UCSR0A.UDRE0 != 1 ); //forse non giusto così
 	UDR0=c;	
 	UCSR0B |= (1<<UDRIE0); //enable transmit interrupt
 }
 
 uint8_t uart_getChar(void)
 {
-	while (UCSRA.RXC0!=1);// forse è sbagliato conviene metterlo così!(UCSR0A & (1<<RXC0)) );
+	while ( !(UCSR0A & (1<<RXC0)) );	//(UCSRA.RXC0!=1);// forse è sbagliato conviene metterlo così!(UCSR0A & (1<<RXC0)) );
 	return UDR0;
 }
