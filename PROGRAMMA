@@ -1,21 +1,17 @@
 BASSO LIVELLO:
-
-Luca:
--Test unico di Digio-EEPROM-ADC-UART-PINS
-inizializzare ogni .c per ogni eeprom
-
-Diletta:
--UART: ISR e ultime due funzioni
-
+Test eeprom
+Completare UART utilizzando la sua
 
 MEDIO LIVELLO:
 Common-->con struct di uart completarlo
 
 ALTO LIVELLO:
 
-DOMANDE:
--La nostra common uguale alla sua? 
--Uart alto livello/shell come comunicano
+"Buffer_utils"
+è una macro, con cui si sostituisce la parte di codice scritta nel momento in cui si scrive BUFFER_PUT e BUFFER_GET
+La sintassi "++i ## and" è una rinominazione, con cui si crea una variabile di controllo; in generale, quello che fa il programma, è il controllo della posizione dell'elemento che si sta leggendo o scrivendo sul buffer.
+FONDAMENTALE PER LA UART SCRITTA DA LUI
 
-
+"Alto livello"
+Bisogna creare una shell con due thread, uno che è in ascolto della tastiera per inviare le cose e uno che è in ascolto dalla seriale per leggerle.
 
