@@ -13,7 +13,7 @@ void printString(char* s){
 
 
 int main(void){
-  uart=UART_init("uart_0",115200);
+  uart=UART_init("uart_0",9600);
   while(1) {
     char tx_message[300];
     char rx_message[300];

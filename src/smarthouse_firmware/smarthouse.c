@@ -1,19 +1,26 @@
+//Standard Libraries
 #include <stdio.h>
+//Low Level Libraries
 #include "eeprom.h"
 #include "adc.h"
 #include "digio.h"
+//High Level Libraries
 #include "smarthouse_comm.h"
+#include "smarthouse_shell_globals.h"
+
+int exit=1;
 
 int main (int argc, char argv[])
 {
 	//Inizializzazione funzioni basso livello
 	adc_init();
-	//da rinominare cosìdigio_init();
-	//da creare eeprom_init();
-	//uart_init la inizializzo in Smarthouse_comm_init()
-	//Inizializzazione funzioni alto livello
+	digio_init();
+	//Inizializzazione funzioni alto livello //uart_init la inizializzo in Smarthouse_comm_init()
 	Smarthouse_comm_init();
-	while(1)
+	while(exit)
 	{	
+		//Orazio Shell	
+		Smarthouse_shellStart();
 	}
+	return 0;
 }

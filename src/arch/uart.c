@@ -18,7 +18,7 @@ void setBaud57600(void) {
 #undef BAUD
 }
 
-void setBaud115200(void) {
+/*void setBaud115200(void) {
 #define BAUD 115200
 #include <util/setbaud.h>
   UBRR0H = UBRRH_VALUE;
@@ -28,7 +28,7 @@ void setBaud115200(void) {
   UCSR0A |= (1<<U2X0);
 #endif
 #undef BAUD
-}
+}*/
 
 #define UART_BUFFER_SIZE 256
 
@@ -55,7 +55,7 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
 
   switch(baud){
   case 57600: setBaud57600(); break;
-  case 115200: setBaud115200(); break;
+//  case 115200: setBaud115200(); break;
   default: return 0;
   }
   
