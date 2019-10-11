@@ -7,22 +7,15 @@
 #include <unistd.h> //per read in listen_serial
 void *listen_keyboard()
 {
-	
-	int stop_wait=0;
 	char ch;
-	while(stop_wait!=1)	
+	printf("Insert keyboard input:\n");	
+	ch=getchar();
+	if(ch < 0)
 	{
-		printf("Insert keyboard input:\n");	
-		ch=getchar();
-		if(ch < 0)
+   		if (ferror(stdin))
 		{
-            		if (ferror(stdin))
-			{
-              			clearerr(stdin);
-			}	        
-		}
-		else
-		{ stop_wait = 1; }
+              		clearerr(stdin);
+		}	        
 	}
 	//apertura shell per l'invio dei comandi
 	//flushInputBuffer
@@ -105,6 +98,13 @@ void serial_set_blocking(int fd, int should_block) {
 
 int main(int argc, char *argv)
 {
+	/*adc_init();
+	digio_init();
+	//Inizializzazione funzioni alto livello //uart_init la inizializzo in Smarthouse_comm_init()
+	Smarthouse_comm_init();
+	*///Threads creations
+//Prima dei thread è necessario verificare che il dispositivo non sia mai stato usato, e nel caso battezzarlo
+//In ogni caso fare una lista dei comandi
 	pthread_t keyboard, serial;
 	pthread_attr_t attr_keyboard, attr_serial;
 	pthread_attr_init(&attr_keyboard);
@@ -116,7 +116,11 @@ int main(int argc, char *argv)
          	printf("ERROR; return code from pthread_create()\n");
          	exit(-1);
       	}
+	int run=1;
+//A questo punto si ha un while con while(run), che tanto l'istruzione quit fa un run=0 return 0
+//Apertura shell iniziale per inserire il comando	
 	while(	pthread_join(keyboard, NULL)!=0 || pthread_join(serial, NULL)!=0 );
-	pthread_exit(NULL);
+	pthread_attr_destroy(&attr_keyboard);
+  	pthread_attr_destroy(&attr_serial);	
 	return 0;
 }
