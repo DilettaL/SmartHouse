@@ -9,7 +9,40 @@
 #include "smarthouse_comm.h"
 #include "smarthouse_shell_globals.h"
 
-int exit=1;
+void *listen_keyboard()
+{
+	char ch;
+	ch=getchar();
+	if(ch < 0)
+	{
+   		if (ferror(stdin))
+		{
+              		clearerr(stdin);
+		}	        
+	}
+	//flushInputBuffer
+}
+
+void *listen_serial()
+{
+int operazione_completata=0;
+	//Condizione per l'utilizzo della seriale - magari per l'abilitazione dell'interrupt
+	if(operazione_completata)
+	{
+		printf("Seriale\n");
+		int serial=open ("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC );
+  		if (serial < 0)
+		{
+    			printf ("error opening serial, serial %d\n", serial);
+  		}
+		char c;
+//		while(c!=EOT)
+//		{
+			read(serial, &c, 1);
+			printf("letto %02x\n", (unsigned int)c);
+//		}
+	}
+}
 
 int main (int argc, char argv[])
 {
@@ -23,19 +56,22 @@ int main (int argc, char argv[])
 	pthread_attr_t attr_keyboard, attr_serial;
 	pthread_attr_init(&attr_keyboard);
 	pthread_attr_init(&attr_serial);
-	phtread_create(&keyboard, &attr_keyboard, listen_keyboard, NULL); 
-	serial_resultphtread_create(&serial, &attr_serial, listen_serial, NULL); 
-	void *keyboard_result, *serial_result;
-
-	while(exit)
-	{	
-		while( (pthread_join(keyboard, &keyboard_result)!=0) || (pthread_join(serial, &serial_result)!=0) )
-		{
-			//Orazio Shell	
-//			Smarthouse_shellStart()
-		}
-	}
+	int control1=pthread_create(&keyboard, &attr_keyboard, listen_keyboard, NULL);
+	int control2=pthread_create(&serial, &attr_serial, listen_serial, NULL);
+	if (control1 || control2)
+	{
+         	printf("ERROR; return code from pthread_create()\n");
+         	exit(-1);
+      	}
+	int run=1;
+/*A questo punto si ha un while con while(run), che tanto l'istruzione quit fa un run=0 return 0
+	while(run)
+	{
+*/		printf("$>Smarthouse:");
+		//Apertura shell iniziale per inserire il comando	
+		while(	pthread_join(keyboard, NULL)!=0 || pthread_join(serial, NULL)!=0 );
+//	}
 	pthread_attr_destroy(&attr_keyboard);
-  	pthread_attr_destroy(&attr_serial);
+  	pthread_attr_destroy(&attr_serial);	
 	return 0;
 }
