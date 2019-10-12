@@ -1,6 +1,10 @@
 //Standard Libraries
 #include <stdio.h>
 #include <pthread.h>
+#include <stdlib.h>
+#include <sys/types.h>//per open
+#include <fcntl.h>
+#include <unistd.h> //per read in listen_serial
 //Low Level Libraries
 #include "eeprom.h"
 #include "adc.h"

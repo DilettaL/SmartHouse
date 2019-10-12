@@ -1,5 +1,9 @@
 #pragma once
 
+//definition of type of function
+typedef int (*CmdFn)(char* response, char** args);
+
+
 //Commands struct
 typedef struct{
 	//command string to compare with input
