@@ -8,7 +8,8 @@ typedef int (*CmdFn)(char* response, char** args);
 typedef struct{
 	//command string to compare with input
 	const char* name;
-//	int n_args;
+	//Argument's number of the function
+	int n_args;
 	//Function of command
 	CmdFn cmd_fn;
 	//How to insert the command
