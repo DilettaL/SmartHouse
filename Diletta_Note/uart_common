@@ -1,3 +1,16 @@
+Stiamo vedendo FlushInput/Output buffer che utilizzano le funzioni di packet_handler c
+
+FlushOutput utilizza PacketHandler_txByte (dichiarata in packet_handler.c) e accetta come argomento un elemento della struct
+PacketHandler sempre definita in questo file
+Esempio: if(!a)-> entra nell'if solo se a=0
+
+packet_handler è un elemento di tipo DeferredPacketHandler definito in deferred_packet_handler.h. E' una struct (di cui un elemento è "base_handler", elemento in ingresso alla funzione PacketHandler_txByte).
+Il tipo DeferredPacketHandler gestisce il pacchetto corrente e i pacchetti in attesa. GESTISCE LA FILA! 
+
+Stiamo guardando più il basso livello. I pacchetti vengono gestiti tramite packet_operation in cui packetStatus è il nostro automa della comunicazione.
+Il pacchetto dovrebbe essere PacketHeader, dobbiamo capire come si mette l'informazione in "seq" (e se va messa li)
+----------------------------------------------------------------------------------------------------------------------------
+
 Makefile definitivo: contiene tutti insieme i .c e i .h di tutti i file, senza distinzione per il basso/alto livello. Aggiungere i percorsi file
 Makefile teensy: vengono utilizzati i .h di orazio_fimware e common, ma sembra che utilizzi i .o già fatti di arch (non penso sia un problema)
 
@@ -34,4 +47,5 @@ deferred_packet_handler:
 ->_processPendingPackets (pacchetto in attesa di processo)
 
 Quindi orazio->orazio_comm->uart.h
+
 
