@@ -8,6 +8,7 @@ Domanda luca: da progetto dipende da tante cose da dove cominciare (selvaggio pe
 Dentro arch implementazione delle funzioni.
 Quando compilo si usa un target ma compilo dipendentemente dalla cartella.
 COMMON:
+						LATO ARDUINO
 stesso codice, compilato da avr e pc, essendo la parte comune. QUi si ha il concetto di pacchetto
 Packet_header: pragma push/pop il compilatore ottimizza per l'architettura, questo comando permette di farlo, evitando padding bytes. (Imbracchiali tutti insieme) in questo modo ho lo stesso layout binario sia per avr che per pc
 (seq incrementato di 1 per ogni pacchetto, perché il checksum dice se il pacchetto è perso, mentre questo identifica il flow dei pacchetti)
@@ -21,17 +22,39 @@ ogni pacchetto inizia ocn l'header e il resto è il payload del pacchetto. Per c
 orazio lavora su vari sottosistemi
 SystemStatus è un pacchetto che boom boom boom dice info su buffer, errors, tutte le cose successe.
 
-un pacchetto per ogni elemento (mai riscrevere il clien, mai cambiare il codice i pacchetti sono uguali per il tipo periferica)
-La ricezione di ogni pacchetto implica un'azione
-(entra uno che deve razzella il codice)
-il protocollo suo secondo lui è la più semplice
+un pacchetto per ogni elemento (mai riscrevere il client, mai cambiare il codice i pacchetti sono uguali per il tipo periferica)
+La ricezione di ogni pacchetto implica un'azione (entra uno che deve razzella il codice) il protocollo suo secondo lui è la più semplice
+Quindi abbiamo visto i pacchetti. Pensiamo come arduino, che si mette in ascolto, quando arriva il checksum se lo prende e deve farci qualcosa, se il pacchetto è ben formato. 
+Per capire cosa fare con il pacchetto si usa il type di packetHeader che definisce l'azione, lo selezioni in modo che sia l'indice di un puntatore a funzione dentro ad un vettore, così posso collegarlo a quello che mi serve.
 
-Quindi abbiamo visto i pacchetti. Pensiamo come arduino, che si mette in ascolto, quando arriva il checksum se lo prende e deve farci qualcosa.
-Per fare questo esiste il type che definisce l'azione, lo selezioni in modo che sia l'indice di un puntatore a funzione dentro un vettore
+packet_handler (la funzione dentro al sorgente): ha un array di puntatori a funzione che prendono in pasto un oggetto di
+questo tipo e un carattere. Lui ha un array di puntatori a funzione. 
+Quando ricevi un pacchetto chiami una funzione e installa le "ops" di tipo PacketOperations, che è una struct che dice cosa
+devi fare quando ricevi un pacchetto. Ad esempio c'è il richiamo ad una funzione che inizializza il buffer. Si chiama una
+funzione a cui si delega, risparmiando una copia. La Onreceive (packetFn) puntatore a inizio pacchetto quando lo si riceve.
+Packet_handler_test fa proprio questo (test di unchain)
+il packet_handler fa proprio questo, quando legge il pacchetto completo è lui stesso a chiamare la callBack di quel pacchetto
+La funzione sendPacket permette di rimandarlo una volta ricevuto (ovviamente ricrementando il seq number). 
+Definito: dove scriverlo e cosa fare.
+PacketOperation ops(non è packetops) struct che contenere tutte le caratteristiche dei pacchetti
+Se si vuole aggiungere un pacchetto basta installarlo
+							LATO PC:
+(Lo chiama Sabrina "Pronto Sabrì dimme tutto, è sempre un piacere sentitte, ciao cara". Dice che è un fenomeno e l'unica brava brava brava. Quando qualcosa lo fomenta ripete l'aggettivo x3, vedi riga 23)
+Sta andando sulla cartella html, ma non si capisce bene. Intanto fa cose.
+da circa minuto 35:
+Dato che c'è una festa sulla seriale si potrebbero eliminare dei pacchetti? non ho capito molto quello che dice 
 
-packet_handler: array di puntatori a fuznione che prendono in pasto un oggetto di questo tipo e un carattere
+DEFERRED_PACKET_HANDLER
+Visto che la cpu è una merda, ci sono delle operazioni pesanti che non vuoi eseguire subito, ma si possono eseguire dopo.
+Allora c'è questa struttura che associa ad ogni pacchetto un buffer circolare di buffer di quel tipo. Nel momento in cui si vuole processare lui svuota il buffer e associa ad ogni pacchetto un buffer di quel tipo.
+ProcessPendingPackets che una volta chiamata 
+minuto 41:
+Per capire quando è finita un'epoca ( l'istante dal quale ha inizio il conteggio del tempo di sistema in un particolare hardware) c'è un pacchetto speciale che si chiama endEpochPacket, che viene sempre mandato, anche se disabilitano tutti pacchetti. E' un header (pacchetto vuoto).
+Quando pacchetto arriva, prendi indice, smucina se lo trovi ok altrimenti errore. 
 
-->
+Per la shell bisogna andare in host_test, orazio_packet_test 
+(non c'è un esempio piccolo perché lui li sbraga sempre) ok ci dovrebbe essere...ma è in "cose" packet_orazio_respons_test dovrebbe essere che è il lato pc. E' praticamente simmetrico rispetto a quello di arduino
+->mamma mia quant'è bona sabrina, sabrina ti amooooooooooooooooooooooooooooooooooooooooooooooooo
 --------------------------------------------------------------------------------------------------------------------
 
 Stiamo vedendo FlushInput/Output buffer che utilizzano le funzioni di packet_handler c
