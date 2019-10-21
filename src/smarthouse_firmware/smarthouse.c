@@ -6,9 +6,9 @@
 #include <fcntl.h>
 #include <unistd.h> //per read in listen_serial
 //Low Level Libraries
-#include "eeprom.h"
-#include "adc.h"
-#include "digio.h"
+//#include "eeprom.h"
+//#include "adc.h"
+//#include "digio.h"
 //High Level Libraries
 #include "smarthouse_comm.h"
 #include "smarthouse_shell_globals.h"
@@ -29,7 +29,7 @@ void *listen_keyboard()
 
 void *listen_serial()
 {
-int operazione_completata=0;
+int operazione_completata=1;
 	//Condizione per l'utilizzo della seriale - magari per l'abilitazione dell'interrupt
 	if(operazione_completata)
 	{
@@ -51,10 +51,10 @@ int operazione_completata=0;
 int main (int argc, char argv[])
 {
 	//Inizializzazione funzioni basso livello
-	adc_init();
-	digio_init();
+//	adc_init();
+//	digio_init();
 	//Inizializzazione funzioni alto livello //uart_init la inizializzo in Smarthouse_comm_init()
-	Smarthouse_comm_init();
+//	Smarthouse_comm_init();
 	//Threads creations
 	pthread_t keyboard, serial;
 	pthread_attr_t attr_keyboard, attr_serial;
