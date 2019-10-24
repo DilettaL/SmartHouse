@@ -61,3 +61,51 @@ Gli elementi " uint8_t rx_checksum; uint8_t* rx_buffer; uint8_t* rx_buffer_end;"
 
 9)Tutto scritto in packet_avr_common.h:
 Sono elementi che permettono di regolare le informazioni quando arduino trasmette al pc (non so se sono necessarie poiché non dovrebbe essere richiesta la parte di codice relativa al deferred)
+
+Avendo capito cosa sono gli argomenti e il valore di ritorno delle funzioni della macchina a stati si vanno quindi a implementare
+
+10) In packet_avr_common.c
+_rxAA: è la funzione che identifica i primi due caratteri di inizio ricezione che sono "AA". In caso di corretta sincronizzazione richiama la funzione successiva
+
+11) In packet_avr_common.c
+_rx55: è la funzione richiamata da _rxAA e identifica gli ultimi due caratteri di inizio ricezione "55". In caso di successo si richiama la funzione successiva e ripone il checksum =0 dovendo poi ricominciare da capo, mentre in caso di insuccesso si richiama "AA".
+
+12) In packet_avr_common.c
+RIGA 41 SINTASSI NON CHIARA PRESENTE ANCHE DOPO:
+h->rx_checksum^=c;
+_rxType: valuta il tipo del pacchetto e le eventuali condizioni di errore. In caso di successo richiama la funzione _rxSize.
+In questo caso l'argomento c passato alla funzione è l'ID del pacchetto. Quindi inizialmente si vede se questo elemento appartiene o meno al range dei pacchetti esistenti. In caso contrario si torna alla prima funzione _rxAA.
+Il secondo caso di insuccesso è valutato andando inizialmente ad associare la struct Operation indicizzata dall'ID alla corrente Operation struct di packetHandler. Una volta fatto ciò si valuta che ... e nel caso si richiama comunque la funzione iniziale _rxAA.
+
+13) In packet_avr_common.c
+13a) Essendo necessaria per questa funzione si aggiunge la define che implica una condizione di non successo per la size
+13b)_rxSize 
+Inizialmente si valuta che la size desiderata h->rx_current_op->size sia uguale a quella indicata dalla define e allo stesso tempo uguale a c, ovvero quella ricevuta. In caso contrario la trasmissione ricomincia dall'inizio.
+Successivamente si valuta
+
+DA FINIRE DATA ANCHE QUI LA SINTASSI NON CHIARA
+
+14)
+
+15)
+
+Una volta descritte le funzioni della macchina a stati, si può studiare il funzionamento del packet_handler, che la utilizza per gestire la ricezione dei pacchetti.
+Infatti il packet_handler ha due compiti ovvero inviare dati al pc e riceverli. La seconda parte è appunto quella che utilizza la macchina a stati.
+
+INTRODUZIONE:
+16) INIZIALIZZAZIONE
+Sia che stiamo utilizzando l'handler in trasmissione o in ricezione è necessario configurare inizialmente la struct packet_hanlder, attraverso l'apposita funzione.
+16a) si scrive l'inizializzazione in packet_avr_common.h
+16b) si implementa la funzione in packet_avr_common.c; in orazio questa funzione viene utilizzata in deferredPacketHandler, e in particolare nella funzione che inizializza il tutto. Nella parte di alto livello (dove la dovremmo ricavare noi) viene richiamata nel file orazio_comm.c, quindi noi la dovremmo richiamare nel file smarthouse_comm.c
+Questa funzione inizialmente inizializza un numero di struct Operations per ogni tipo di pacchetto esistente, e successivamente pone a 0 tutti gli elementi della struct. Inoltre (NOTA IMPORTANTE) fa puntare alla funzione della struct la prima funzione della macchina a stati, _rxAA, in modo che in ricezione si parta subito da essa.
+
+17) INSTALLAZIONE/DISINSTALLAZIONE
+
+RICEZIONE:
+La ricezione si basa fondalmente sull'utilizzo di una funzione che si mette in ascolto (probabilmente il richiamo continuo di questa funzione viene fatta nella parte di alto livello).
+18a) Vado ad inizializzare questa funzione in packet_avr_common.h
+18b) con questa funzione "(*handler->rxFn)(handler, c);" si richiama fondalmente la funzione _rxAA, funzione iniziale della macchina a stati, attivando quindi tutto il meccanismo a catena. Il valore di ritorno è appunto un valore di PacketStatus che, in caso di corretto funzionamento, è SyncChecksum.
+La particolare sintassi usata da questa funzione permette di passare alla funzione contenuta nella struct gli argomenti (handler, c).
+
+TRASMISSIONE:
+19)

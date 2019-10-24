@@ -60,6 +60,8 @@ typedef struct PacketHandler
 
 //4a)
 #define PACKET_TYPE_MAX 20
+//13a)
+#define PACKET_SIZE_ANY 0xFF
 
 //4b)
 struct PacketOperations;
@@ -96,3 +98,13 @@ typedef PacketHeader*  (*PacketGenFn)(PacketType type,
 
 //8a)
 typedef PacketStatus (*PacketHandlerRxFn)(struct PacketHandler*, uint8_t c);
+
+//16a)
+// initializes an empty packet handler
+PacketStatus PacketHandler_initialize(PacketHandler* h);
+
+//17)
+
+//18a)
+// processes a byte if available from the rx buffer
+PacketStatus PacketHandler_rxByte(PacketHandler* handler, uint8_t c);
