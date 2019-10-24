@@ -99,7 +99,26 @@ PacketStatus PacketHandler_initialize(PacketHandler* h)
 	return Success;
 }
 
-//17)
+//17b)
+PacketStatus PacketHandler_installPacket(PacketHandler* h, PacketOperations* ops)
+{
+	if (ops->type>=PACKET_TYPE_MAX)
+	{	return PacketTypeOutOfBounds;	}
+	if (h->operations[ops->type] != 0)
+	{	return PacketInstallError;	}
+	h->operations[ops->type]=ops;
+	return Success;
+}
+
+PacketStatus PacketHandler_uninstallPacket(PacketHandler* h, PacketType type)
+{
+	if (type>=PACKET_TYPE_MAX)
+	{	return PacketTypeOutOfBounds;	}
+	if (h->operations[type] == 0)
+	{	return PacketUninstallError;	}
+	h->operations[type]=0;
+  	return Success;
+}
 
 //18b)
 PacketStatus PacketHandler_rxByte(PacketHandler* handler, uint8_t c)

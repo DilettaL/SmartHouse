@@ -103,7 +103,12 @@ typedef PacketStatus (*PacketHandlerRxFn)(struct PacketHandler*, uint8_t c);
 // initializes an empty packet handler
 PacketStatus PacketHandler_initialize(PacketHandler* h);
 
-//17)
+//17a)
+/ installs the manager for packet operations
+PacketStatus PacketHandler_installPacket(PacketHandler* h, PacketOperations* ops);
+// removes a packet
+PacketStatus PacketHandler_uninstallPacket(PacketHandler* h, PacketType type);
+
 
 //18a)
 // processes a byte if available from the rx buffer

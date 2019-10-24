@@ -100,6 +100,16 @@ Sia che stiamo utilizzando l'handler in trasmissione o in ricezione è necessari
 Questa funzione inizialmente inizializza un numero di struct Operations per ogni tipo di pacchetto esistente, e successivamente pone a 0 tutti gli elementi della struct. Inoltre (NOTA IMPORTANTE) fa puntare alla funzione della struct la prima funzione della macchina a stati, _rxAA, in modo che in ricezione si parta subito da essa.
 
 17) INSTALLAZIONE/DISINSTALLAZIONE
+Per installare/disinstallare un pacchetto è necessario verificare che tale pacchetto rispetti le dimensioni massime e che l'eventuale puntatore dell'handler alla struct Operations sia vuoto/non vuoto dipendentemente dall'azione.
+->Installare=h->operations[ops->type]=ops;
+Questa associazione corrisponde ad andare ad associare ad ogni elemento dell'array operations di PacketHandler (h) la propria struct PacketOperations, chiamata ops. Il numero dell'elemento dell'array corrisponde all'ID del pacchetto.
+->Disinstallare=h->operations[type]=0;
+In questo caso si ha il fenomeno opposto, ovvero si deve togliere l'assegnazione degli elementi dell'array operations di PacketHandler (h).
+Quindi installare un pacchetto significa associargli un'apposita struttura dati per gestire il determinato tipo di operazioni definite dal pacchetto.
+17a) packet_avr_common.h
+Vado a inizializzare le funzioni.
+17b) packet_avr_common.c
+implementazione delle funzioni installer and uninstaller
 
 RICEZIONE:
 La ricezione si basa fondalmente sull'utilizzo di una funzione che si mette in ascolto (probabilmente il richiamo continuo di questa funzione viene fatta nella parte di alto livello).
@@ -108,4 +118,3 @@ La ricezione si basa fondalmente sull'utilizzo di una funzione che si mette in a
 La particolare sintassi usata da questa funzione permette di passare alla funzione contenuta nella struct gli argomenti (handler, c).
 
 TRASMISSIONE:
-19)
