@@ -104,8 +104,8 @@ typedef PacketStatus (*PacketHandlerRxFn)(struct PacketHandler*, uint8_t c);
 PacketStatus PacketHandler_initialize(PacketHandler* h);
 
 //17a)
-/ installs the manager for packet operations
-PacketStatus PacketHandler_installPacket(PacketHandler* h, PacketOperations* ops);
+// installs the manager for packet operations
+PacketStatus PacketHandler_installPacket(PacketHandler* h, PacketType type, PacketSize size, void* buffer, PacketFn action, void* action_args);
 // removes a packet
 PacketStatus PacketHandler_uninstallPacket(PacketHandler* h, PacketType type);
 

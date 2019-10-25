@@ -100,13 +100,16 @@ PacketStatus PacketHandler_initialize(PacketHandler* h)
 }
 
 //17b)
-PacketStatus PacketHandler_installPacket(PacketHandler* h, PacketOperations* ops)
+PacketStatus PacketHandler_installPacket(PacketHandler* h,  PacketType type, PacketSize size, void* buffer, PacketFn action, void* action_args)
 {
-	if (ops->type>=PACKET_TYPE_MAX)
+	if (type>=PACKET_TYPE_MAX)
 	{	return PacketTypeOutOfBounds;	}
-	if (h->operations[ops->type] != 0)
+	if (h->operations[type] != 0)
 	{	return PacketInstallError;	}
-	h->operations[ops->type]=ops;
+/*bisogna associare a una PacketOperations *ops tutti gli elementi e poi associarli a h->operations[type]*/
+	PacketOperations ops =
+	{type, size _initializeBuffer, (void*)h, _onReceive, (void*)h};
+	h->operations[type]=ops;
 	return Success;
 }
 

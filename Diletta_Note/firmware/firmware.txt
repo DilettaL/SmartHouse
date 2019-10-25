@@ -1,0 +1,34 @@
+Tutti i file analizzati sono nella cartella "orazio_firmware"
+
+1) orazio.c
+Il file di partenza è orazio.c, sorgente che contiene il main.
+Inizialmente sono inizializzate tutte le funzioni del basso e dell'alto livello.
+Successivamente è richiamato il loop infinito: while(1){}
+All'interno di questo loop sono richiamate varie funzioni per la gestione e il controllo delle periferiche del robot, che a noi non dovrebbero interessare.
+
+orazio_comm.c
+
+2) Orazio_commInit(void)
+2a in smarthouse_comm.c)E' la funzione con cui si inizializza la uart e il packet handler. Inoltre associa ad ogni pacchetto il proprio handler
+Il baudrate viene prelevato da un elemento di una struct definito con "system_param.comm_speed"
+La struct che prende il nome di system_param si trova in "orazio_globals.c"
+Questa struct è di tipo SystemParamPacket ed è definit in "orazio_packets.h" ed è un tipo di pacchetto, che contiene tutte le fino sul sistema, tra cui appunto il baud rate.
+2b in smarthouse_packet.h) Si va a creare la tipologia di pacchetto, ponendo l'ID però =1. Inizialmente si cancellano tutti gli elementi
+2c in smarthouse_globals.h)Si va ad inizializzare la struct di tipo SystemParamPacket
+2d in smarthouse_globals.c)Si vanno ad assegnare dei valori alla struct
+2e in smarthouse_comm.c)si può a questo punto andare ad inserire il baud rate nella funzione Smarthouse_commInit(). 
+2f in smarthouse_comm.c) avendo definito i pacchetti (vedi smarthouse_packets.h e smartPacket.txt) si possono ora installare.
+Visto che però noi non abbiamo utilizzato (ALMENO PER ORA) la sovrastruttura del deferred, le parti in cui usiamo il packet saranno indicate con /*PROVA*/
+In realtà andiamo a richiamare la funzione initialize, implementata nel punto successivo
+2g in smarthouse_comm.c) 
+Sempre con /*PROVA*/ andiamo a richiare la funzione che installa i pacchetti per ogni tipo di pacchetto dichiarato. A questa funzione, cambiato ora, passiamo l'handler e i parametri di PacketOperations, quindi dobbiamo fare delle modifiche in "packet_avr_common.c"
+Ho provato a modificarla creando una ops fittizia interna che vede associati i valori di ingresso e che poi vengono riassociati al packet_handler. lui lo fa attraverso il deferred
+2e in smarthouse_comm.c) abbiamo visto che gli argomenti da passare all'installatore sono molteplici. I due ad ora non risolti sono la funzione e gli argomenti.
+La funzione passata nel suo programma può essere di due tipi, ma per i nostri pacchetti (penso) serve solo PacketStatus Orazio_handlePacket(PacketHeader* p, void* args_) con la quale si dovrebbe sostanzialmente indicizzare il pacchetto all'interno della struct Index dichiarata all'inizio di smarthouse_packet.c
+
+ 
+3) orazio_comm.c
+Ciò che permette di gestire la comunicazione è la funzione riga 74: " Orazio_commHandle();" descritta nel file orazio_comm.c implementata a riga 302.
+Orazio_flushInputBuffers(); è una funzione che permette al robot di acquisire i dati dalla UART utilizzandone l'apposita funzione.
+Una volta ricevuto il dato immagino debba spacchettarlo, e in seguito viene utilizzata la funzione flushOutputBuffers(); per rinviare i dati al mittente.
+3a)
