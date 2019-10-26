@@ -75,4 +75,21 @@ typedef struct SystemParamPacket
 //	uint8_t  periodic_packet_mask;    // this is a mask of packets we want to receive at each cycle 
 } SystemParamPacket;
 #define SYSTEM_PARAM_PACKET_ID 5
+
+typedef struct
+{
+	PacketHeader header;
+	uint16_t rx_buffer_size;
+	uint16_t rx_packets;
+	uint16_t rx_packet_errors;
+	uint16_t tx_buffer_size;
+	uint16_t tx_packets;
+	uint16_t tx_packet_errors;
+	uint16_t battery_level;
+	int16_t watchdog_count;
+	uint16_t rx_seq;
+	uint8_t rx_packet_queue;
+	uint32_t idle_cycles;
+} SystemStatusPacket;
+#define SYSTEM_STATUS_PACKET_ID 6
 #pragma pack(pop)

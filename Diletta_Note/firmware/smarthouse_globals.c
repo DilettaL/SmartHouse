@@ -21,3 +21,16 @@ SystemParamPacket system_params = {
 	//.num_joints=NUM_JOINTS
 };
 
+//3a)
+SystemStatusPacket system_status = {
+	//inizializzazione del packet header
+	{
+		.type=SYSTEM_STATUS_PACKET_ID,
+		.size=sizeof(SystemStatusPacket),
+		.seq=0
+	},
+	.rx_seq=0,
+	.rx_packet_queue=0,
+	.idle_cycles=0
+};
+

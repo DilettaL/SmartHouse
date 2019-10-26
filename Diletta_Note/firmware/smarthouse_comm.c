@@ -43,6 +43,8 @@ void Smarthouse_initializePackets()
 void Smarthouse_commHandle(void)
 {
 	//Arduino riceve da uart con Smarthouse_flushInputBuffers();
+	//3a)
+	Smarthouse_flushInputBuffers();
 	//Si deve in qualche modo elaborare il pacchetto
 	//A questo punto si rinvia al pc il pacchetto con Smarthouse_flushOutputBuffers();
 }
@@ -73,3 +75,22 @@ void Smarthouse_commHandle(void)
   Orazio_sendPacket((PacketHeader*)&end_epoch);
   Orazio_flushOutputBuffers();
 }*/
+
+void Smarthouse_flushInputBuffers(void)
+{
+	system_status.rx_buffer_size=UART_rxBufferFull(uart);
+	//3b)
+	while (UART_rxBufferFull(uart))
+	{
+		//3c)
+		uint8_t c=UART_getChar(uart);
+		//3d)
+		PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
+		//3e)
+		if(status<0)
+		{	++system_status.rx_packet_errors;	}
+		//3f)
+		if(status==SyncChecksum)
+		{	++system_status.rx_packets;	}
+	}
+}
