@@ -1,0 +1,9 @@
+Abbiamo capito che il nostro programma devo essere costituito da due codici binari.
+Un elf è quello che definisce il funzionamento di arduino e uno che definisce il funzionamento da PC. Ognuno di essi deve essere correlato da un makefile. Il makefile riferito ad arduino deve contenere anche il codice per essere inviato alla board tramite seriale, mentre invece quello su pc necessita solo del gcc.
+
+In questo file si tenta di capire quali file vanno utilizzati e come per creare il programma che deve funzionare da pc.
+Si fa riferimento alla cartella "orazio_host".
+
+1) "Orazio.c"
+Si crea nella cartella pc il file smarthouse_pc.c, che contiene il main del programma da far funzionare su pc.
+come detto dal prof serviranno due thread che da pc si mettono in ascolto dalla tastiera e dalla seriale. 
