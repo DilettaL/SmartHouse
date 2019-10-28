@@ -7,3 +7,17 @@ Si fa riferimento alla cartella "orazio_host".
 1) "Orazio.c"
 Si crea nella cartella pc il file smarthouse_pc.c, che contiene il main del programma da far funzionare su pc.
 come detto dal prof serviranno due thread che da pc si mettono in ascolto dalla tastiera e dalla seriale. 
+Sono due i file principali da cui vengono richiamate le funzioni in orazio.c: orazio_client.c e orazio_shell_globals.c
+Come è stato già detto, il nostro file dovrà contenere due thread, uno per la tastiera e uno per la seriale. Invece in orazio.c, essendo la comunicazione con il robot via internet, si ha 
+
+
+2)"orazio_client.c"
+In questo file sono richiamate le funzioni PacketHandler _txByte e PacketHandler _rxByte per la ricezione e invio dei pacchetti.
+
+3)"orazio_shell_globals.c"
+E' il file all'interno del quale si inizializza la shell e si crea l'interfaccia con l'utente, ovvero si richiamano le funzioni per interpretare i comandi inseriti da tastiera "executeCommand", etc etc
+In generale tutte le sottofunzioni che permettono di interfacciare l'utente con il programma sono contenute in orazio_shell_commands.c
+
+4)"orazio_shell_commands.c"
+I comandi inseribili sono inseriti in una struct e, all'interno di ogni elemento di essa, sono contenute anche le rispettive funzioni.
+
