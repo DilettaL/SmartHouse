@@ -6,13 +6,13 @@
 
 // initializes the digital io pins of the chip
 void DigIO_init(void) {
-  // we set all pins as input
-  uint8_t num_channels=DigIO_numChannels();
-  for (int i=0; i<num_channels; ++i) {
-    DigIO_setDirection(i,0);
-    // pull up on each pin
-    DigIO_setValue(i,1);
-  }
+	// we set all pins as input
+	uint8_t num_channels=DigIO_numChannels();
+	for (int i=0; i<num_channels; ++i) {
+		DigIO_setDirection(i,0);
+		// pull up on each pin
+		DigIO_setValue(i,1);
+	}
 }
 
 // returns the number of digital io pins on the chip
