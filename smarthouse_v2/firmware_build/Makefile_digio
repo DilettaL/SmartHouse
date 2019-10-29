@@ -1,9 +1,9 @@
 # set this to false to disable sonars in firmware
 
-#PREFIX=../
-#ARCH=arch/
+PREFIX=../
+ARCH=arch/atmega2560/
 CC=avr-gcc
-INCLUDE_DIRS=-I$/../smarthouse_firmware#$(PREFIX)/src/common -I$(PREFIX)/src/include
+INCLUDE_DIRS=-I$(PREFIX)/src/common -I$(PREFIX)/src/arch/include -I$(PREFIX)/src/smarthouse_firmware
 CC_OPTS=-Wall -std=gnu99 -DF_CPU=16000000UL    -O3 -funsigned-char -funsigned-bitfields  -fshort-enums -Wall -Wstrict-prototypes -mmcu=atmega2560 -D_ARDUINO_MEGA_2560_ $(INCLUDE_DIRS) 
 
 
@@ -21,26 +21,38 @@ AVRDUDE_FLAGS += -D -q -V -C /usr/share/arduino/hardware/tools/avr/../avrdude.co
 AVRDUDE_FLAGS += -c wiring
 
 
-OBJS=	digio.o\
-	smarthouse_functions.o\
-
-HEADERS=smarthouse_functions.h\
-	digio.h\
-	packet_avr_common.h\
-
-BINS= test.elf\
+OBJS=digio.o\
+	delay.o\
+	uart.o\
+	
+HEADERS=digio.h\
+	delay.h\
+	uart.h\
+	
+BINS= digio_test.elf\
 
 .phony:	clean all
 
 all:	$(BINS)
 
 #common objects
-%.o:	$(HEADERS)
+%.o:	$(PREFIX)/src/common/%.c 
 	$(CC) $(CC_OPTS) -c  $<
 
+#peripherials
+%.o:	$(PREFIX)/src/$(ARCH)/%.c 
+	$(CC) $(CC_OPTS) -c  $<
+
+#peripherial test
+%.o:	$(PREFIX)/src/micro_test/%.c 
+	$(CC) $(CC_OPTS) -c  $<
+
+#orazio server objects
+%.o:	$(PREFIX)/src/smarthouse_firmware/%.c 
+	$(CC) $(CC_OPTS) -c  $<
 
 %.elf:	%.o $(OBJS)
-	$(CC) $(CC_OPTS) -o $@ $< $(OBJS)
+	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LIBS)
 
 clean:
 	rm -rf $(OBJS) $(BINS) *.hex *~ *.o
