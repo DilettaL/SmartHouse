@@ -1,0 +1,40 @@
+Bisogna capire quanti e quali pacchetti implementare per il nostro dispositivo.
+
+1)
+Abbiamo ripreso una macro che, richiamata con INIT_PACKET, permette di associare l'id, la dimensione e la seq ad ogni pacchetti, inizializzandolo appunto.
+
+2)
+Si è poi ripresa la struct che permette di indicizzare tutti i pacchetti PacketIndexed, che contiene l'header e l'indice associato ad ogni pacchetto.
+
+3)
+pragma push/pop (pdf Luca) permettono di non far fare ottimizzazioni al compilatore
+
+Lui in totale ha fatto 13 tipi di pacchetti, noi non né vogliamo così tanti né di tutti questi tipi.
+Ogni suo pacchetto, esattamente come lo sarà nei nostri, contiene l'header che permette di caratterizzarlo e che ci da le info sul pacchetto stesso. Inoltre il type di packetHeader definisce l'azione.
+Il payload, la parte del pacchetto specifica per ognuno contiene le info per passare le info al sistema.
+Come ci ha già spiegato Giorgione i pacchetti si dividono (per orazio) in tre tipologie: controllo (robot fai questo), configurazione, stato (periodicamente dalla macchina=info non richiste)
+Ovviamente ogni elemento del robot che deve essere controllato avrà questi tre tipi di pacchetti, ad esempio lui li ha per il sonar, i joints etc. etc.
+
+Noi (IMMAGINIAMO) dovremmo averli per i due differenti tipi di pin: analogici e digitali, e in particolare li facciamo per la configurazione e dello stato. Quindi in generale per le periferiche contiamo 4 pacchetti.
+Proviamo a scriverli
+
+IN OGNI PACCHETTO SI HA PACKETHEADER
+
+4)
+Pacchetto stato pin anaologici. 
+Si ha un array di bit per capire (PROBABILMENTE) se gli adc sono accesi o spenti. ADC_MAX viene posto a 8 come da specifiche.
+
+5)
+Pacchetto configurazione pin analogici.
+Si hanno come parametri il numero degli adc e il numero di campioni da utilizzare per ogni adc.
+
+6)
+Pacchetto stato pin digitali.
+Numero dei pin utilizzati, il numero dei pin utilizzati per ogni tipologia e l'eventuale risultato dell'input.
+
+7)
+Pacchetto configurazione pin digitali.
+Numero dei pin da utilizzare per ogni tipo e il valore dell'intensità con cui dimmerare.
+
+8)
+Pacchetto presente dei parametri generali del sistema fatto anche da giorgio in cui ora però l'unica cosa che occorre è il baud rate, definito con "comm_speed"

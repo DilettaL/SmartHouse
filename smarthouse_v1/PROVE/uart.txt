@@ -1,0 +1,29 @@
+Normal Asynchronous Mode
+
+Frame format: deve essere equivalente per ricevitore e trasmettitore
+
+Prima di utilizzare inizializzare:
+-baud rate
+-frame format
+-abilitare trsm e ric
+-Disabilitare interrupt, pulire global interrupt flag
+
+TXCn Flag e RXCn Flag utile per capire quando i dispositivi hanno terminato
+
+Trasmissione:
+Shift register non può essere scritto nel mentre di una trasmissione
+
+If 9-bit characters are used (UCSZn = 7), the ninth bit must be written to the TXB8 bit in UCSRnB before the low
+byte of the character is written to UDRn.
+Il 9-bit aggiunto manualmente (codice pag208)
+
+Il trasmettitore si può disabilitare solo dopo aver terminato operazione
+
+RICEZIONE:
+Flag su bit di buffer =1 quando si scrive in ricezione
+il buffer in ricezione FIFO
+
+C:
+SetBaudRate = funzione di inizializzazione che configura UBRRHL
+Definire la struct di Uart in cui si inseriscono elementi trasmissione e ricezione
+Inizializzare la struct Uart appena definita

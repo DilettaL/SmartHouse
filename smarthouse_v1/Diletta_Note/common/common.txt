@@ -1,0 +1,120 @@
+Ogni punto è inserito e indicato, sia nei file che ad inizio descrizione, nell'apposito file .c o .h
+Alla fine o duurante la descrizione è nominato il file da cui è prelevato il codice
+
+1)
+Buffer_utils.h contiene delle macro utilizzate dalle funzioni della uart del basso e alto livello. Viene utilizzata da packet_handler.c nel nostro caso l'unico sorgente è packet_avr_common.c
+
+2)
+packet_avr_common.c: Parto considerando che in packet_avr_common.c dovrà essere presente il packet_handler, che non è altro che una macchina a stati per identificare lo stato di ricezione del pacchetto da parte di avr. Questo gestore prevede 6 funzioni che permettono di passare da uno stato all'altro.
+(Ripreso da packet_handler.c)
+
+3)
+Queste funzioni prevedono due tipi non standard che sono PacketStatus e PacketHandler
+3.a) packet_avr_common.h:
+PacketStatus è il valore di ritorno delle possibili funzioni, e indica che tipo di risposta ha avuto il sistema, sia in caso di errore che di successo. E' fondamentalmente un intero, a cui è associato un nome. Per dichiarare questa struttura si utilizza l'enum.
+(Ripreso da packet_operations.h)
+3.b) packet_avr_common.h:
+PacketHandler è una struct che contiene le info sulla trasmissione, la ricezione e puntatori a funzione
+per ora la inserisco commentata e poi man mano aggiungo pezzi.
+La definzione "struct PacketHandler;" non so se sia necessaria o meno, nel caso in fase di test si può verificare
+(Ripreso da packet_handler.h)
+
+Si vogliono ora capire cosa sono gli elementi della struct PacketHanlder. Da qui in poi in ogni indice è descritto un elemento di PacketHandler
+
+4) Tutto scritto in packet_avr_common.h:
+Nei punti di questo argomento si analizza il primo elemento della struct PacketHanlder ovvero "PacketOperations *operations[PACKET_TYPE_MAX];"
+4a) "PACKET_TIPE_MAX" è dichiarato in packet_header.h e permette di definire un array di elemeni PacketOperations pari al numero di pacchetti che si vogliono usare
+4b) "PacketOperations" è una struct dichiarata in packet_operations.h, commento inizialmente tutti i campi.
+La definzione "struct PacketOperations;" non so se sia necessaria o meno, nel caso in fase di test si può verificare
+(Ripreso da packet_operations.h)
+4c) QUESTO PUNTO E' STATO ELIMINATO MA E' IMPORTANTE AI FINI DEL RAGIONAMENTO LOGICO LEGGERE LA SEGUENTE DESCRIZIONE:
+Questa struct ha come primi due elementi, gli stessi della struct PacketHeader dichiarata in packet_header.h. Vado quindi a sostituirli direttamente con la struct.
+4d)Vado a riprendere da packet_header.h,la struct con definizione dei tipi di dato contenuti al suo interno. Questa struct corrisponde all'header del pacchetto, che dovrà essere sempre inserita in ognuno di esso. A quanto pare il tipo di pacchetto e la sua dimensione servono anche alle operazioni sugli stati come infatti previsto dalla loro descrizione (pdf Luca)
+4e) QUESTO PUNTO E' STATO ELIMINATO MA E' IMPORTANTE AI FINI DEL RAGIONAMENTO LOGICO LEGGERE LA SEGUENTE DESCRIZIONE:
+Controllo quali elementi della struct PacketOperation sono utilizzati.
+In packet_handler.c della struct, che è chiamata "ops", viene utilizzato solo type. mantengo quindi il packetHeader
+In deferred_packet_handler viene usata nella definizione di DeferredPacketOps ma mai utilizzata (o almeno credo)
+In orazio_firmware viene utilizzata una struct "HbridgeOps *ops" ma non è dello stesso tipo.
+Quindi per ora resta quasi tutto commentato. 
+4f) Scommento la 1a riga della struct PacketHandler ovvero "PacketOperations *operations[PACKET_TYPE_MAX];" in modo da poter identificare le caratteristiche e le eventuali operazioni di ogni pacchetto.
+
+5)Tutto scritto in packet_avr_common.h:
+5a) "PacketOperations* rx_current_op;"
+Questo è un puntatore di tipo PacketOperations*. Probabilmente (anche dal nome) punta alla struct che identifica i parametri della corrente operazione, ed è utilizzato infatti in packet_handler.c
+5b) Poiché in packet_handler vado ad accedere a PacketOPerations leggendo sia tipo che size elimino l'elemento PacketHeader, aggiunto nel punto 4c) e mantengo gli elementi della struct di partenza.
+L'aver aggiunto PacketHeader con le sue definizioni ha comunque la sua utilità in quanto sono presenti le definizioni di tipo di size e type
+5c) Si osserva che (sempre in packet_hanlder.c) gli elementi inizialmente non utilizzati di PacketOperations, e commentati nel punto 4e), sono utilizzati proprio da questo puntatore a funzione quindi si scommentano analizzandoli:
+Questi elementi non sono altro che due funzioni con i relativi argomenti.
+La loro funzione viene chiarita in seguito (sempre se ci arrivo)
+5d)Le funzioni definite in PacketOperations devono però essere inizializzate, essendo dei tipi non standard. Il motivo per cui si definiscono nuovi tipi per queste funzioni, nonostante quelli utilizzati come argomenti e valore di ritorno sono già dichiarati, è perché si trovano dentro una struct; questo renderebbe impossibile il passaggio dei parametri e l'analisi del valore di ritorno. Con un nuovo tipo possiamo invece gestire tutto ciò.
+(Ripreso da packet_operations.h)
+
+6)Tutto scritto in packet_avr_common.h:
+L'elemento "PacketHeader* rx_current_packet;" è un puntatore alle info del corrente pacchetto, PacketHeader appunto
+
+7)Tutto scritto in packet_avr_common.h:
+Gli elementi " uint8_t rx_checksum; uint8_t* rx_buffer; uint8_t* rx_buffer_end;" definisco le informazioni necessarie ad arduino per ricevere il pacchetto.
+
+8)Tutto scritto in packet_avr_common.h:
+8a)L'elemento "PacketHandlerRxFn rxFn;" della struct permette di richiamare una funzione. Essendo tale funzione un elemento della struct essa deve esse ridefinita con un tipo, in modo da poterle passare i parametri ed analizzare il valore di ritorno (come visto in precedenza).
+8b)Questa funzione chiamata così in modo generico permette di richiamare le funzioni che compongono la macchina a stati, definite in 2).
+
+9)Tutto scritto in packet_avr_common.h:
+Sono elementi che permettono di regolare le informazioni quando arduino trasmette al pc (non so se sono necessarie poiché non dovrebbe essere richiesta la parte di codice relativa al deferred)
+
+Avendo capito cosa sono gli argomenti e il valore di ritorno delle funzioni della macchina a stati si vanno quindi a implementare
+
+10) In packet_avr_common.c
+_rxAA: è la funzione che identifica i primi due caratteri di inizio ricezione che sono "AA". In caso di corretta sincronizzazione richiama la funzione successiva
+
+11) In packet_avr_common.c
+_rx55: è la funzione richiamata da _rxAA e identifica gli ultimi due caratteri di inizio ricezione "55". In caso di successo si richiama la funzione successiva e ripone il checksum =0 dovendo poi ricominciare da capo, mentre in caso di insuccesso si richiama "AA".
+
+12) In packet_avr_common.c
+RIGA 41 SINTASSI NON CHIARA PRESENTE ANCHE DOPO:
+h->rx_checksum^=c;
+_rxType: valuta il tipo del pacchetto e le eventuali condizioni di errore. In caso di successo richiama la funzione _rxSize.
+In questo caso l'argomento c passato alla funzione è l'ID del pacchetto. Quindi inizialmente si vede se questo elemento appartiene o meno al range dei pacchetti esistenti. In caso contrario si torna alla prima funzione _rxAA.
+Il secondo caso di insuccesso è valutato andando inizialmente ad associare la struct Operation indicizzata dall'ID alla corrente Operation struct di packetHandler. Una volta fatto ciò si valuta che ... e nel caso si richiama comunque la funzione iniziale _rxAA.
+
+13) In packet_avr_common.c
+13a) Essendo necessaria per questa funzione si aggiunge la define che implica una condizione di non successo per la size
+13b)_rxSize 
+Inizialmente si valuta che la size desiderata h->rx_current_op->size sia uguale a quella indicata dalla define e allo stesso tempo uguale a c, ovvero quella ricevuta. In caso contrario la trasmissione ricomincia dall'inizio.
+Successivamente si valuta
+
+DA FINIRE DATA ANCHE QUI LA SINTASSI NON CHIARA
+
+14)
+
+15)
+
+Una volta descritte le funzioni della macchina a stati, si può studiare il funzionamento del packet_handler, che la utilizza per gestire la ricezione dei pacchetti.
+Infatti il packet_handler ha due compiti ovvero inviare dati al pc e riceverli. La seconda parte è appunto quella che utilizza la macchina a stati.
+
+INTRODUZIONE:
+16) INIZIALIZZAZIONE
+Sia che stiamo utilizzando l'handler in trasmissione o in ricezione è necessario configurare inizialmente la struct packet_hanlder, attraverso l'apposita funzione.
+16a) si scrive l'inizializzazione in packet_avr_common.h
+16b) si implementa la funzione in packet_avr_common.c; in orazio questa funzione viene utilizzata in deferredPacketHandler, e in particolare nella funzione che inizializza il tutto. Nella parte di alto livello (dove la dovremmo ricavare noi) viene richiamata nel file orazio_comm.c, quindi noi la dovremmo richiamare nel file smarthouse_comm.c
+Questa funzione inizialmente inizializza un numero di struct Operations per ogni tipo di pacchetto esistente, e successivamente pone a 0 tutti gli elementi della struct. Inoltre (NOTA IMPORTANTE) fa puntare alla funzione della struct la prima funzione della macchina a stati, _rxAA, in modo che in ricezione si parta subito da essa.
+
+17) INSTALLAZIONE/DISINSTALLAZIONE
+Per installare/disinstallare un pacchetto è necessario verificare che tale pacchetto rispetti le dimensioni massime e che l'eventuale puntatore dell'handler alla struct Operations sia vuoto/non vuoto dipendentemente dall'azione.
+->Installare=h->operations[ops->type]=ops;
+Questa associazione corrisponde ad andare ad associare ad ogni elemento dell'array operations di PacketHandler (h) la propria struct PacketOperations, chiamata ops. Il numero dell'elemento dell'array corrisponde all'ID del pacchetto.
+->Disinstallare=h->operations[type]=0;
+In questo caso si ha il fenomeno opposto, ovvero si deve togliere l'assegnazione degli elementi dell'array operations di PacketHandler (h).
+Quindi installare un pacchetto significa associargli un'apposita struttura dati per gestire il determinato tipo di operazioni definite dal pacchetto.
+17a) packet_avr_common.h
+Vado a inizializzare le funzioni.
+17b) packet_avr_common.c
+implementazione delle funzioni installer and uninstaller
+
+RICEZIONE:
+La ricezione si basa fondalmente sull'utilizzo di una funzione che si mette in ascolto (probabilmente il richiamo continuo di questa funzione viene fatta nella parte di alto livello).
+18a) Vado ad inizializzare questa funzione in packet_avr_common.h
+18b) con questa funzione "(*handler->rxFn)(handler, c);" si richiama fondalmente la funzione _rxAA, funzione iniziale della macchina a stati, attivando quindi tutto il meccanismo a catena. Il valore di ritorno è appunto un valore di PacketStatus che, in caso di corretto funzionamento, è SyncChecksum.
+La particolare sintassi usata da questa funzione permette di passare alla funzione contenuta nella struct gli argomenti (handler, c).
+
+TRASMISSIONE:

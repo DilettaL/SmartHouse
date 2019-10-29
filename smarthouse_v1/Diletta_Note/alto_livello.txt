@@ -1,0 +1,6 @@
+Alto livello:
+
+Smarthouse (contiene il main)->
+->Smarthouse_comm (contiene il collegamento ad uart.h e richiama le funzioni per la gestione dei pacchetti)
+Nel file il baud rate viene passato con system_params.comm_speed. Questa è una struct presente in orazio_globals.
+Il baud rate inserito non è variabile, ma è 115200 quindi posso fare a meno di quell'elemento della struct
