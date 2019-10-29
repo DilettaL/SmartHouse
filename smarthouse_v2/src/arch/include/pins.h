@@ -22,4 +22,6 @@ typedef struct{
 
 } Pin_analog;
 
+// fixed maximum number of pins mapped to arduino
+#define PINS_NUM 14
 extern const Pin_analog pins_analog[];
