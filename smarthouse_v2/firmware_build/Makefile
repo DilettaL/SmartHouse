@@ -1,10 +1,10 @@
 # set this to false to disable sonars in firmware
 
 PREFIX=../
-ARCH=arch/
+ARCH=arch/atmega2560
 CC=avr-gcc
-INCLUDE_DIRS=-I$(PREFIX)/src/common -I$(PREFIX)/src/include
-CC_OPTS=-Wall -std=gnu99 -DF_CPU=16000000UL    -O3 -funsigned-char -funsigned-bitfields  -fshort-enums -Wall -Wstrict-prototypes -mmcu=atmega2560 -D_ARDUINO_MEGA_2560_ $(INCLUDE_DIRS) 
+INCLUDE_DIRS=-I$(PREFIX)/src/common -I$(PREFIX)/src/arch/include -I$(PREFIX)/src/orazio_firmware
+CC_OPTS=-Wall -std=gnu99 -DF_CPU=16000000UL    -O3 -funsigned-char -funsigned-bitfields  -fshort-enums -Wall -Wstrict-prototypes -mmcu=atmega2560 -D_ARDUINO_MEGA_2560_ $(INCLUDE_DIRS)
 
 
 AVRDUDE=avrdude
@@ -21,19 +21,17 @@ AVRDUDE_FLAGS += -D -q -V -C /usr/share/arduino/hardware/tools/avr/../avrdude.co
 AVRDUDE_FLAGS += -c wiring
 
 
-OBJS=pins.o\
-     eeprom.o\
-     digio.o\
-     uart_ORIGINAL.o\
-     adc.o\
-
+OBJS=	pins.o\
+     	digio.o\
+	uart.o\
+	delay.o\
+     
 HEADERS=pins.h\
-	eeprom.h\
 	digio.h\
-	uart_ORIGINAL.h\
-	adc.h\
+	uart.h\
+	delay.h\
 
-BINS= adc_test.elf\
+BINS=digio_test.elf\
 
 .phony:	clean all
 
@@ -51,9 +49,7 @@ all:	$(BINS)
 %.o:	$(PREFIX)/src/micro_test/%.c 
 	$(CC) $(CC_OPTS) -c  $<
 
-#orazio server objects
-%.o:	$(PREFIX)/src/orazio_firmware/%.c 
-	$(CC) $(CC_OPTS) -c  $<
+
 
 %.elf:	%.o $(OBJS)
 	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LIBS)
