@@ -6,10 +6,22 @@
 #include "delay.h"
 #include "adc.h"
 
+//*************
+#include "buffer_utils.h"
+#include "uart.h"
+#include <string.h>
+//*************
+
 void LedOn(uint8_t);
 void LedOff(uint8_t);
 void Dimmer(uint8_t);
 void InputDigital(uint8_t);
+
+
+//***************
+struct UART* uart;
+//***************
+
 
 PacketStatus Digital_init(DigitalType type, uint8_t pin)
 {
@@ -53,11 +65,15 @@ void Dimmer(uint8_t pin)
 
 void InputDigital(uint8_t pin)
 {
+	uint32_t baud = 115200;
+	UART_init("uart_0", baud);
 	DigIO_init();
 	DigIO_setDirection(pin, Input);
 	DigIO_setValue(pin, 1);
+	while (1){
 	uint8_t key=DigIO_getValue(pin);
-	printf("%d", key);	
+	UART_putChar(uart, key);
+	}
 }
 
 PacketStatus Analog_init(void)
@@ -67,3 +83,4 @@ PacketStatus Analog_init(void)
 	RunAdc(10);
 	return Success;
 }
+
