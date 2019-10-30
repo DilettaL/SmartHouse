@@ -7,6 +7,7 @@
 
 void Led(void);
 void Dimmer(void);
+void InputDigital(void);
 
 PacketStatus Digital_init(DigitalType type)
 {
@@ -17,7 +18,7 @@ PacketStatus Digital_init(DigitalType type)
 		case DigitalDimmer:
 			Dimmer();
 		case DigitalInput:
-			printf("DigitalInput\n");
+			InputDigital();
 		default:
 			return -1;
 	}
@@ -25,6 +26,7 @@ PacketStatus Digital_init(DigitalType type)
 
 void Led(void)
 {
+	DigIO_init();
 	DigIO_setDirection(10, Output);
 	DigIO_setValue(10, 1);
 }
@@ -35,4 +37,14 @@ void Dimmer(void)
 	PWM_enable(10, 1);
 	PWM_setDutyCycle(10, 10);
 	delayMs(100);
+}
+
+void InputDigital(void)
+{
+	uint8_t a[200];
+	DigIO_init();
+	DigIO_setDirection(10, Input);
+	DigIO_setValue(10, 1);
+	uint8_t key=DigIO_getValue(10);
+	sprintf(a, "%d", key);	
 }
