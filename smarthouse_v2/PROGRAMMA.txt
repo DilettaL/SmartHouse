@@ -1,0 +1,8 @@
+CARTELLA SMARTHOUSE FIRMWARE:
+LUCA
+-Test DigitalInput
+-Test ADC
+
+DILETTA
+-Implementare funzione ledOff
+-Capire come mappare i pin

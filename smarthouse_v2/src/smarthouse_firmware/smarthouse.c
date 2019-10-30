@@ -1,49 +1,48 @@
 #include <stdio.h>
 #include "smarthouse_functions.h"
 #include "smarthouse_packets.h"
-#include "digio.h"
-#include "pwm.h"
-#include "delay.h"
-#include "adc.h"
 
-void LedOn(uint8_t);
-void LedOff(uint8_t);
-void Dimmer(uint8_t);
-void InputDigital(uint8_t);
-
-PacketStatus Digital_init(DigitalType type, uint8_t pin)
+int main(int argc, char **argv)
 {
-	switch(type)
+	DigitalConfig test;
+	test->type= DigitalLed;
+	for(int i=0; i<DIGITAL_MAX; i++)
+	{
+		if(i=10) {test->led[i]=1;	}
+		else{test->led[i]=0;}
+	}
+	Digital_init(test);	
+	return 0;
+}
+
+/*
+PacketStatus Digital_init(DigitalConfig digital)
+{
+	switch(digital->type)
 	{
 		case DigitalLed:
-			Led(pin);
+			Led(digital->*led);
 		case DigitalDimmer:
-			Dimmer(pin);
+			Dimmer(digital->*dimmer);
 		case DigitalInput:
-			InputDigital(pin);
-		case DigitalOff:
-			LedOff(pin);
+			InputDigital(digital->*input);
 		default:
 			return -1;
 	}
 	return Success;
 }
 
-void LedOn(uint8_t pin)
+void Led(uint8_t *pin)
 {
 	DigIO_init();
-	DigIO_setDirection(pin, Output);
-	DigIO_setValue(pin, 1);
+	for(int i=0; i<DIGITAL_MAX; i++)
+	{
+		DigIO_setDirection(i, Output);
+		DigIO_setValue(i, led[i]);
+	}
 }
 
-void LedOff(uint8_t)
-{
-	DigIO_init();
-	DigIO_setDirection(pin, Output);
-	DigIO_setValue(pin, 0);
-}
-
-void Dimmer(uint8_t pin)
+void Dimmer(uint8_t *pin)
 {	
 	PWM_init();
 	PWM_enable(pin, 1);
@@ -67,3 +66,4 @@ PacketStatus Analog_init(void)
 	RunAdc(10);
 	return Success;
 }
+*/
