@@ -4,6 +4,7 @@
 #include "digio.h"
 #include "pwm.h"
 #include "delay.h"
+#include "adc.h"
 
 void Led(void);
 void Dimmer(void);
@@ -22,6 +23,7 @@ PacketStatus Digital_init(DigitalType type)
 		default:
 			return -1;
 	}
+	return Success;
 }
 
 void Led(void)
@@ -41,10 +43,17 @@ void Dimmer(void)
 
 void InputDigital(void)
 {
-	uint8_t a[200];
 	DigIO_init();
 	DigIO_setDirection(10, Input);
 	DigIO_setValue(10, 1);
 	uint8_t key=DigIO_getValue(10);
-	sprintf(a, "%d", key);	
+	printf("%d", key);	
+}
+
+PacketStatus Analog_init(void)
+{
+	Adc_init();
+	SetAdc(4);
+	RunAdc(10);
+	return Success;
 }

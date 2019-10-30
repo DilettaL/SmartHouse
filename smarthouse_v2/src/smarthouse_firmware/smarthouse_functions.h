@@ -3,3 +3,4 @@
 #include "smarthouse_packets.h"
 
 PacketStatus Digital_init(DigitalType);
+PacketStatus Analog_init(void);

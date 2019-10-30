@@ -5,5 +5,6 @@
 int main(int argc, char **argv)
 {
 	Digital_init(DigitalInput);
+//	Analog_init();
 	return 0;
 }	
