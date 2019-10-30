@@ -4,6 +4,6 @@
 
 int main(int argc, char **argv)
 {
-	Digital_init(DigitalLed);
+	Digital_init(DigitalDimmer);
 	return 0;
 }	

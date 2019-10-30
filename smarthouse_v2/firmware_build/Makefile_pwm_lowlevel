@@ -21,23 +21,19 @@ AVRDUDE_FLAGS += -D -q -V -C /usr/share/arduino/hardware/tools/avr/../avrdude.co
 AVRDUDE_FLAGS += -c wiring
 
 
-OBJS=smarthouse_functions.o\
-	packet_common.o\
+OBJS=pwm.o\
+	delay.o\
 	digio.o\
 	pins.o\
 	uart.o\
-	pwm.o\
 	
-HEADERS=smarthouse_functions.h\
-	packet_common.h\
-	smarthouse_packets.h\
+HEADERS=pwm.h\
+	delay.h\
 	digio.h\
 	pins.h\
-	pwm.h\
-	delay.h\
 	uart.h\
 	
-BINS= led_test.elf\
+BINS= pwm_test.elf\
 
 .phony:	clean all
 
