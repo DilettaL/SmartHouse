@@ -16,7 +16,7 @@ PacketStatus Digital_init(DigitalType type, uint8_t pin)
 	switch(type)
 	{
 		case DigitalLed:
-			Led(pin);
+			LedOn(pin);
 		case DigitalDimmer:
 			Dimmer(pin);
 		case DigitalInput:
@@ -36,7 +36,7 @@ void LedOn(uint8_t pin)
 	DigIO_setValue(pin, 1);
 }
 
-void LedOff(uint8_t)
+void LedOff(uint8_t pin)
 {
 	DigIO_init();
 	DigIO_setDirection(pin, Output);
