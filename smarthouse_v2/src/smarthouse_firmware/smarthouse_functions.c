@@ -6,47 +6,47 @@
 #include "delay.h"
 #include "adc.h"
 
-void Led(void);
-void Dimmer(void);
-void InputDigital(void);
+void Led(uint8_t);
+void Dimmer(uint8_t);
+void InputDigital(uint8_t);
 
-PacketStatus Digital_init(DigitalType type)
+PacketStatus Digital_init(DigitalType type, uint8_t pin)
 {
 	switch(type)
 	{
 		case DigitalLed:
-			Led();
+			Led(pin);
 		case DigitalDimmer:
-			Dimmer();
+			Dimmer(pin);
 		case DigitalInput:
-			InputDigital();
+			InputDigital(pin);
 		default:
 			return -1;
 	}
 	return Success;
 }
 
-void Led(void)
+void Led(uint8_t pin)
 {
 	DigIO_init();
-	DigIO_setDirection(10, Output);
-	DigIO_setValue(10, 1);
+	DigIO_setDirection(pin, Output);
+	DigIO_setValue(pin, 1);
 }
 
-void Dimmer(void)
+void Dimmer(uint8_t pin)
 {	
 	PWM_init();
-	PWM_enable(10, 1);
-	PWM_setDutyCycle(10, 10);
+	PWM_enable(pin, 1);
+	PWM_setDutyCycle(pin, 10);
 	delayMs(100);
 }
 
-void InputDigital(void)
+void InputDigital(uint8_t pin)
 {
 	DigIO_init();
-	DigIO_setDirection(10, Input);
-	DigIO_setValue(10, 1);
-	uint8_t key=DigIO_getValue(10);
+	DigIO_setDirection(pin, Input);
+	DigIO_setValue(pin, 1);
+	uint8_t key=DigIO_getValue(pin);
 	printf("%d", key);	
 }
 

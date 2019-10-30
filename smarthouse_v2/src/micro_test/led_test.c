@@ -4,7 +4,8 @@
 
 int main(int argc, char **argv)
 {
-	Digital_init(DigitalInput);
+	Digital_init(DigitalLed, 11);
+	Digital_init(DigitalInput, 10);
 //	Analog_init();
 	return 0;
 }	
