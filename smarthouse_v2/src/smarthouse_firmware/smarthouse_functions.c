@@ -24,6 +24,7 @@ PacketStatus Digital_init(DigitalType type)
 
 void Led(void)
 {
+	PWM_init();
 	DigIO_setDirection(10, Output);
 	DigIO_setValue(10, 1);
 }
