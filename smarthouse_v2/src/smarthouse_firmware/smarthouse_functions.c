@@ -3,6 +3,7 @@
 #include "smarthouse_packets.h"
 #include "digio.h"
 #include "pwm.h"
+#include "delay.h"
 
 void Led(void);
 void Dimmer(void);
@@ -24,13 +25,14 @@ PacketStatus Digital_init(DigitalType type)
 
 void Led(void)
 {
-	PWM_init();
 	DigIO_setDirection(10, Output);
 	DigIO_setValue(10, 1);
 }
 
 void Dimmer(void)
-{
+{	
+	PWM_init();
 	PWM_enable(10, 1);
-	PWM_setDutyCycle(10, 120);
+	PWM_setDutyCycle(10, 10);
+	delayMs(100);
 }

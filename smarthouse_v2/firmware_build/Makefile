@@ -23,6 +23,7 @@ AVRDUDE_FLAGS += -c wiring
 
 OBJS=smarthouse_functions.o\
 	packet_common.o\
+	delay.o\
 	digio.o\
 	pins.o\
 	uart.o\
