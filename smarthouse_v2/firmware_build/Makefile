@@ -22,7 +22,6 @@ AVRDUDE_FLAGS += -c wiring
 
 
 OBJS=smarthouse_functions.o\
-	packet_common.o\
 	delay.o\
 	digio.o\
 	pins.o\
@@ -31,8 +30,8 @@ OBJS=smarthouse_functions.o\
 	adc.o\
 	
 HEADERS=smarthouse_functions.h\
-	packet_common.h\
 	smarthouse_packets.h\
+	packet_operations.h\
 	digio.h\
 	pins.h\
 	pwm.h\

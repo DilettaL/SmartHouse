@@ -1,5 +1,5 @@
 #include "smarthouse_globals.h"
-
+//#include "smarthouse_packets.h"
 SystemParamPacket system_params = 
 {
 /*HEADER  {.type=SYSTEM_PARAM_PACKET_ID,

@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include "smarthouse_comm.h"
-#include "smarthouse_packets.h"
+#include "packet_operations.h"
 #include "smarthouse_globals.h"
 #include "uart.h"
 

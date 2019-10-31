@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "smarthouse_functions.h"
+#include "packet_operations.h"
 #include "smarthouse_packets.h"
 #include "digio.h"
 #include "pwm.h"

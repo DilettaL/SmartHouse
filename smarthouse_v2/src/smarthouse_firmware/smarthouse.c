@@ -5,10 +5,11 @@
 #include "smarthouse_comm.h"
 //#include "smarthouse_param.h"
 //#include "smarthouse_pin.h"
-/******************
+//******************
 #include "smarthouse_functions.h"
+#include "packet_operations.h"
 #include "smarthouse_packets.h"
-******************/
+//******************
 int main(int argc, char **argv)
 {
 	//Initialization low level functions
@@ -32,11 +33,11 @@ Dopo di ciò può iniziare il programma vero e proprio
 	test->samples=100;
 	Analog_init(test);
 */
-	DigitalConfig test;
+	DigitalConfig *test;
 	test->type= DigitalLed;
 	for(int i=0; i<DIGITAL_MAX; i++)
 	{
-		if(i=10) {test->led[i]=1;	}
+		if(i==10) {test->led[i]=1;	}
 		else{test->led[i]=0;}
 	}
 	Digital_init(test);	

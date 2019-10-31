@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "smarthouse_functions.h"
-#include "packet_common.h"
+#include "packet_operations.h"
+#include "smarthouse_packets.h"
 
 int main(int argc, char **argv)
 {
