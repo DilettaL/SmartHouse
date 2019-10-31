@@ -15,11 +15,10 @@ int main(int argc, char **argv)
 	UART_init("uart_0", baud);
 	printf_init();	
 	while(1)
-	{	Digital_init(DigitalLed, 11);
+	{	//Digital_init(DigitalLed, 11);
 		Digital_init(DigitalInput, 10);
-		Digital_init(DigitalDimmer, 5);
-		Digital_init(Adc, 4);
-	//	Analog_init();
+	//	Digital_init(DigitalDimmer, 5);
+	//	Digital_init(Adc, 4);
 	}
 	return 0;
 }	

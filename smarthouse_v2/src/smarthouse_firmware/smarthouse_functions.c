@@ -70,8 +70,7 @@ void InputDigital(uint8_t pin)
 	DigIO_setDirection(pin, Input);
 	DigIO_setValue(pin, 1);
 	uint8_t key=DigIO_getValue(pin);
-	printf("value:%d\n", key);
-	delayMs(100);
+	printf("value:%d\n",key);	
 }
 
 uint16_t AdcConvert(uint8_t pin){
@@ -80,8 +79,8 @@ uint16_t AdcConvert(uint8_t pin){
 	SetAdc(pin);
 	value = RunAdc(sample);
 //solo come test:
-	for (int i = 0; i < sample; i++);
-		printf ("value: %d\n",value);
+//	for (int i = 0; i < sample; i++);
+//		printf ("value: %d\n",value);
 	return value;
 }
 
