@@ -68,7 +68,6 @@ void InputDigital(uint8_t pin)
 {
 	uint32_t baud = 115200;
 	UART_init("uart_0", baud);
-	DigIO_init();
 	DigIO_setDirection(pin, Input);
 	DigIO_setValue(pin, 1);
 	while (1){
