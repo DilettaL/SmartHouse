@@ -11,6 +11,7 @@
 #include "buffer_utils.h"
 #include "uart.h"
 #include <string.h>
+#include "uart_ORIGINAL.h"
 //*************
 
 void LedOn(uint8_t);
@@ -66,8 +67,8 @@ void InputDigital(uint8_t pin)
 	DigIO_setDirection(pin, Input);
 	DigIO_setValue(pin, 1);
 	uint8_t key=DigIO_getValue(pin);
-	UART_putChar(uart, key);
 	printf("value:%d\n", key);
+	delayMs(100);
 }
 
 PacketStatus Analog_init(void)

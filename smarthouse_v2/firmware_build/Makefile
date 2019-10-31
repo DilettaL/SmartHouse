@@ -28,6 +28,7 @@ OBJS=smarthouse_functions.o\
 	uart.o\
 	pwm.o\
 	adc.o\
+	uart_ORIGINAL.o\
 	
 HEADERS=smarthouse_functions.h\
 	smarthouse_packets.h\
@@ -38,6 +39,7 @@ HEADERS=smarthouse_functions.h\
 	delay.h\
 	uart.h\
 	adc.h\
+	uart_ORIGINAL.h\
 	
 BINS= led_test.elf\
 
