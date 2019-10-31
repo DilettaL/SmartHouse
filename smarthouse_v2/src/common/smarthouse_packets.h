@@ -8,7 +8,8 @@ typedef enum
 	DigitalLed=0,
 	DigitalDimmer=1,
 	DigitalInput=2,
-	DigitalOff=3
+	DigitalOff=3,
+	Adc=4
 } DigitalType;
 
 typedef struct

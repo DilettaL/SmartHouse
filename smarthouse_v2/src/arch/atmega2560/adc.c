@@ -22,6 +22,7 @@ void Adc_init()
 
 void SetAdc(uint8_t pin)
 {
+//MANCA CONTROLLO SUL NUMERO DI PIN INSERITO
 	//Define input adc channel
 	const Pin_analog* mapping=pins_analog+pin;
 	//pins set MUX5:0 of ADMUX and ADCSRB register
@@ -31,6 +32,7 @@ void SetAdc(uint8_t pin)
 
 uint16_t RunAdc(uint8_t numb_samples)
 {
+//MANCA CONTROLLO SUL NUMERO DI CAMPIONI RICHIESTO
 	//Each data is converts with n samples
 	uint16_t result[numb_samples];
 	uint8_t count;
