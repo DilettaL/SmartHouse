@@ -44,21 +44,18 @@ PacketStatus Digital_init(DigitalType type, uint8_t pin)
 
 void LedOn(uint8_t pin)
 {
-	DigIO_init();
 	DigIO_setDirection(pin, Output);
 	DigIO_setValue(pin, 1);
 }
 
 void LedOff(uint8_t pin)
 {
-	DigIO_init();
 	DigIO_setDirection(pin, Output);
 	DigIO_setValue(pin, 0);
 }
 
 void Dimmer(uint8_t pin)
 {	
-	PWM_init();
 	PWM_enable(pin, 1);
 	PWM_setDutyCycle(pin, 100);
 	delayMs(100);
@@ -66,19 +63,15 @@ void Dimmer(uint8_t pin)
 
 void InputDigital(uint8_t pin)
 {
-	uint32_t baud = 115200;
-	UART_init("uart_0", baud);
 	DigIO_setDirection(pin, Input);
 	DigIO_setValue(pin, 1);
-	while (1){
 	uint8_t key=DigIO_getValue(pin);
 	UART_putChar(uart, key);
-	}
+	printf("value:%d\n", key);
 }
 
 PacketStatus Analog_init(void)
 {
-	Adc_init();
 	SetAdc(4);
 	RunAdc(10);
 	return Success;
