@@ -1,12 +1,28 @@
 #include <stdio.h>
+#include "digio.h"
+#include "adc.h"
+#include "pwm.h"
+#include "smarthouse_comm.h"
+//#include "smarthouse_param.h"
+//#include "smarthouse_pin.h"
+/******************
 #include "smarthouse_functions.h"
 #include "smarthouse_packets.h"
-
+******************/
 int main(int argc, char **argv)
 {
+	//Initialization low level functions
 	DigIO_init();
 	Adc_init();
 	PWM_init();
+	//Initialization high level smarthouse firmware functions
+	Smarthouse_commInit();	//Uart and common initialization
+	//Smarthouse_paramInit();	//EEPROM(firmware and protocol) initialization
+	//Smarthouse_pinInit();		//Struct digital and analog initialization
+
+/*************
+Dopo di ciò può iniziare il programma vero e proprio
+*************/
 /*	AnalogConfig test;
 	for(int i=0; i<ANALOG_MAX; i++)
 	{
