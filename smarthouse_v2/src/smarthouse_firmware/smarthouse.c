@@ -33,6 +33,7 @@ Dopo di ciò può iniziare il programma vero e proprio
 	test->samples=100;
 	Analog_init(test);
 */
+//DA RIVEDERE
 	DigitalConfig *test;
 	test->type= DigitalLed;
 	for(int i=0; i<DIGITAL_MAX; i++)
