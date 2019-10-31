@@ -60,7 +60,7 @@ void Dimmer(uint8_t pin)
 {	
 	PWM_init();
 	PWM_enable(pin, 1);
-	PWM_setDutyCycle(pin, 10);
+	PWM_setDutyCycle(pin, 100);
 	delayMs(100);
 }
 
