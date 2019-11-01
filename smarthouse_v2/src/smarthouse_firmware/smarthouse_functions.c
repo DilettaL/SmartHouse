@@ -32,14 +32,19 @@ PacketStatus Digital_init(DigitalType type, uint8_t pin)
 	{
 		case DigitalLed:
 			LedOn(pin);
+			break;
 		case DigitalDimmer:
 			Dimmer(pin);
+			break;
 		case DigitalInput:
 			InputDigital(pin);
+			break;
 		case DigitalOff:
 			LedOff(pin);
+			break;
 		case Adc:
 			AdcConvert(pin);
+			break;
 		default:
 			return -1;
 	}

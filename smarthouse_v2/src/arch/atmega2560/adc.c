@@ -43,7 +43,7 @@ uint16_t RunAdc(uint8_t numb_samples)
 		ADCSRA |= (1<<ADSC);
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
-/*test*///	printf("result[%d]:%d\n", count, result[count]);
+/*test*/	printf("result[%d]:%d\n", count, result[count]);
 	}
 	return *result;	
 }
