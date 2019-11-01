@@ -3,7 +3,14 @@
 
 #define DIGITAL_MAX 8
 #define ANALOG_MAX 8
-#define SMARTHOUSE_PROTOCOL_VERSION 0x20180915
+#define SMARTHOUSE_PROTOCOL_VERSION 0x19880314
+//Struct dati per l'indicizzazione
+typedef struct {
+	PacketHeader header;
+	uint8_t index;
+} PacketIndexed;
+
+
 //Tipologie di azioni con i pin digitali
 typedef enum
 {
@@ -12,7 +19,7 @@ typedef enum
 	DigitalInput=2,
 	DigitalOff=3,
 	Adc=4
-} DigitalType;
+} FunctionType;
 
 //Tipi di parametri da poter salvare nella eeprom
 typedef enum
@@ -26,20 +33,19 @@ typedef enum
 #pragma pack(push, 1)
 typedef struct
 {
-	DigitalType type;
-	uint8_t ledOn[DIGITAL_MAX];
-	uint8_t ledOff[DIGITAL_MAX];
-	uint8_t dimmer[DIGITAL_MAX];
-	uint8_t input[DIGITAL_MAX];
+	FunctionType type;
+	uint8_t ledOn;
+	uint8_t ledOff;
+	uint8_t dimmer;
+	uint8_t input;
 	uint8_t intensity;
-//	uint8_t result[DIGITAL_MAX];
-} DigitalConfig;
+} DigitalParam;
 
 typedef struct
 {
-	uint8_t Adc[ANALOG_MAX];
+	uint8_t Adc;
 	uint8_t samples;	
-} AnalogConfig;
+} AnalogParam;
 
 //Da qui partono i pacchetti
 typedef struct SystemParamPacket{
@@ -55,4 +61,21 @@ typedef struct SystemParamPacket{
 } SystemParamPacket;
 #define SYSTEM_PARAM_PACKET_ID 1
 
+typedef struct
+{
+	PacketIndexed header;
+	DigitalParam digitalSet;
+} DigitalParamPacket;
+#define DIGITAL_PARAM_PACKET_ID 2
+
+typedef struct
+{
+	PacketIndexed header;
+	AnalogParam analogSet;
+} AnalogParamPacket;
+#define ANALOG_PARAM_PACKET_ID 3
+
 #pragma pack(pop)
+
+extern DigitalParam digital_controll[DIGITAL_MAX];
+extern AnalogParam analog_controll[ANALOG_MAX];

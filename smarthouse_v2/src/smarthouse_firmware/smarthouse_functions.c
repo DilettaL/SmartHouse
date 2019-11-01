@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "smarthouse_functions.h"
 #include "packet_operations.h"
 #include "smarthouse_packets.h"
@@ -24,9 +25,19 @@ uint16_t AdcConvert(uint8_t);
 //***************
 struct UART* uart;
 //***************
+PacketStatus Smarthouse_pinsInit(void)
+{
+	for(int i=0; i<DIGITAL_MAX; i++)
+	{
+		memset(digital_controll+i, 0, sizeof(DigitalParam));	
+	}
+	for(int i=0; i<ANALOG_MAX; i++)
+	{
+		memset(analog_controll+i, 0, sizeof(AnalogParam));
+	}
+}
 
-
-PacketStatus Digital_init(DigitalType type, uint8_t pin)
+PacketStatus functionsChoice(FunctionType type, uint8_t pin)
 {
 	switch(type)
 	{
@@ -88,13 +99,3 @@ uint16_t AdcConvert(uint8_t pin){
 //		printf ("value: %d\n",value);
 	return value;
 }
-
-/*
-PacketStatus Analog_init(void)
-{
-	SetAdc(4);
-	RunAdc(10);
-	return Success;
-}
-*/
-
