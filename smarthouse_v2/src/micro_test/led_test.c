@@ -6,6 +6,7 @@
 #include "pwm.h"
 #include "adc.h"
 #include "uart.h"
+#include "uart_ORIGINAL.h"
 int main(int argc, char **argv)
 {
 	DigIO_init();
