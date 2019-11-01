@@ -14,10 +14,11 @@ int main(int argc, char **argv)
 	uint32_t baud = 19200;
 	UART_init("uart_0", baud);
 	printf_init();	
-while(1)
-{	Digital_init(DigitalLed, 11);
-	Digital_init(DigitalInput, 10);
-//	Analog_init();
-}
+	while(1)
+	{	//Digital_init(DigitalLed, 11);
+		Digital_init(DigitalInput, 10);
+	//	Digital_init(DigitalDimmer, 5);
+	//	Digital_init(Adc, 4);
+	}
 	return 0;
 }	

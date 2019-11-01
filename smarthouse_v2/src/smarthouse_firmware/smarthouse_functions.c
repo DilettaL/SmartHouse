@@ -18,6 +18,7 @@ void LedOn(uint8_t);
 void LedOff(uint8_t);
 void Dimmer(uint8_t);
 void InputDigital(uint8_t);
+uint16_t AdcConvert(uint8_t);
 
 
 //***************
@@ -37,6 +38,8 @@ PacketStatus Digital_init(DigitalType type, uint8_t pin)
 			InputDigital(pin);
 		case DigitalOff:
 			LedOff(pin);
+		case Adc:
+			AdcConvert(pin);
 		default:
 			return -1;
 	}
@@ -67,14 +70,26 @@ void InputDigital(uint8_t pin)
 	DigIO_setDirection(pin, Input);
 	DigIO_setValue(pin, 1);
 	uint8_t key=DigIO_getValue(pin);
-	printf("value:%d\n", key);
-	delayMs(100);
+	printf("value:%d\n",key);	
 }
 
+uint16_t AdcConvert(uint8_t pin){
+	uint16_t value = 0;
+	uint8_t sample = 10;
+	SetAdc(pin);
+	value = RunAdc(sample);
+//solo come test:
+//	for (int i = 0; i < sample; i++);
+//		printf ("value: %d\n",value);
+	return value;
+}
+
+/*
 PacketStatus Analog_init(void)
 {
 	SetAdc(4);
 	RunAdc(10);
 	return Success;
 }
+*/
 
