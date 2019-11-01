@@ -22,28 +22,29 @@ AVRDUDE_FLAGS += -c wiring
 
 
 OBJS=smarthouse_comm.o\
-	smarthouse_functions.o\
 	smarthouse_globals.o\
-#smarthouse_param.o\
-#smarthouse_pin.o\
+	smarthouse_param.o\
+	delay.o\
 	digio.o\
-	adc.o\
-	uart.o\
 	pins.o\
+	uart.o\
 	pwm.o\
+	adc.o\
+	eeprom.o\
 	
 HEADERS=smarthouse_comm.h\
-	smarthouse_functions.h\
 	smarthouse_globals.h\
-#smarthouse_param.h\
-#smarthouse_pin.h\
-	smarthouse_packets.h\
+	smarthouse_param.h\
 	packet_operations.h\
+	packet_header.h\
+	smarthouse_packets.h\
 	digio.h\
-	adc.h\
-	uart.h\
 	pins.h\
-	pwm.h\	
+	pwm.h\
+	delay.h\
+	uart.h\
+	adc.h\
+	eeprom.h\
 	
 BINS= smarthouse.elf\
 
@@ -58,10 +59,6 @@ all:	$(BINS)
 #peripherials
 %.o:	$(PREFIX)/src/$(ARCH)/%.c 
 	$(CC) $(CC_OPTS) -c  $<
-
-#peripherial test
-#%.o:	$(PREFIX)/src/micro_test/%.c 
-#	$(CC) $(CC_OPTS) -c  $<
 
 #orazio server objects
 %.o:	$(PREFIX)/src/smarthouse_firmware/%.c 

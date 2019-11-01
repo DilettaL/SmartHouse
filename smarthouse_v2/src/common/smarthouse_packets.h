@@ -1,8 +1,10 @@
 #pragma once
+#include "packet_header.h"
 
 #define DIGITAL_MAX 8
 #define ANALOG_MAX 8
-
+#define SMARTHOUSE_PROTOCOL_VERSION 0x20180915
+//Tipologie di azioni con i pin digitali
 typedef enum
 {
 	DigitalLed=0,
@@ -11,6 +13,16 @@ typedef enum
 	DigitalOff=3
 } DigitalType;
 
+//Tipi di parametri da poter salvare nella eeprom
+typedef enum
+{
+	ParamSystem = 0,
+	ParamDigital =1,
+	ParamAnalog =2
+} ParamType;
+
+
+#pragma pack(push, 1)
 typedef struct
 {
 	DigitalType type;
@@ -28,10 +40,11 @@ typedef struct
 	uint8_t samples;	
 } AnalogConfig;
 
+//Da qui partono i pacchetti
 typedef struct SystemParamPacket{
-//	PacketHeader header;
-//	uint32_t protocol_version;
-//	uint32_t firmware_version;
+	PacketHeader header;
+	uint32_t protocol_version;
+	uint32_t firmware_version;
 //	int16_t timer_period_ms;
 	uint32_t comm_speed;
 //	uint16_t comm_cycles;
@@ -39,3 +52,6 @@ typedef struct SystemParamPacket{
 //	uint16_t watchdog_cycles;
 //	uint8_t num_joints;
 } SystemParamPacket;
+#define SYSTEM_PARAM_PACKET_ID 1
+
+#pragma pack(pop)

@@ -6,6 +6,8 @@
 #include "smarthouse_globals.h"
 #include "uart.h"
 
+static struct UART* uart;
+
 void Smarthouse_commInit(void)
 {
 	//1)il baude rate deve essere preso dal pacchetto SystemParams

@@ -8,6 +8,7 @@ X-Capire come mappare i pin: ho creato degli array che mappano i pin per ogni op
 -togliere i DigIO_init/PWM_init/Adc_init dalle varie funzioni, andrà messa nel main (smarthouse.c)
 in realtà li ho tolti e li ho messi nello pseudo main di smarthouse.c
 X-in smarthouse.c sono presenti delle funzioni commentate, da mettere in smarthouse_functions.c (da modificare anche il.h), che utilizzano elementi di una struct da inizializzare con i pacchetti.
+-smarthouse_param//TEST STAMPARE IL PROTOCOLLO E IL FIRMWARE
 ______________________________________________________________________________________________________________________________
 
 OBIETTIVO:

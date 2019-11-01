@@ -1,14 +1,14 @@
 #include "smarthouse_globals.h"
-//#include "smarthouse_packets.h"
+
 SystemParamPacket system_params = 
 {
-/*HEADER  {.type=SYSTEM_PARAM_PACKET_ID,
-   .size=sizeof(SystemParamPacket),
-   .seq=0
-  },
-*/
-//  .protocol_version=ORAZIO_PROTOCOL_VERSION,
-//  .firmware_version=ORAZIO_FIRMWARE_VERSION,
+	{
+		.type=SYSTEM_PARAM_PACKET_ID,
+		.size=sizeof(SystemParamPacket),
+		.seq=0
+	},
+	.protocol_version= SMARTHOUSE_PROTOCOL_VERSION,
+	.firmware_version= SMARTHOUSE_FIRMWARE_VERSION,
 //  .timer_period_ms=10,
 	.comm_speed=115200,
 //  .comm_cycles=2,

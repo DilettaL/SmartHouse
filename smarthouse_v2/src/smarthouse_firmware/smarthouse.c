@@ -3,10 +3,10 @@
 #include "adc.h"
 #include "pwm.h"
 #include "smarthouse_comm.h"
-//#include "smarthouse_param.h"
-//#include "smarthouse_pin.h"
+#include "smarthouse_param.h"
+//NON SO SE SERVE PERCHE' FORSE SI FA IN PARAMINIT#include "smarthouse_pin.h"
 //******************
-#include "smarthouse_functions.h"
+//#include "smarthouse_functions.h"
 #include "packet_operations.h"
 #include "smarthouse_packets.h"
 //******************
@@ -17,9 +17,9 @@ int main(int argc, char **argv)
 	Adc_init();
 	PWM_init();
 	//Initialization high level smarthouse firmware functions
-	Smarthouse_commInit();	//Uart and common initialization
-	//Smarthouse_paramInit();	//EEPROM(firmware and protocol) initialization
-	//Smarthouse_pinInit();		//Struct digital and analog initialization
+	Smarthouse_commInit();	//MANCA INIZIALIZZAZIONE PACCHETTI E PACKETHANDLER Uart and common initialization
+	Smarthouse_paramInit();	//COMPLETARE PIN INIZIALIZZAZIONE EEPROM(firmware and protocol) initialization
+//	Smarthouse_pinInit();	//Struct digital and analog initialization questa cosa potrei farla in smartfuncions
 
 /*************
 Dopo di ciò può iniziare il programma vero e proprio
@@ -34,14 +34,14 @@ Dopo di ciò può iniziare il programma vero e proprio
 	Analog_init(test);
 */
 //DA RIVEDERE
-	DigitalConfig *test;
+/*	DigitalConfig *test;
 	test->type= DigitalLed;
 	for(int i=0; i<DIGITAL_MAX; i++)
 	{
 		if(i==10) {test->led[i]=1;	}
 		else{test->led[i]=0;}
 	}
-	Digital_init(test);	
+	Digital_init(test);*/	
 	return 0;
 }
 
