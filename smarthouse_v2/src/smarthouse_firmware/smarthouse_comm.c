@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include "smarthouse_comm.h"
 #include "smarthouse_globals.h"
+#include "packet_handler.h"
 #include "packet_operations.h"
 #include "uart.h"
 
 static struct UART* uart;
 static uint16_t global_seq;
+static PacketHandler packet_handler;
 
 void Smarthouse_commInit(void)
 {
@@ -15,6 +17,7 @@ void Smarthouse_commInit(void)
 	uart = UART_init("uart_0", system_params.comm_speed);
 	global_seq=0;
 	//2)inizializzazione del packethandler
+	PacketHandler_initialize(&packet_handler);
 	//3)funzione interna a questo file che installa i pacchetti
 	//Smarthouse_initializePackets
 }
