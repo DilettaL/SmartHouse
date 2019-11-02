@@ -18,7 +18,8 @@ typedef enum
 	DigitalDimmer=1,
 	DigitalInput=2,
 	DigitalOff=3,
-	Adc=4
+	Adc=4,
+	Null=5
 } FunctionType;
 
 //Tipi di parametri da poter salvare nella eeprom
@@ -76,6 +77,3 @@ typedef struct
 #define ANALOG_PARAM_PACKET_ID 3
 
 #pragma pack(pop)
-
-extern DigitalParam digital_controll[DIGITAL_MAX];
-extern AnalogParam analog_controll[ANALOG_MAX];

@@ -18,11 +18,15 @@ int main(int argc, char **argv)
 	PWM_init();
 	//Initialization high level smarthouse firmware functions
 	Smarthouse_commInit();	//MANCA INIZIALIZZAZIONE PACCHETTI E PACKETHANDLER Uart and common initialization
-	Smarthouse_paramInit();	//COMPLETARE PIN INIZIALIZZAZIONE EEPROM(firmware and protocol) initialization
+	Smarthouse_paramInit();	//EEPROM(firmware, protocol, analog and digital pins) initialization
 //	Smarthouse_pinInit();	//Struct digital and analog initialization questa cosa potrei farla in smartfuncions
 
 /*************
 Dopo di ciò può iniziare il programma vero e proprio
+	while(1)
+	{
+
+	}
 *************/
 /*	AnalogConfig test;
 	for(int i=0; i<ANALOG_MAX; i++)
