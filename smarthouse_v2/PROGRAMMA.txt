@@ -1,14 +1,10 @@
+TEST:
 CARTELLA SMARTHOUSE FIRMWARE:
-LUCA
--Test DigitalInput
--Test ADC
-
-DILETTA
-X-Capire come mappare i pin: ho creato degli array che mappano i pin per ogni operazione. Sono però necessari dei for con if annidati per scandirli. Non so se è una soluzione efficace
--togliere i DigIO_init/PWM_init/Adc_init dalle varie funzioni, andrà messa nel main (smarthouse.c)
-in realtà li ho tolti e li ho messi nello pseudo main di smarthouse.c
-X-in smarthouse.c sono presenti delle funzioni commentate, da mettere in smarthouse_functions.c (da modificare anche il.h), che utilizzano elementi di una struct da inizializzare con i pacchetti.
--smarthouse_param//TEST STAMPARE IL PROTOCOLLO E IL FIRMWARE
+-smarthouse_param//TEST STAMPARE IL PROTOCOLLO, IL FIRMWARE E LA CONFIGURAZIONE DEI PIN
+CARTELLA COMMON:
+-Packet_handler //TEST CORRETTA INSTALLAZIONE DI UN PACCHETTO  
+Per ora l'handler prevede solamente la presenza dell'array di packetOperations in quanto è l'unico elemento utilizzato.
+A sua volta il tipo PacketOperations contiene solamente il PacketType essendo, ancora una votla, l'unico elemento utilizzato che permette di identificare un pacchetto.
 ______________________________________________________________________________________________________________________________
 
 OBIETTIVO:

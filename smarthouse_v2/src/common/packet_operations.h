@@ -1,5 +1,5 @@
 #pragma once
-#include <stdint.h>
+#include "packet_header.h"
 
 typedef enum
 {
@@ -28,3 +28,13 @@ typedef enum
 	SyncPayloadComplete=6,	
 	SyncChecksum=7
 } PacketStatus;
+
+typedef struct PacketOperations 
+{
+	PacketType type;
+//  PacketSize size; // expected size of the payload, -1 if error;
+//  PacketGenFn initialize_buffer_fn;
+//  void* initialize_buffer_args;
+//  PacketFn on_receive_fn;
+//  void* on_receive_args;
+} PacketOperations;

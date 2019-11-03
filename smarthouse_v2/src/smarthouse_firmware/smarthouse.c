@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	Adc_init();
 	PWM_init();
 	//Initialization high level smarthouse firmware functions
-	Smarthouse_commInit();	//MANCA INIZIALIZZAZIONE PACCHETTI E PACKETHANDLER Uart and common initialization
+	Smarthouse_commInit();	//Uart and common initialization
 	Smarthouse_paramInit();	//EEPROM(firmware, protocol, analog and digital pins) initialization
 //	Smarthouse_pinInit();	//Struct digital and analog initialization questa cosa potrei farla in smartfuncions
 
