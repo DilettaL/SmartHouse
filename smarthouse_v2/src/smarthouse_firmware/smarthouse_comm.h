@@ -9,3 +9,6 @@ void Smarthouse_commInit(void);
 //calls the deferred actions
 //initiates the transmission in the output buffers
 void Smarthouse_commHandle(void);
+
+//
+void Smarthouse_flushInputBuffers(void);

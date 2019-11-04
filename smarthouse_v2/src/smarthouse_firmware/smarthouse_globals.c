@@ -10,11 +10,26 @@ SystemParamPacket system_params =
 	.protocol_version= SMARTHOUSE_PROTOCOL_VERSION,
 	.firmware_version= SMARTHOUSE_FIRMWARE_VERSION,
 //  .timer_period_ms=10,
-	.comm_speed=19200,
+	.comm_speed=19200
 //  .comm_cycles=2,
 //  .periodic_packet_mask=(PSystemStatusFlag|PJointStatusFlag|PDriveStatusFlag|PSonarStatusFlag),
 //  .watchdog_cycles=0,
 //  .num_joints=NUM_JOINTS
+};
+
+SystemStatusPacket system_status = 
+{
+	{
+		.type=SYSTEM_STATUS_PACKET_ID,
+		.size=sizeof(SystemStatusPacket),
+		.seq=0
+  	},
+	.rx_buffer_size=0,
+	.rx_packets=0,
+	.rx_packet_errors=0
+//	.rx_seq=0,
+//	.rx_packet_queue=0,
+//	.idle_cycles=0
 };
 
 DigitalParamPacket digital_control[DIGITAL_MAX] = {

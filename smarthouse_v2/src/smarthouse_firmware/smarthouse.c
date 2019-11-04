@@ -25,7 +25,9 @@ int main(int argc, char **argv)
 Dopo di ciò può iniziare il programma vero e proprio
 	while(1)
 	{
-
+		//POSSIAMO SCOMMENTARLA SOLO DOPO L'HANDLER
+		Smarthouse_flushInputBuffers();
+//Controllo il tipo di pacchetto, se pacchetto di configurazione(da ricevere) o pacchetto di stato (da 	trasmettere). Nel caso di pacchetto di stato bisogna abilitare la Smarthouse_flushOutoputBuffers(); e inviare il pacchetto desiderato dal pc
 	}
 *************/
 /*	AnalogConfig test;
