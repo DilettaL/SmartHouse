@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include "smarthouse_comm.h"
 #include "smarthouse_globals.h"
+//*******************
+#include "smarthouse_functions.h"
+//*******************
 #include "packet_handler.h"
 #include "packet_operations.h"
 #include "uart.h"
@@ -13,6 +16,21 @@ static struct UART* uart;
 static uint16_t global_seq;
 static PacketHandler packet_handler;
 
+//*******************************
+typedef struct
+{
+	void* dest;             // destination buffer OR, if max_index>0 an array of dest_buffer ptrs
+	PacketStatus (*post_copy_fn)(void);// function that is invoked after the packet is received
+	int8_t max_index;       // max index: 0 in case of non array vars
+} PacketHandlerArgs;
+
+static PacketHandlerArgs digital_control_args = {
+  .dest=&digital_control,
+  .post_copy_fn=functionsChoice,
+  .max_index=-DIGITAL_MAX
+};
+
+//*******************************
 void Smarthouse_commInit(void)
 {
 	//baude rate definition is in smarthouse_globals.c
@@ -65,12 +83,13 @@ void Orazio_flushInputBuffers(void)
 //Per ora solo funzione per la configurazione quella di stato la faremo dopo
 static PacketStatus Smarthouse_handleConfigPacket(PacketHeader* p, void* args_)
 {
-	//Dipendentemente dal tipo del pacchetto contenuto nell'header richiamo la funzione passando gli argomenti
-	switch(p->type)
+	PacketHeader* target=0;
+	system_status.rx_seq=p.seq;
+	switch(p.type)
 	{
-		//SBAGLIATO?case DigitalParamPacket:
-		//	break;
 		default:
 			return GenericError;
 	}
+	//Dipendentemente dal tipo del pacchetto contenuto nell'header richiamo la funzione passando gli argomenti
+	
 }

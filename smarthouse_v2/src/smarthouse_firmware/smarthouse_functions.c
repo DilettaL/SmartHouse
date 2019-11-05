@@ -37,7 +37,7 @@ PacketStatus Smarthouse_pinsInit(void)
 	}
 }
 
-PacketStatus functionsChoice(FunctionType type, uint8_t pin)
+PacketStatus functionsChoice();//FunctionType type, uint8_t pin)
 {
 	switch(type)
 	{

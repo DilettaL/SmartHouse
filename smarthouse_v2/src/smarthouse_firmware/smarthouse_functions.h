@@ -3,4 +3,4 @@
 #include "smarthouse_packets.h"
 
 PacketStatus Smarthouse_pinsInit(void);
-PacketStatus functionsChoice(FunctionType, uint8_t);
+PacketStatus functionsChoice(void);//FunctionType, uint8_t);

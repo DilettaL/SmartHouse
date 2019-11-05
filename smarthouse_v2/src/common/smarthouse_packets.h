@@ -62,8 +62,8 @@ typedef struct
 	uint16_t tx_packet_errors;
 	uint16_t battery_level;
 	int16_t watchdog_count;
-	uint16_t rx_seq;
-	uint8_t rx_packet_queue;
+*/	uint16_t rx_seq;
+/*	uint8_t rx_packet_queue;
 	uint32_t idle_cycles;
 */} SystemStatusPacket;
 #define SYSTEM_STATUS_PACKET_ID 1

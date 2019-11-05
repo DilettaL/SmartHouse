@@ -27,7 +27,7 @@ SystemStatusPacket system_status =
 	.rx_buffer_size=0,
 	.rx_packets=0,
 	.rx_packet_errors=0
-//	.rx_seq=0,
+	.rx_seq=0,
 //	.rx_packet_queue=0,
 //	.idle_cycles=0
 };
