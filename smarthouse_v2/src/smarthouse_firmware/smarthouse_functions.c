@@ -29,7 +29,7 @@ PacketStatus Smarthouse_pinsInit(void)
 {
 	for(int i=0; i<DIGITAL_MAX; i++)
 	{
-		memset(digital_controll+i, 0, sizeof(DigitalParam));	
+		memset(digital_controll+i, 0, sizeof(DigitalParam));
 	}
 	for(int i=0; i<ANALOG_MAX; i++)
 	{
