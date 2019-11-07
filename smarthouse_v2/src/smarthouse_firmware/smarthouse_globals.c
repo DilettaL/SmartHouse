@@ -32,6 +32,17 @@ SystemStatusPacket system_status =
 //	.idle_cycles=0
 };
 
+PacketTest test=
+{
+	{
+		.type=TEST_PACKET_ID,
+		.size=sizeof(PacketTest),
+		.seq=0
+	},
+	.type=Null,
+	.pintest=0
+}
+
 DigitalParamPacket digital_control[DIGITAL_MAX] = {
 {//pinDig 0
 	//PacketIndex
