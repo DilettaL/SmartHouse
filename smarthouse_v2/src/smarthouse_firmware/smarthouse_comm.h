@@ -12,3 +12,10 @@ void Smarthouse_commHandle(void);
 
 //
 void Smarthouse_flushInputBuffers(void);
+
+static PacketHeader* _initializeBuffer(PacketType, size, void*);
+
+//Merge con deferred
+static PacketHeader* _initializeBuffer(PacketType, PacketSize, void*);
+static PacketStatus _onReceive(PacketHeader*, void*);
+

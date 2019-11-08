@@ -16,6 +16,28 @@ static struct UART* uart;
 static uint16_t global_seq;
 static PacketHandler packet_handler;
 
+
+static PacketHeader* _initializeBuffer( PacketHandler* h,
+                                        PacketSize size,
+                                        void* args ){
+	PacketHandler handler=(PacketHandler*) args;	//<- punta a tutti i parametri che io sto inviando
+	
+}
+
+
+// when a buffer is requested, we pick one from the ring buffer, if available
+static PacketHeader* _initializeBuffer(PacketType type,
+                                       PacketSize size,
+                                       void* args ) {
+//	  DeferredPacketHandler* handler=(DeferredPacketHandler*) args;	   //-non serve puntare all'args perche sto passando tutto l'handler
+//	  DeferredPacketOps* info=handler->packet_infos +type;          // dice quele buffer sto assegnando a quale pacchetto
+  // if no buffer available, return 
+  if (info->packet_buffers_size>=info->packet_buffers_max)
+    return 0;
+  // otherwise we return the last buffer
+  return info->packet_buffers[info->packet_buffers_end];
+}
+
 //*******************************
 typedef struct
 {
@@ -93,3 +115,4 @@ static PacketStatus Smarthouse_handleConfigPacket(PacketHeader* p, void* args_)
 	//Dipendentemente dal tipo del pacchetto contenuto nell'header richiamo la funzione passando gli argomenti
 	
 }
+
