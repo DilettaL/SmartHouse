@@ -8,3 +8,5 @@ extern  SystemStatusPacket system_status;
 
 extern DigitalParamPacket digital_control[DIGITAL_MAX];
 extern AnalogParamPacket analog_control[ANALOG_MAX];
+
+extern PacketTest test;

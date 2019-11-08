@@ -14,10 +14,10 @@ typedef struct {
 //Tipologie di azioni con i pin digitali
 typedef enum
 {
-	DigitalLed=0,
-	DigitalDimmer=1,
-	DigitalInput=2,
-	DigitalOff=3,
+	ledOn=0,
+	dimmer=1,
+	digitalInput=2,
+	ledOff=3,
 	Adc=4,
 	Null=5
 } FunctionType;
@@ -96,4 +96,18 @@ typedef struct
 } AnalogParamPacket;
 #define ANALOG_PARAM_PACKET_ID 4
 
+typedef struct
+{
+	FunctionType type;
+	uint8_t pintest;
+} TestParam;
+
+//*****PROVA
+typedef struct
+{
+	PacketHeader header;
+	TestParam test;
+} PacketTest;
+#define TEST_PACKET_ID 5
+//*****PROVA
 #pragma pack(pop)

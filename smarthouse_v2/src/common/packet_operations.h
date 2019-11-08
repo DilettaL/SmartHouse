@@ -41,8 +41,15 @@ typedef struct PacketOperations
 {
 	PacketType type;
 	PacketSize size; // expected size of the payload, -1 if error;
+<<<<<<< HEAD
+//	PacketGenFn initialize_buffer_fn;
+//  void* initialize_buffer_args;
+//  PacketFn on_receive_fn;
+//  void* on_receive_args;
+=======
 	PacketGenFn initialize_buffer_fn;
 	void* initialize_buffer_args;
 	PacketFn on_receive_fn;
 	void* on_receive_args;
+>>>>>>> 3600cf87bdd0649a224f2b294f80b3fa7ec14540
 } PacketOperations;

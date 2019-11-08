@@ -10,6 +10,7 @@
 #include "packet_operations.h"
 #include "smarthouse_packets.h"
 //******************
+//Si deve accendere il led 10 da pc
 int main(int argc, char **argv)
 {
 	//Initialization low level functions
@@ -18,7 +19,7 @@ int main(int argc, char **argv)
 	PWM_init();
 	//Initialization high level smarthouse firmware functions
 	Smarthouse_commInit();	//Uart and common initialization
-	Smarthouse_paramInit();	//EEPROM(firmware, protocol, analog and digital pins) initialization
+//	Smarthouse_paramInit();	//EEPROM(firmware, protocol, analog and digital pins) initialization
 //	Smarthouse_pinInit();	//Struct digital and analog initialization questa cosa potrei farla in smartfuncions
 
 /*************
