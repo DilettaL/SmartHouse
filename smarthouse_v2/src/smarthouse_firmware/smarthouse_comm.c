@@ -20,8 +20,8 @@ static PacketHandler packet_handler;
 static PacketHeader* _initializeBuffer( PacketHandler* h,
                                         PacketSize size,
                                         void* args ){
-	PacketHandler handler=(PacketHandler*) args;	//<- punta a tutti i parametri che io sto inviando
-	
+	  PacketHandler* handler=(PacketHandler*) args;
+	return (PacketHeader*) handler->rx_current_packet;
 }
 
 
