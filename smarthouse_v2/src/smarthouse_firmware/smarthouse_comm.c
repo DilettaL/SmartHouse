@@ -55,7 +55,6 @@ static PacketHandlerArgs digital_control_args = {
 };
 
 //*******************************
->>>>>>> c0e722d6067a8d39ac8aeda4808fb9d2b226701d
 void Smarthouse_commInit(void)
 {
 	//baude rate definition is in smarthouse_globals.c
