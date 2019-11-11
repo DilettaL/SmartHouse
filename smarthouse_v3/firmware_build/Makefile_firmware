@@ -25,6 +25,7 @@ OBJS=smarthouse_comm.o\
 	smarthouse_globals.o\
 	packet_handler.o\
 	uart.o\
+	uart_ORIGINAL.o\
 	
 HEADERS=smarthouse_comm.h\
 	smarthouse_globals.h\
@@ -33,6 +34,7 @@ HEADERS=smarthouse_comm.h\
 	packet_header.h\
 	smarthouse_packets.h\
 	uart.h\
+	uart_ORIGINAL.h\
 	
 BINS= smarthouse.elf\
 

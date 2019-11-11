@@ -5,6 +5,7 @@
 #include "smarthouse_globals.h"
 #include "packet_handler.h"
 #include "uart.h"
+#include "uart_ORIGINAL.h"
 
 static struct UART* uart;
 static PacketHandler packet_handler;
