@@ -16,6 +16,46 @@ static struct UART* uart;
 static uint16_t global_seq;
 static PacketHandler packet_handler;
 
+<<<<<<< HEAD
+=======
+
+static PacketHeader* _initializeBuffer( PacketHandler* h,
+                                        PacketSize size,
+                                        void* args ){
+	  PacketHandler* handler=(PacketHandler*) args;
+	return (PacketHeader*) handler->rx_current_packet;
+}
+
+
+// when a buffer is requested, we pick one from the ring buffer, if available
+static PacketHeader* _initializeBuffer(PacketType type,
+                                       PacketSize size,
+                                       void* args ) {
+//	  DeferredPacketHandler* handler=(DeferredPacketHandler*) args;	   //-non serve puntare all'args perche sto passando tutto l'handler
+//	  DeferredPacketOps* info=handler->packet_infos +type;          // dice quele buffer sto assegnando a quale pacchetto
+  // if no buffer available, return 
+  if (info->packet_buffers_size>=info->packet_buffers_max)
+    return 0;
+  // otherwise we return the last buffer
+  return info->packet_buffers[info->packet_buffers_end];
+}
+
+//*******************************
+typedef struct
+{
+	void* dest;             // destination buffer OR, if max_index>0 an array of dest_buffer ptrs
+	PacketStatus (*post_copy_fn)(void);// function that is invoked after the packet is received
+	int8_t max_index;       // max index: 0 in case of non array vars
+} PacketHandlerArgs;
+
+static PacketHandlerArgs digital_control_args = {
+  .dest=&digital_control,
+  .post_copy_fn=functionsChoice,
+  .max_index=-DIGITAL_MAX
+};
+
+//*******************************
+>>>>>>> c0e722d6067a8d39ac8aeda4808fb9d2b226701d
 void Smarthouse_commInit(void)
 {
 	//baude rate definition is in smarthouse_globals.c
