@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "smarthouse_client.h"
+#include "serial_linux.h"
 
 #define NUM_DIGITAL_MAX 8
 #define NUM_ANALOG_MAX 8
@@ -90,11 +91,17 @@ static PacketStatus _installPacketOp(SmarthouseClient* cl, void* dest, PacketTyp
 struct SmarthouseClient* SmarthouseClient_init(const char* device, uint32_t baudrate)
 {
 	//Configure serial port
-//QUESTE FUNZIONI NON SONO STANDARD MA E' NECESSARIO IMPLEMENTARLE
+	//Open serial port
 	int fd=serial_open(device);
-	if(fd<0)	{return 0;}
+	if(fd<0)
+	{
+		printf ("error %d opening serial, fd %d\n", errno, fd);
+		return 0;
+	}
+	//Associate attributes (baudrate) to port
 	if (serial_set_interface_attribs(fd, baudrate, 0) <0)
 	{	return 0;	}
+	//Set blocking/no blocking port mode
   	serial_set_blocking(fd, 1); 
   	if  (! fd)	{return 0;}
 	//Set memory part for client and the packets

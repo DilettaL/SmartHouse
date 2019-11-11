@@ -17,8 +17,7 @@ const char *banner[]={
 	"to request a status packet insert(then choice packet type):",
 	"$>Smarthouse	request",
 	"to exit insert:",
-	"$>Smarthouse	quit",
-	0
+	"$>Smarthouse	quit"
 };
 
 void printBanner(void)
@@ -34,7 +33,7 @@ void printBanner(void)
 
 int main(int argc, char** argv)
 {
-	const char* device=0;
+	const char* device="/dev/ttyACM0"; //abbiamo messo tutto il pathname richiesso da open() lui solo 0
 	uint32_t baudrate = 19200;
 	//Si devono creare due thread uno per la ricezione uno per la trasmissione
 //*************************INIZIO: PACCHETTO DI PROVA
@@ -54,4 +53,5 @@ int main(int argc, char** argv)
 	//Creare il thread per la lettura dalla seriale
 	printf("looping...");
 	//Smarthouse_shellStart();
+	//return 0;
 }

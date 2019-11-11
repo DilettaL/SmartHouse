@@ -9,9 +9,9 @@ LIBS=-lpthread -lreadline -lwebsockets
 #dovrebbero essere i file .o che lavorano con i threads? 
 LOBJS = smarthouse_client.o\
 	packet_handler.o\
+	serial_linux.o\
 #	deferred_packet_handler.o\
 #	orazio_print_packet.o\
-#	serial_linux.o\
 
 OBJS = 	shell_globals.o\
 	shell_commands.o\
@@ -23,6 +23,7 @@ OBJS = 	shell_globals.o\
 HEADERS = smarthouse_client.h\
 	shell_globals.h\
 	shell_commands.h\
+	serial_linux.h\
 	packet_handler.h\
 	smarthouse_packets.h\
 	packet_header.h\

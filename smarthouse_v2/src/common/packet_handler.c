@@ -30,7 +30,23 @@ PacketStatus PacketHandler_initialize(PacketHandler* h)
 /**********************
 Per installare un pacchetto quindi si controlla se è giusto il tipo e si crea una PacketOperations per quel singolo pacchetto. Successivamente si va ad associare l' i-esimo (dove i =tipo) elemento PacketOperations dell'handler al packetOperations in ingresso. 
 **********************/
-PacketStatus PacketHandler_installPacket(PacketHandler *h, PacketType type)
+
+static PacketHeader* _initializeBuffer_firmware(PacketType type, PacketSize size, void* arg)
+{
+	PacketHandler* handler=(PacketHandler*)arg;
+	return (PacketHeader*) handler->rx_current_packet;
+}
+
+static PacketStatus _onReceive_firmware(PacketHeader *packet, void* arg)
+{
+	PacketHandler *handler=(PacketHandler*)arg;
+//arg deve essere un riferimento alla struc di globals
+//packet è il packetheader di quel pacchetto (risultato di intiaizeBuffer) che è stato ricevuto e va copiato in memoria
+	memcpy(handler, packet, packet->size);
+	return Success;
+}
+
+PacketStatus PacketHandler_installPacket(PacketHandler *h, PacketType type, PacketSize size, void* action_args )
 {
 	//I parametri passati a questa funzione sono il packetHandler e gli argomenti di PacketOperations
 	//Control type of packet
@@ -39,7 +55,12 @@ PacketStatus PacketHandler_installPacket(PacketHandler *h, PacketType type)
 	//Associate ops argumento to ops struc
 	PacketOperations ops =
 	{
-		type
+		type,
+		size,
+		_initializeBuffer_firmware,
+		(void*)h,
+		_onReceive_firmware,
+		void* action_args
 	};
 	if (h->operations[ops.type] != 0)
 		{	return PacketInstallError;	}
@@ -47,10 +68,7 @@ PacketStatus PacketHandler_installPacket(PacketHandler *h, PacketType type)
   	return Success;
 }
 
-//Receive
-//Manca funzione che attiva la ricezione
-
-//Transmitt
+//Ricezione
 PacketStatus _rxAA(PacketHandler* h, uint8_t c){
  	h->rx_checksum=0;
 	if (c==0xAA){

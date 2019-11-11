@@ -35,6 +35,9 @@ typedef enum
 typedef struct
 {
 	FunctionType type;
+	uint8_t ledOn;
+	uint8_t ledOff;
+	uint8_t dimmer;
 	uint8_t input;
 	uint8_t intensity;
 } DigitalParam;
@@ -81,17 +84,10 @@ typedef struct SystemParamPacket
 
 typedef struct
 {
-	FunctionType type;
-	uint8_t intensity;
-	uint8_t *result_input;
-} StatusPinPacket;
-#define DIGITAL_STATUS_PACKET_ID 3
-typedef struct
-{
 	PacketIndexed header;
 	DigitalParam digitalSet;
 } DigitalParamPacket;
-#define DIGITAL_PARAM_PACKET_ID 4
+#define DIGITAL_PARAM_PACKET_ID 3
 
 typedef struct
 {
@@ -112,6 +108,6 @@ typedef struct
 	PacketHeader header;
 	TestParam test;
 } PacketTest;
-#define TEST_PACKET_ID 6
+#define TEST_PACKET_ID 5
 //*****PROVA
 #pragma pack(pop)

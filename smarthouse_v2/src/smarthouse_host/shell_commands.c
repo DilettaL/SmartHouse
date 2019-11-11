@@ -92,8 +92,26 @@ int ledOffFn(void)
 
 int requestFn(void)
 {
-	printf("implementare");
-	return 0;
+	printf("Insert type status:\n0 for system status\n1 for digital status\n2 for analog status");
+	uint8_t status, set_pin;
+	scanf("%d", &status);
+	if(status<0 && >2)
+	{	printf("This status doesen't exist\n");	return 1;}
+	else if(status==0)
+	{
+
+	}
+	else
+	{
+		set_pin=setPin();
+		if(set_pin>=0 && set_pin<=20)
+		{	
+			printf("creare struct request status con tipo di stato e pin");
+			return 0;	
+		}
+		else
+		{	return 1;	}
+	}
 }
 
 Command commands[] = {
