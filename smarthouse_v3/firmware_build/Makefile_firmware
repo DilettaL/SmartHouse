@@ -23,10 +23,13 @@ AVRDUDE_FLAGS += -c wiring
 
 OBJS=smarthouse_comm.o\
 	smarthouse_globals.o\
+	packet_handler.o\
 	uart.o\
 	
 HEADERS=smarthouse_comm.h\
 	smarthouse_globals.h\
+	packet_handler.h\
+	packet_operations.h\
 	packet_header.h\
 	smarthouse_packets.h\
 	uart.h\

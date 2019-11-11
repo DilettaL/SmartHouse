@@ -1,6 +1,7 @@
 #pragma once
 #include "packet_header.h"
 
+#define SMARTHOUSE_PROTOCOL_VERSION 0x19880314
 
 #pragma pack(push, 1)
 
