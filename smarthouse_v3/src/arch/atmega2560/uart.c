@@ -4,7 +4,8 @@
 #include <avr/interrupt.h>
 #include <string.h>
 #include <util/atomic.h>
-
+/// TEST
+#include <stdio.h>
 void setBaud57600(void) {
 #undef BAUD
 #define BAUD 57600
@@ -16,6 +17,21 @@ void setBaud57600(void) {
   UCSR0A |= (1<<U2X0);
 #endif
 #undef BAUD
+}
+
+void setBaud19200(void)
+{
+#undef BAUD
+#define BAUD 19200
+#include <util/setbaud.h>
+  UBRR0H = UBRRH_VALUE;
+  UBRR0L = UBRRL_VALUE;
+printf("ok(uart.c)\n");
+#ifdef USE_2X
+  UCSR0A |= (1<<U2X0);
+#endif
+#undef BAUD
+
 }
 
 void setBaud115200(void) {
@@ -55,6 +71,7 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
 
   switch(baud){
   case 57600: setBaud57600(); break;
+case 19200: setBaud19200(); break;
   case 115200: setBaud115200(); break;
   default: return 0;
   }

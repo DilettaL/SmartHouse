@@ -16,3 +16,13 @@ SystemParamPacket system_params =
 //	.watchdog_cycles=0,
 //	.num_joints=NUM_JOINTS
 };
+
+TestPacket test=
+{
+	{
+		.type=TEST_PACKET_ID,
+		.size=sizeof(TestPacket),
+		.seq=0
+	},
+	.prova=0
+};

@@ -18,4 +18,10 @@ typedef struct SystemParamPacket{
   } SystemParamPacket;
 #define SYSTEM_PARAM_PACKET_ID 1
 
+typedef struct TestPacket
+{
+	PacketHeader header;
+	uint8_t prova;
+} TestPacket;
+#define TEST_PACKET_ID 2
 #pragma pack(pop)
