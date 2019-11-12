@@ -6,7 +6,9 @@
 #include "packet_handler.h"
 #include "uart.h"
 #include "uart_ORIGINAL.h"
-
+//****
+#include "digio.h"
+//****
 static struct UART* uart;
 static PacketHandler packet_handler;
 
@@ -89,9 +91,11 @@ int Smarthouse_flushOutputBuffers(void)
 void Smarthouse_commHandle(void)
 {
 	Smarthouse_flushInputBuffers();
-	if(test.prova==0)
+	if(test.prova==1)
 	{
 		printf("Valore prova: %d\n", test.prova);
+		DigIO_setDirection(10, Output);
+		DigIO_setValue(10, 1);
 	}
 	else
 	{printf("Valore prova: %d\n", test.prova);}

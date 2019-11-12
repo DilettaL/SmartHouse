@@ -24,7 +24,9 @@ AVRDUDE_FLAGS += -c wiring
 OBJS=smarthouse_comm.o\
 	smarthouse_globals.o\
 	packet_handler.o\
+	digio.o\
 	uart.o\
+	pins.o\
 	uart_ORIGINAL.o\
 	
 HEADERS=smarthouse_comm.h\
@@ -33,7 +35,9 @@ HEADERS=smarthouse_comm.h\
 	packet_operations.h\
 	packet_header.h\
 	smarthouse_packets.h\
+	digio.h\
 	uart.h\
+	pins.h\
 	uart_ORIGINAL.h\
 	
 BINS= smarthouse.elf\
