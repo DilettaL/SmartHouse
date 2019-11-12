@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 	}
 	printf("Success\n");
 //Invio il pacchetto di prova
-//	SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
+	SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
 /*************************FINE: PACCHETTO DI PROVA*/
 	//Creare il thread per la lettura dalla seriale
 //	printf("looping...");
