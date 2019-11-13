@@ -5,7 +5,7 @@
 #include "delay.h"
 #include <string.h>
 #include "smarthouse_globals.h"
-
+#include "digio.h"
 
 static struct UART* uart;
 static PacketHandler packet_handler;
@@ -38,6 +38,7 @@ void flushBuffers(void) {
 
 int main(int argc, char**argv)
 {
+	DigIO_init();
 	int seq = 0;
 	uart = UART_init(0, 115200);
 	PacketHandler_initialize(&packet_handler);
@@ -56,6 +57,11 @@ int main(int argc, char**argv)
 		while (PacketHandler_sendPacket(&packet_handler, (PacketHeader*) & test) != Success)
 		{
 			flushBuffers();
+			if(test.prova==0)
+			{
+				DigIO_setDirection(10, 1);
+				DigIO_setValue(10, 1);
+			}
 		}
 	test.header.seq = seq;
 	seq++;
