@@ -83,13 +83,24 @@ void Smarthouse_flushInputBuffers(void)
 
 int Smarthouse_flushOutputBuffers(void)
 {
-  while (packet_handler.tx_size)
-    UART_putChar(uart, PacketHandler_txByte(&packet_handler));
-  return packet_handler.tx_size;
+	while (packet_handler.tx_size)
+	UART_putChar(uart, PacketHandler_txByte(&packet_handler));
+	return packet_handler.tx_size;
+}
+
+void print_debug(char *buffer)
+{
+	int i=0;
+	while(sizeof(buffer))
+	{
+		UART_putChar(uart, *(buffer+i));
+		i++;
+	}
 }
 
 void Smarthouse_commHandle(void)
 {
+	char buffer[20];
 	Smarthouse_flushInputBuffers();
 	if(test.prova==1)
 	{
@@ -101,5 +112,8 @@ void Smarthouse_commHandle(void)
 	{
 //	printf("Valore prova: %d\n", test.prova);
 	}
-	Smarthouse_flushOutputBuffers();
+	sprintf(buffer, "test.prova=%d\n", test.prova);
+	print_debug(buffer);
+//	Smarthouse_flushOutputBuffers();
+
 }
