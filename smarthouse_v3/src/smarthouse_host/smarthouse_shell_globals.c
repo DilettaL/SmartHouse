@@ -21,25 +21,3 @@ TestPacket test=
 	.header.size=sizeof(TestPacket)
 };
 
-void Orazio_shellStart(void) 
-{
-	printf("shell started\n");
-	//stuff
-	while (run)
-	{
-		char *buffer = readline("Smarthouse $> ");
-		if (buffer)
-		{
-			char response[10000];
-			executeCommand(response, buffer);
-			if (*buffer)
-			{
-				add_history(buffer);
-				free(buffer);
-			}
-		}
-		else
-		{	run=0;	}
-
-	}
-}

@@ -93,13 +93,13 @@ void Smarthouse_commHandle(void)
 	Smarthouse_flushInputBuffers();
 	if(test.prova==1)
 	{
-//		printf("Valore prova: %d\n", test.prova);
+		printf("Valore prova: %d\n", test.prova);
 		DigIO_setDirection(10, 1);
 		DigIO_setValue(10, 1);
 	}
 	else
 	{
-//	printf("Valore prova: %d\n", test.prova);
+	printf("Valore prova: %d\n", test.prova);
 	}
 	Smarthouse_flushOutputBuffers();
 }
