@@ -6,9 +6,11 @@ int main (int argc, char** argv)
 {
 	DigIO_init();
 	Smarthouse_commInit();
-	while(1)
+	int k = 1;
+	while(k)
 	{
 		Smarthouse_commHandle();
+		--k;
 	}
 	return 0;
 }
