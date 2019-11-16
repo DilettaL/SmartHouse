@@ -7,6 +7,7 @@
 
 
 struct SmarthouseClient* client=0;
+int run=1;
 
 SystemParamPacket system_params=
 {
@@ -19,3 +20,26 @@ TestPacket test=
 	.header.type=TEST_PACKET_ID,
 	.header.size=sizeof(TestPacket)
 };
+
+void Orazio_shellStart(void) 
+{
+	printf("shell started\n");
+	//stuff
+	while (run)
+	{
+		char *buffer = readline("Smarthouse $> ");
+		if (buffer)
+		{
+			char response[10000];
+			executeCommand(response, buffer);
+			if (*buffer)
+			{
+				add_history(buffer);
+				free(buffer);
+			}
+		}
+		else
+		{	run=0;	}
+
+	}
+}
