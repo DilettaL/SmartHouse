@@ -51,6 +51,7 @@ int main(int argc, char**argv)
 		_onReceive,
 		(void*)&packet_handler
 	};
+//	TestPacket test = {.prova=1};
 	PacketHandler_installPacket(&packet_handler, &packet_ops);
   	while(1)
 	{
