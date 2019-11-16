@@ -33,7 +33,7 @@ void printBanner(void)
 
 int main(int argc, char** argv)
 {
-	const char* device="/dev/tty"; //non capisco per ora se va bene 0 come lui o tutto il percorso dell'usb
+	const char* device="/dev/ttyACM0"; //non capisco per ora se va bene 0 come lui o tutto il percorso dell'usb
 	uint32_t baudrate = 19200;
 //*************************INIZIO: PACCHETTO DI PROVA
 //Il pacchetto di prova è inizializzato dentro SmarthouseClient_init();
@@ -49,12 +49,6 @@ int main(int argc, char** argv)
 //Invio il pacchetto di prova
 	PacketStatus status=SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
 	printf("valore di ritorno della sendPacket: %d\n", status);
-=======
-	while (1)
-	{
-		SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
-	}
->>>>>>> cbce9d36dc9bb8a51be4407954eb075eacc970c1
 /*************************FINE: PACCHETTO DI PROVA*/
 	//Creare il thread per la lettura dalla seriale
 //	printf("looping...");
