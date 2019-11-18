@@ -12,6 +12,8 @@
 static struct UART* uart;
 static PacketHandler packet_handler;
 
+static uint16_t global_seq;
+
 static PacketHeader* _initializeBuffer( PacketType type,
                                         PacketSize size,
                                         void* args )
@@ -51,16 +53,25 @@ void Smarthouse_initializePackets(void)
 			sizeof(SystemParamPacket),
 			&packet_handler,
 			&system_params);
+	initializeOps(SYSTEM_STATUS_PACKET_ID,
+			sizeof(SystemStatusPacket),
+			&packet_handler,
+			&system_status);
 	initializeOps(TEST_PACKET_ID,
 			sizeof(TestPacket),
 			&packet_handler,
 			&test);
+	initializeOps(MESSAGE_PACKET_ID,
+			sizeof(StringMessagePacket),
+			&packet_handler,
+			&string_message);
 }
 
 void Smarthouse_commInit (void)
 {
 	//baude rate definition is in smarthouse_globals.c
 	uart = UART_init("uart_0", system_params.comm_speed);
+	global_seq=0;
 	//2)inizializzazione del packethandler
 	PacketHandler_initialize(&packet_handler);
 	Smarthouse_initializePackets();
@@ -68,6 +79,16 @@ void Smarthouse_commInit (void)
 
 
 //////////////////////////////TEST
+PacketStatus Smarthouse_sendPacket(PacketHeader* p){
+  p->seq=global_seq;
+  PacketStatus status=PacketHandler_sendPacket(&packet_handler, p);    
+  if (status==Success)
+    ++system_status.tx_packets;
+  else
+    ++system_status.tx_packet_errors;
+  return status;
+}
+
 void Smarthouse_flushInputBuffers(void)
 {
 	while (UART_rxBufferFull(uart))
@@ -84,36 +105,24 @@ void Smarthouse_flushInputBuffers(void)
 int Smarthouse_flushOutputBuffers(void)
 {
 	while (packet_handler.tx_size)
-	UART_putChar(uart, PacketHandler_txByte(&packet_handler));
+	{
+		UART_putChar(uart, PacketHandler_txByte(&packet_handler));
+	}
+	system_status.tx_buffer_size=UART_txBufferFull(uart);
 	return packet_handler.tx_size;
 }
 
-void print_debug(char *buffer)
-{
-	int i=0;
-	while(sizeof(buffer))
-	{
-		UART_putChar(uart, *(buffer+i));
-		i++;
-	}
-}
 
 void Smarthouse_commHandle(void)
 {
-	char buffer[20];
 	Smarthouse_flushInputBuffers();
+	++global_seq;
 	if(test.prova==1)
 	{
-		printf("Valore prova: %d\n", test.prova);
+//		printf("Valore prova: %d\n", test.prova);
 		DigIO_setDirection(10, 1);
 		DigIO_setValue(10, 1);
 	}
-	else
-	{
-	printf("Valore prova: %d\n", test.prova);
-	}
-	sprintf(buffer, "test.prova=%d\n", test.prova);
-	print_debug(buffer);
-//	Smarthouse_flushOutputBuffers();
-
+	Smarthouse_sendPacket((PacketHeader*)&test);
+	Smarthouse_flushOutputBuffers();
 }

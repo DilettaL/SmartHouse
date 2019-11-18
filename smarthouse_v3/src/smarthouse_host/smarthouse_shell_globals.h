@@ -6,8 +6,9 @@
 // the client
 extern struct SmarthouseClient* client;
 
-extern struct SystemParamPacket system_params;
+extern SystemParamPacket system_params;
+extern SystemStatusPacket system_status;
 
-extern struct TestPacket test;
+extern TestPacket test;
 
-
+extern StringMessagePacket message;

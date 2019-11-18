@@ -17,6 +17,16 @@ SystemParamPacket system_params =
 //	.num_joints=NUM_JOINTS
 };
 
+SystemStatusPacket system_status = {
+  {.type=SYSTEM_STATUS_PACKET_ID,
+   .size=sizeof(SystemStatusPacket),
+   .seq=0
+  },
+  .rx_seq=0,
+  .rx_packet_queue=0,
+  .idle_cycles=0
+};
+
 TestPacket test=
 {
 	{
@@ -25,4 +35,11 @@ TestPacket test=
 		.seq=0
 	},
 	.prova=0
+};
+
+StringMessagePacket string_message = {
+  {.type=MESSAGE_PACKET_ID,
+   .size=sizeof(StringMessagePacket),
+   .seq=0
+  }
 };
