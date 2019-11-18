@@ -123,6 +123,11 @@ void Smarthouse_commHandle(void)
 		DigIO_setDirection(10, 1);
 		DigIO_setValue(10, 1);
 	}
-	Smarthouse_sendPacket((PacketHeader*)&test);
+/*	else
+	{
+	printf("Valore prova: %d\n", test.prova);
+	}
+*/	Smarthouse_sendPacket((PacketHeader*)&test);
 	Smarthouse_flushOutputBuffers();
+
 }
