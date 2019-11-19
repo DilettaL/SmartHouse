@@ -121,8 +121,8 @@ void Smarthouse_commHandle(void)
 {
 	char buffer[128];
 	char *bend;
-	bend=buffer+sprintf(bend, "PROVA PROVA PROVA");
-	Smarthouse_flushInputBuffers(bend);
+	bend=buffer+sprintf(buffer, "PROVA PROVA PROVA");
+	Smarthouse_flushInputBuffers();
 UART_putChar(uart, (uint8_t) *bend);
 
 	++global_seq;
