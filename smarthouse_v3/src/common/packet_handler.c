@@ -1,7 +1,10 @@
 #include "packet_handler.h"
 #include "buffer_utils.h"
 #include <stdio.h>
-
+////
+char stampa[10];
+int i = 0;
+///
 PacketStatus _rxAA(PacketHandler* h, uint8_t c);
 PacketStatus _rx55(PacketHandler* h, uint8_t c);
 PacketStatus _rxType(PacketHandler* h, uint8_t c);
@@ -114,15 +117,15 @@ PacketStatus _rxSize(PacketHandler* h, uint8_t c) {
 }
 
 PacketStatus _rxPayload(PacketHandler* h, uint8_t c) {
-  h->rx_checksum^=c;
-  *h->rx_buffer_end=c;
-  ++h->rx_buffer_end;
-  --h->rx_bytes_to_read;
-  if (! h->rx_bytes_to_read) {
-    h->rxFn=_rxChecksum;
-    return SyncPayloadComplete;
-  }
-  return SyncPayload;
+	  h->rx_checksum^=c;
+	  *h->rx_buffer_end=c;
+	  ++h->rx_buffer_end;
+	  --h->rx_bytes_to_read;
+	  if (! h->rx_bytes_to_read) {
+	    h->rxFn=_rxChecksum;
+	    return SyncPayloadComplete;
+	  }
+	  return SyncPayload;
 }
 
 PacketStatus _rxChecksum(PacketHandler* h, uint8_t c){
@@ -143,10 +146,11 @@ PacketStatus _rxChecksum(PacketHandler* h, uint8_t c){
 }
 
 static inline void _putTxByte(PacketHandler* h, uint8_t c){
-  if (h->tx_size==PACKET_SIZE_MAX)
-    return;
-  h->tx_buffer[h->tx_end]=c;
-  BUFFER_PUT(h->tx, PACKET_SIZE_MAX);
+	  if (h->tx_size==PACKET_SIZE_MAX)
+	    return;
+	  h->tx_buffer[h->tx_end]=c;
+	  BUFFER_PUT(h->tx, PACKET_SIZE_MAX);
+//printf ("%x\n",c);
 }
 
 uint8_t PacketHandler_txByte(PacketHandler* h){

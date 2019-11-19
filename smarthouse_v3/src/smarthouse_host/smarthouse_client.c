@@ -104,8 +104,7 @@ int fd=serial_open(device);
 			.size=sizeof(TestPacket),
      			.seq=0
    		},
-		.prova=5,
-		.prova2 = 2
+		.prova=5
 	};	
 */
 	// initializes the packet system
@@ -148,7 +147,7 @@ static void _flushBuffer(SmarthouseClient* cl)
 		uint8_t c=PacketHandler_txByte(&cl->packet_handler);
 		ssize_t res = write(cl->fd,&c,1);
 		cl->tx_bytes+=res;
-printf ("%x\n",c);
+//printf ("%x\n",c);
 	}
 }
 
@@ -179,7 +178,9 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	//we do only operations and nobody else can read/write packet
 	pthread_mutex_lock(&cl->write_mutex);
 	pthread_mutex_lock(&cl->read_mutex);
-printf("TestPrimaHandler\nprova:%d\tprova2:%d\n", cl->test.prova, cl->test.prova2); 
+//printf("TestPrimaHandler\nprova:%x\tprova2:%x\n", cl->test.prova, cl->test.prova2); 
+
+
 	send_result=_sendPacket(cl,p);
   	if(send_result!=Success)
 	{
@@ -190,5 +191,22 @@ printf("TestPrimaHandler\nprova:%d\tprova2:%d\n", cl->test.prova, cl->test.prova
 	pthread_mutex_unlock(&cl->read_mutex);
 	pthread_mutex_unlock(&cl->write_mutex);
 //	_readPacket(cl);
+
+/*uint8_t i=0;
+uint8_t* pt = (uint8_t* )&cl->test.header;
+while(i!=sizeof(TestPacket))
+{	printf("%d\tADDR:%p\tVAL:%x\n\n", i, pt+i, *(pt+i));	
+i++;
+}
+*/
 	return send_result;	
 }
+
+
+
+
+
+
+
+
+
