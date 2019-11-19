@@ -102,10 +102,12 @@ int fd=serial_open(device);
 		{
 			.type=TEST_PACKET_ID,
 			.size=sizeof(TestPacket),
-      			.seq=0
-    		},
-		.prova=1
-	};
+     			.seq=0
+   		},
+		.prova=5,
+		.prova2 = 2
+	};	
+
 	// initializes the packet system
 	PacketHandler_initialize(&cl->packet_handler);
 	//packets installation on host
@@ -146,6 +148,7 @@ static void _flushBuffer(SmarthouseClient* cl)
 		uint8_t c=PacketHandler_txByte(&cl->packet_handler);
 		ssize_t res = write(cl->fd,&c,1);
 		cl->tx_bytes+=res;
+printf ("%x\n",c);
 	}
 }
 
@@ -185,6 +188,6 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	_flushBuffer(cl);
 	pthread_mutex_unlock(&cl->read_mutex);
 	pthread_mutex_unlock(&cl->write_mutex);
-	_readPacket(cl);
+//	_readPacket(cl);
 	return send_result;	
 }

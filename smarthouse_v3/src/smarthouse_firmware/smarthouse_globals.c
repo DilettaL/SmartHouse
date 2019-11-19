@@ -34,7 +34,7 @@ TestPacket test=
 		.size=sizeof(TestPacket),
 		.seq=0
 	},
-	.prova=0
+	.prova=5
 };
 
 StringMessagePacket string_message = {

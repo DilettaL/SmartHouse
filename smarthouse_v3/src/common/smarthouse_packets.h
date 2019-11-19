@@ -36,6 +36,7 @@ typedef struct TestPacket
 {
 	PacketHeader header;
 	uint8_t prova;
+	uint8_t prova2;
 } TestPacket;
 #define TEST_PACKET_ID 3
 

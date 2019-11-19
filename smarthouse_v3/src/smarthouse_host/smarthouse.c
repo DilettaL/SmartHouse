@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 		printf("Failed\n");
 		exit(-1);
 	}
-	printf("Success\n");
+	//printf("Success\n");
 //Invio il pacchetto di prova
 	PacketStatus status=SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
 	printf("valore di ritorno della sendPacket: %d\n", status);

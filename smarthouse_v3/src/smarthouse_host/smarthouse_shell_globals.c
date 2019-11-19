@@ -24,7 +24,7 @@ SystemStatusPacket system_status=
 TestPacket test=
 {
 	.header.type=TEST_PACKET_ID,
-	.header.size=sizeof(TestPacket)
+	.header.size=sizeof(TestPacket),
 };
 
 StringMessagePacket message={
