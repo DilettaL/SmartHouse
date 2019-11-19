@@ -89,9 +89,8 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
   return status;
 }
 
-char* Smarthouse_flushInputBuffers(char* array)
+void Smarthouse_flushInputBuffers(void)
 {
-char buffer[128];
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
@@ -105,7 +104,6 @@ char buffer[128];
 			printf("Errore\n");
 		}
 	}
-return array;
 }
 
 /*int Smarthouse_flushOutputBuffers(void)
@@ -121,16 +119,11 @@ return array;
 
 void Smarthouse_commHandle(void)
 {
-/*	char *buffer[128];
+	char buffer[128];
 	char *bend;
-	bend=buffer;
-	buffer=
-	*/
-char *bend=(char*)malloc(sizeof(char)*128);
-bend=Smarthouse_flushInputBuffers(bend);
-
-for(int i=0; i<8; i++)
-{UART_putChar(uart, (uint8_t) *(bend+i));}
+	bend=buffer+sprintf(bend, "PROVA PROVA PROVA");
+	Smarthouse_flushInputBuffers(bend);
+UART_putChar(uart, (uint8_t) *bend);
 
 	++global_seq;
 /*	if(test.prova==1)
