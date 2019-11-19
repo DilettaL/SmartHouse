@@ -91,11 +91,13 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
 
 void Smarthouse_flushInputBuffers(void)
 {
+char buffer[128];
+char* bend;
 	while (UART_rxBufferFull(uart))
 	{
 	    uint8_t c=UART_getChar(uart);
-char buffer[128];
-char* bend = buffer + sprintf(buffer, "%x\n", c);
+
+bend = buffer + sprintf(buffer, "%x\n", c);
 UART_putChar(uart, (uint8_t) * bend);
 	    PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
