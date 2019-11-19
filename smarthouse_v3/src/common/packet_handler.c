@@ -150,7 +150,7 @@ static inline void _putTxByte(PacketHandler* h, uint8_t c){
 	    return;
 	  h->tx_buffer[h->tx_end]=c;
 	  BUFFER_PUT(h->tx, PACKET_SIZE_MAX);
-//printf ("%x\n",c);
+printf ("c dentro _putTxByte:%x\n",c);
 }
 
 uint8_t PacketHandler_txByte(PacketHandler* h){
@@ -177,6 +177,7 @@ PacketStatus PacketHandler_sendPacket(PacketHandler* h, PacketHeader* header) {
     h->tx_checksum^=*buf;
     _putTxByte(h,*buf);
     --size;
+printf("*buf dentro _sendPacket%x", *buf);
     ++buf;
   }
   _putTxByte(h,h->tx_checksum);
