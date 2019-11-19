@@ -177,7 +177,7 @@ PacketStatus PacketHandler_sendPacket(PacketHandler* h, PacketHeader* header) {
     h->tx_checksum^=*buf;
     _putTxByte(h,*buf);
     --size;
-printf("*buf dentro _sendPacket%x", *buf);
+printf("---*buf dentro _sendPacket%x\n", *buf);
     ++buf;
   }
   _putTxByte(h,h->tx_checksum);

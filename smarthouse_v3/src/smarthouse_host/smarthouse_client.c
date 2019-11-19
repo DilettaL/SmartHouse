@@ -14,12 +14,12 @@ typedef struct SmarthouseClient {
 //  ResponsePacket response;
 //  StringMessagePacket message;
 //  EndEpochPacket end_epoch;
-//	SystemStatusPacket system_status;
-//	SystemParamPacket system_params;
+	SystemStatusPacket system_status;
+	SystemParamPacket system_params;
 //	DigitalParamPacket digital_params[DIGITAL_MAX];
 //	AnalogParamPacket analog_params[ANALOG_MAX];
-//	TestPacket test;
-//	StringMessagePacket message;
+	TestPacket test;
+	StringMessagePacket message;
 
 	// file descriptor of the serial port
 	int fd;
