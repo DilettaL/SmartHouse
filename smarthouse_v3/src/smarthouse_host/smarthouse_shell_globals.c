@@ -23,8 +23,13 @@ SystemStatusPacket system_status=
 
 TestPacket test=
 {
-	.header.type=TEST_PACKET_ID,
-	.header.size=sizeof(TestPacket),
+	{
+		.type=TEST_PACKET_ID,
+		.size=sizeof(TestPacket),
+		.seq=0
+	},
+	.prova=2,
+	.prova2=2
 };
 
 StringMessagePacket message={

@@ -62,9 +62,9 @@ static PacketStatus _installPacketOp(SmarthouseClient* cl, void* dest, PacketTyp
 	ops->on_receive_fn=_copyToBuffer;
 /*	if (indexed!=0)// analogo if(indexed)
 	{	ops->on_receive_fn=_copyToIndexedBuffer;	}
-	else //else if (indexed==0)
+*/	if(indexed==0)//else //else if (indexed==0)
 	{	ops->on_receive_fn=_copyToBuffer;	}
-*/	ops->on_receive_args=dest;	//packet installation with handler
+	ops->on_receive_args=dest;	//packet installation with handler
 	PacketStatus install_result =PacketHandler_installPacket(&cl->packet_handler, ops);
 	if(install_result!=Success)
 	{
@@ -97,7 +97,7 @@ int fd=serial_open(device);
 	cl->rx_bytes=0;
 	cl->tx_bytes=0;
 //***************INIZIO: INIZIALIZZAZIONE PACCHETTO DI PROVA
-	TestPacket test=
+/*	TestPacket test=
 	{
 		{
 			.type=TEST_PACKET_ID,
@@ -107,7 +107,7 @@ int fd=serial_open(device);
 		.prova=5,
 		.prova2 = 2
 	};	
-
+*/
 	// initializes the packet system
 	PacketHandler_initialize(&cl->packet_handler);
 	//packets installation on host
@@ -178,7 +178,8 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	PacketStatus send_result;
 	//we do only operations and nobody else can read/write packet
 	pthread_mutex_lock(&cl->write_mutex);
-	pthread_mutex_lock(&cl->read_mutex); 
+	pthread_mutex_lock(&cl->read_mutex);
+printf("TestPrimaHandler\nprova:%d\tprova2:%d\n", cl->test.prova, cl->test.prova2); 
 	send_result=_sendPacket(cl,p);
   	if(send_result!=Success)
 	{
