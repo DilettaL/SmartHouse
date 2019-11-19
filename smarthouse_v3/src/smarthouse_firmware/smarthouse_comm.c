@@ -119,13 +119,15 @@ void Smarthouse_flushInputBuffers(void)
 
 void Smarthouse_commHandle(void)
 {
-	char buffer[128];
-	char *bend;
-	bend=buffer+sprintf(buffer, "PROVA PROVA PROVA");
-	Smarthouse_flushInputBuffers();
-UART_putChar(uart, (uint8_t) *bend);
 
-	++global_seq;
+char buffer[5];
+char *bend=buffer+sprintf(buffer, "PROVA");
+int l=strlen(buffer);
+for(int i=0; i<l; ++i, ++bend)
+{
+	UART_putChar(uart, (uint8_t)*bend);
+}
+
 /*	if(test.prova==1)
 	{
 		printf("Valore prova: %d\n", test.prova);
