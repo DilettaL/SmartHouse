@@ -179,6 +179,9 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	//we do only operations and nobody else can read/write packet
 	pthread_mutex_lock(&cl->write_mutex);
 	pthread_mutex_lock(&cl->read_mutex);
+	int i=0;
+	while(i!=sizeof(TestPacket))
+	{	printf("%d\t%x\n", i, cl->test+i);	}
 printf("TestPrimaHandler\nprova:%d\tprova2:%d\n", cl->test.prova, cl->test.prova2); 
 	send_result=_sendPacket(cl,p);
   	if(send_result!=Success)
