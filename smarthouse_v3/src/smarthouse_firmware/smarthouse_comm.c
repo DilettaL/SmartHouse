@@ -95,9 +95,9 @@ char buffer[128];
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
-array=array+sprintf(buffer, "CARATTERE c:");
-array+=c;
-array=array+sprintf(buffer, "\n");
+//array=array+sprintf(buffer, "CARATTERE c:");
+//array+=c;
+//array=array+sprintf(buffer, "\n");
 //UART_putChar(uart, (uint8_t) * bend);
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
