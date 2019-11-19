@@ -89,22 +89,22 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
   return status;
 }
 
-void Smarthouse_flushInputBuffers(void)
+char* Smarthouse_flushInputBuffers(char* array)
 {
 char buffer[128];
-char* bend;
+//char* bend;
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
-bend = buffer + sprintf(buffer, "CARATTERE C:%x\n", c);
-UART_putChar(uart, (uint8_t) * bend;
+array = buffer + sprintf(buffer, "CARATTERE C:%x\n", c);
+//UART_putChar(uart, (uint8_t) * bend);
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
 			printf("Errore\n");
 		}
 	}
-//	return bend;
+return array;
 }
 
 /*int Smarthouse_flushOutputBuffers(void)
@@ -125,13 +125,12 @@ void Smarthouse_commHandle(void)
 	bend=buffer;
 	buffer=
 	*/
-	//char *array
-	//array=
-	Smarthouse_flushInputBuffers();
-/*
-	for(int i=0; i<8; i++)
-	{UART_putChar(uart, (uint8_t) *(bend+i);}
-*/
+char bend[128];
+bend=Smarthouse_flushInputBuffers(bend);
+
+for(int i=0; i<8; i++)
+{UART_putChar(uart, (uint8_t) *(bend+i));}
+
 	++global_seq;
 /*	if(test.prova==1)
 	{
