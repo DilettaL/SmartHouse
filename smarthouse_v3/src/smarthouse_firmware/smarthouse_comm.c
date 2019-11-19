@@ -94,6 +94,9 @@ void Smarthouse_flushInputBuffers(void)
 	while (UART_rxBufferFull(uart))
 	{
 	    uint8_t c=UART_getChar(uart);
+char buffer[128];
+char* bend = buffer + sprintf(buffer, "%x\n", c);
+UART_putChar(uart, (uint8_t) * bend);
 	    PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
@@ -117,13 +120,13 @@ void Smarthouse_commHandle(void)
 {
 	Smarthouse_flushInputBuffers();
 	++global_seq;
-	if(test.prova==1)
+/*	if(test.prova==1)
 	{
-//		printf("Valore prova: %d\n", test.prova);
+		printf("Valore prova: %d\n", test.prova);
 		DigIO_setDirection(10, 1);
 		DigIO_setValue(10, 1);
 	}
-/*	else
+	else
 	{
 	printf("Valore prova: %d\n", test.prova);
 	}
