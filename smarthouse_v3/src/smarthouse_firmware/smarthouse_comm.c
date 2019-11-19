@@ -95,19 +95,19 @@ char buffer[128];
 char* bend;
 	while (UART_rxBufferFull(uart))
 	{
-	    uint8_t c=UART_getChar(uart);
-
-bend = buffer + sprintf(buffer, "%x\n", c);
-UART_putChar(uart, (uint8_t) * bend);
-	    PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
+		uint8_t c=UART_getChar(uart);
+bend = buffer + sprintf(buffer, "CARATTERE C:%x\n", c);
+UART_putChar(uart, (uint8_t) * bend;
+	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
 			printf("Errore\n");
 		}
 	}
+//	return bend;
 }
 
-int Smarthouse_flushOutputBuffers(void)
+/*int Smarthouse_flushOutputBuffers(void)
 {
 	while (packet_handler.tx_size)
 	{
@@ -116,11 +116,22 @@ int Smarthouse_flushOutputBuffers(void)
 	system_status.tx_buffer_size=UART_txBufferFull(uart);
 	return packet_handler.tx_size;
 }
-
+*/
 
 void Smarthouse_commHandle(void)
 {
+/*	char *buffer[128];
+	char *bend;
+	bend=buffer;
+	buffer=
+	*/
+	//char *array
+	//array=
 	Smarthouse_flushInputBuffers();
+/*
+	for(int i=0; i<8; i++)
+	{UART_putChar(uart, (uint8_t) *(bend+i);}
+*/
 	++global_seq;
 /*	if(test.prova==1)
 	{
@@ -132,7 +143,7 @@ void Smarthouse_commHandle(void)
 	{
 	printf("Valore prova: %d\n", test.prova);
 	}
-*/	Smarthouse_sendPacket((PacketHeader*)&test);
+	Smarthouse_sendPacket((PacketHeader*)&test);
 	Smarthouse_flushOutputBuffers();
-
+*/
 }
