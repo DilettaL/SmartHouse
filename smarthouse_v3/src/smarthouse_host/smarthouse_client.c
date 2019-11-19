@@ -178,16 +178,6 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	//we do only operations and nobody else can read/write packet
 	pthread_mutex_lock(&cl->write_mutex);
 	pthread_mutex_lock(&cl->read_mutex);
-<<<<<<< HEAD
-	int i=0;
-	while(i!=sizeof(TestPacket))
-	{	printf("%d\t%x\n", i, cl->test+i);	}
-printf("TestPrimaHandler\nprova:%d\tprova2:%d\n", cl->test.prova, cl->test.prova2); 
-=======
-//printf("TestPrimaHandler\nprova:%x\tprova2:%x\n", cl->test.prova, cl->test.prova2); 
-
-
->>>>>>> b133ce0d8be9172a608f8956f1dd2e1c137453da
 	send_result=_sendPacket(cl,p);
   	if(send_result!=Success)
 	{
@@ -208,12 +198,3 @@ i++;
 */
 	return send_result;	
 }
-
-
-
-
-
-
-
-
-
