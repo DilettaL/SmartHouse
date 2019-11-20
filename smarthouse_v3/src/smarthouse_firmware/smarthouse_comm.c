@@ -8,6 +8,7 @@
 #include "uart_ORIGINAL.h"
 //****
 #include "digio.h"
+#include "delay.h"
 //****
 static struct UART* uart;
 static PacketHandler packet_handler;
@@ -117,8 +118,21 @@ void Smarthouse_flushInputBuffers(void)
 }
 */
 
+void printString(char* s) {
+int l = strlen(s);
+for (int i = 0; i < l; ++i, ++s)
+UART_putChar(uart, (uint8_t) * s);
+}
+
 void Smarthouse_commHandle(void)
 {
+	char buffer[128];
+	char* bend = buffer + sprintf(buffer, "direction=\n");
+
+	printString(buffer);
+	delayMs (1000);
+
+
 	Smarthouse_flushInputBuffers();
 /*	if(test.prova==1)
 	{

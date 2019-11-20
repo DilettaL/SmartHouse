@@ -28,7 +28,7 @@ OBJS=smarthouse_comm.o\
 	uart.o\
 	pins.o\
 	delay.o\
-	uart_ORIGINAL.o\
+#	uart_ORIGINAL.o\
 	
 HEADERS=smarthouse_comm.h\
 	smarthouse_globals.h\
@@ -40,7 +40,7 @@ HEADERS=smarthouse_comm.h\
 	uart.h\
 	pins.h\
 	delay.h\
-	uart_ORIGINAL.h\
+#	uart_ORIGINAL.h\
 	
 BINS= smarthouse.elf\
 
