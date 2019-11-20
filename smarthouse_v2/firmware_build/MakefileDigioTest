@@ -21,28 +21,23 @@ AVRDUDE_FLAGS += -D -q -V -C /usr/share/arduino/hardware/tools/avr/../avrdude.co
 AVRDUDE_FLAGS += -c wiring
 
 
-OBJS=smarthouse_comm.o\
-	smarthouse_globals.o\
-	packet_handler.o\
+OBJS=	delay.o\
 	digio.o\
-	uart.o\
 	pins.o\
-	delay.o\
+	uart.o\
+	pwm.o\
+	adc.o\
 	uart_ORIGINAL.o\
 	
-HEADERS=smarthouse_comm.h\
-	smarthouse_globals.h\
-	packet_handler.h\
-	packet_operations.h\
-	packet_header.h\
-	smarthouse_packets.h\
-	digio.h\
-	uart.h\
+HEADERS=digio.h\
 	pins.h\
+	pwm.h\
 	delay.h\
+	uart.h\
+	adc.h\
 	uart_ORIGINAL.h\
 	
-BINS= smarthouse.elf\
+BINS= digio_test.elf\
 
 .phony:	clean all
 
@@ -54,6 +49,10 @@ all:	$(BINS)
 
 #peripherials
 %.o:	$(PREFIX)/src/$(ARCH)/%.c 
+	$(CC) $(CC_OPTS) -c  $<
+
+#peripherial test
+%.o:	$(PREFIX)/src/micro_test/%.c 
 	$(CC) $(CC_OPTS) -c  $<
 
 #orazio server objects

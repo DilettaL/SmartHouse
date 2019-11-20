@@ -1,4 +1,41 @@
+#include <stdio.h>
 #include "digio.h"
+/////////////////////////////////////
+#include <string.h>
+#include "uart.h"
+#include "delay.h"
+
+static struct UART* uart;
+
+void printString(char* s) {
+int l = strlen(s);
+for (int i = 0; i < l; ++i, ++s)
+UART_putChar(uart, (uint8_t) * s);
+}
+
+int main (int argc, char** argv)
+{
+	DigIO_init();
+  uart = UART_init("uart_0", 115200);
+delayMs(500);
+	char buffer[128];
+	char* bend = buffer + sprintf(buffer, "direction");
+	bend += sprintf(bend, "SS\n");
+	bend += sprintf(bend, "value");
+	bend += sprintf(bend, "TT\n");
+	printString(buffer);
+delayMs(5000);
+
+/*	while(1)
+	{
+		Smarthouse_commHandle();
+	}
+*/	return 0;
+}
+
+
+
+/*#include "digio.h"
 #include "uart.h"
 #include "delay.h"
 #include <stdio.h>
@@ -49,3 +86,4 @@ int main(void) {
     delayMs(1000);
   }
 }
+*/
