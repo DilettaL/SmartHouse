@@ -7,20 +7,23 @@
 
 static struct UART* uart;
 
+void printString(char* s) {
+int l = strlen(s);
+for (int i = 0; i < l; ++i, ++s)
+UART_putChar(uart, (uint8_t) * s);
+}
+
 int main (int argc, char** argv)
 {
-	DigIO_init();
-	Smarthouse_commInit();
-char buffer[5];
-char *bend=buffer+sprintf(buffer, "PROVA");
-int l=strlen(bend);
-for(int i=0; i<l; ++i, ++bend)
-{
-	UART_putChar(uart, (uint8_t)*bend);
-}
-	while(1)
+char buffer[128];
+char* bend = buffer + sprintf(buffer, "direction=[");
+bend += sprintf(bend, "]\n");
+bend += sprintf(bend, "value=[");
+bend += sprintf(bend, "]\n");
+printString(buffer);
+/*	while(1)
 	{
 		Smarthouse_commHandle();
 	}
-	return 0;
-}
+*/	return 0;
+}/home/diletta/Desktop/Sistemi Operativi/srrg2_orazio/srrg2_orazio/src/micro_test/digio_test.c
