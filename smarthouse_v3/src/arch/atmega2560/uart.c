@@ -26,12 +26,10 @@ void setBaud19200(void)
 #include <util/setbaud.h>
   UBRR0H = UBRRH_VALUE;
   UBRR0L = UBRRL_VALUE;
-printf("ok(uart.c)\n");
 #ifdef USE_2X
   UCSR0A |= (1<<U2X0);
 #endif
 #undef BAUD
-
 }
 
 void setBaud115200(void) {

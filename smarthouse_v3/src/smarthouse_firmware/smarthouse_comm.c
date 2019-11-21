@@ -102,21 +102,21 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
 void Smarthouse_flushInputBuffers(void)
 {	
 char buffer [128];
-uint8_t i = 0;
-char* bend = buffer + sprintf(buffer, "ELEMENTI Rx: ");
+char* bend = buffer;
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
-bend += sprintf (bend, "%x\t",c);	
+bend += sprintf (bend, "%x \n",c);	
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
 			printf("Errore\n");
 		}
 bend += sprintf (bend, "\n");	
+printString(buffer);
 	}
 
-printString(buffer);
+//printString(buffer);
 delayMs (1000);
 }
 
