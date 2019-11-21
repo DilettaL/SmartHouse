@@ -15,6 +15,15 @@ static PacketHandler packet_handler;
 
 static uint16_t global_seq;
 
+//Per debug:
+void printString(char* s) {
+int l = strlen(s);
+for (int i = 0; i < l; ++i, ++s)
+UART_putChar(uart, (uint8_t) * s);
+}
+///////////////////////////////////
+
+
 static PacketHeader* _initializeBuffer( PacketType type,
                                         PacketSize size,
                                         void* args )
@@ -91,20 +100,24 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
 }
 
 void Smarthouse_flushInputBuffers(void)
-{
+{	
+char buffer [128];
+uint8_t i = 0;
+char* bend = buffer + sprintf(buffer, "ELEMENTI Rx: ");
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
-//array=array+sprintf(buffer, "CARATTERE c:");
-//array+=c;
-//array=array+sprintf(buffer, "\n");
-//UART_putChar(uart, (uint8_t) * bend);
+bend += sprintf (bend, "%x\t",c);	
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
 			printf("Errore\n");
 		}
+bend += sprintf (bend, "\n");	
 	}
+
+printString(buffer);
+delayMs (1000);
 }
 
 /*int Smarthouse_flushOutputBuffers(void)
@@ -118,20 +131,15 @@ void Smarthouse_flushInputBuffers(void)
 }
 */
 
-void printString(char* s) {
-int l = strlen(s);
-for (int i = 0; i < l; ++i, ++s)
-UART_putChar(uart, (uint8_t) * s);
-}
 
 void Smarthouse_commHandle(void)
 {
-	char buffer[128];
+/*	char buffer[128];
 	char* bend = buffer + sprintf(buffer, "direction=\n");
 
 	printString(buffer);
 	delayMs (1000);
-
+*/
 
 	Smarthouse_flushInputBuffers();
 /*	if(test.prova==1)
