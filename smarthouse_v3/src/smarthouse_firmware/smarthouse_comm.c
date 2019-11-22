@@ -129,20 +129,22 @@ void Smarthouse_commHandle(void)
 char buffer[128];
 char* bend = buffer + sprintf(buffer, "prova=");
 bend+= sprintf(bend, "%d\n", test.prova);
-printString(buffer);
-delayMs (1000);
 
 	Smarthouse_flushInputBuffers();
 	if(test.prova!=0)
 	{
-		DigIO_setDirection(10, 1);
-		DigIO_setValue(10, 1);
+bend+= sprintf(bend, "ACCENDI LED\n");
+//		DigIO_setDirection(10, 1);
+//		DigIO_setValue(10, 1);
 	}
 	else
 	{
-		DigIO_setValue(10, 0);
+bend+= sprintf(bend, "errore\n");
+//		DigIO_setValue(10, 0);
 	}
 
+printString(buffer);
+delayMs (1000);
 /*	Smarthouse_sendPacket((PacketHeader*)&test);
 	Smarthouse_flushOutputBuffers();
 */

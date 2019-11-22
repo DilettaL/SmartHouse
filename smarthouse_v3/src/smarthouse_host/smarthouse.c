@@ -48,6 +48,8 @@ int main(int argc, char** argv)
 	//printf("Success\n");
 //Invio il pacchetto di prova
 printf("prova:%d\n", test.prova);
+test.prova=1;
+printf("prova:%d\n", test.prova);
 	PacketStatus status=SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
 	printf("valore di ritorno della sendPacket: %d\n", status);
 /*************************FINE: PACCHETTO DI PROVA*/
