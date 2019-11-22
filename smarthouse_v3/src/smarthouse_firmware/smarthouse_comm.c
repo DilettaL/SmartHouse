@@ -127,7 +127,8 @@ void Smarthouse_flushInputBuffers(void)
 void Smarthouse_commHandle(void)
 {
 char buffer[128];
-char* bend = buffer + sprintf(buffer, "prova=%d\n", test.prova);
+char* bend = buffer + sprintf(buffer, "prova=");
+bend+= sprintf(bend, "%d\n", test.prova);
 printString(buffer);
 delayMs (1000);
 
