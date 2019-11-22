@@ -38,8 +38,10 @@ TestPacket test=
 };
 
 StringMessagePacket string_message = {
-  {.type=MESSAGE_PACKET_ID,
-   .size=sizeof(StringMessagePacket),
-   .seq=0
-  }
+	{
+		.type=MESSAGE_PACKET_ID,
+		.size=sizeof(StringMessagePacket),
+		.seq=0
+	},
+	.message=0
 };

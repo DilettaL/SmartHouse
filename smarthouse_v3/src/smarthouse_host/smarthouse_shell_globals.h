@@ -11,4 +11,4 @@ extern SystemStatusPacket system_status;
 
 extern TestPacket test;
 
-extern StringMessagePacket message;
+extern StringMessagePacket string_message;

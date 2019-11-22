@@ -19,7 +19,7 @@ typedef struct SmarthouseClient {
 //	DigitalParamPacket digital_params[DIGITAL_MAX];
 //	AnalogParamPacket analog_params[ANALOG_MAX];
 	TestPacket test;
-	StringMessagePacket message;
+	StringMessagePacket string_message;
 
 	// file descriptor of the serial port
 	int fd;
@@ -114,7 +114,7 @@ int fd=serial_open(device);
 	_installPacketOp(cl, &system_status, SYSTEM_STATUS_PACKET_ID, sizeof(cl->system_status), 0);
 //Installazione della prova
 	_installPacketOp(cl, &test, TEST_PACKET_ID, sizeof(cl->test), 0);
-	_installPacketOp(cl, &message, MESSAGE_PACKET_ID, sizeof(cl->message), 0);
+	_installPacketOp(cl, &string_message, MESSAGE_PACKET_ID, sizeof(cl->string_message), 0);
 	memset(&cl->packet_sizes, 0, sizeof(cl->packet_sizes));
 	cl->packet_sizes[SYSTEM_PARAM_PACKET_ID]=sizeof(SystemParamPacket);
 	cl->packet_sizes[SYSTEM_STATUS_PACKET_ID]=sizeof(SystemStatusPacket);
@@ -187,8 +187,8 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	_flushBuffer(cl);
 	pthread_mutex_unlock(&cl->read_mutex);
 	pthread_mutex_unlock(&cl->write_mutex);
-//	_readPacket(cl);
-
+	_readPacket(cl);
+	printf("%s\n", cl->string_message.message);
 /*uint8_t i=0;
 uint8_t* pt = (uint8_t* )&cl->test.header;
 while(i!=sizeof(TestPacket))

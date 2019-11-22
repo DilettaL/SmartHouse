@@ -31,7 +31,7 @@ TestPacket test=
 	.prova=0
 };
 
-StringMessagePacket message={
+StringMessagePacket string_message={
   .header.type=MESSAGE_PACKET_ID,
 	.header.size=sizeof(StringMessagePacket)
 };

@@ -100,27 +100,25 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
 }
 
 
-
-char buffer2[128];
 void Smarthouse_flushInputBuffers(void)
 {	
-char *bend2=buffer2+sprintf(buffer2, "elementi di ingresso:\n");
+//char *bend2=buffer2+sprintf(buffer2, "elementi di ingresso:\n");
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
-bend2+= sprintf(bend2, "%x\t", c);
+//bend2+= sprintf(bend2, "%x\t", c);
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
 			printf("Errore\n");
 		}
-bend2+=sprintf(bend2, "prova\n");
+//bend2+=sprintf(bend2, "prova\n");
 	}
 	printString(buffer2);
 	delayMs(1000);
 }
 
-/*int Smarthouse_flushOutputBuffers(void)
+int Smarthouse_flushOutputBuffers(void)
 {
 	while (packet_handler.tx_size)
 	{
@@ -129,15 +127,14 @@ bend2+=sprintf(bend2, "prova\n");
 	system_status.tx_buffer_size=UART_txBufferFull(uart);
 	return packet_handler.tx_size;
 }
-*/
+
 
 
 
 void Smarthouse_commHandle(void)
 {
-char buffer[128];
 char* bend;
-bend = buffer + sprintf(buffer, "prova=");
+bend = string_message.message + sprintf(string_message.message, "prova=");
 bend+= sprintf(bend, "%d\n", test.prova);
 printString(buffer);
 	Smarthouse_flushInputBuffers();
@@ -152,7 +149,6 @@ printString(buffer);
 //bend+= sprintf(bend, "errore\n");
 //		DigIO_setValue(10, 0);
 	}
-/*	Smarthouse_sendPacket((PacketHeader*)&test);
+	Smarthouse_sendPacket((PacketHeader*)&string_message);
 	Smarthouse_flushOutputBuffers();
-*/
 }

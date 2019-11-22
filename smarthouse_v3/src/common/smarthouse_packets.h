@@ -39,7 +39,7 @@ typedef struct TestPacket
 } TestPacket;
 #define TEST_PACKET_ID 3
 
-#define MESSAGE_MAX_SIZE 80
+#define MESSAGE_MAX_SIZE 128
   typedef struct {
     PacketHeader header;
     char message[MESSAGE_MAX_SIZE];
