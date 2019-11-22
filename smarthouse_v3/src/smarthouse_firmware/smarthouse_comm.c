@@ -114,7 +114,7 @@ void Smarthouse_flushInputBuffers(void)
 		}
 //bend2+=sprintf(bend2, "prova\n");
 	}
-	printString(buffer2);
+	printString(string_message.message);
 	delayMs(1000);
 }
 
@@ -136,7 +136,7 @@ void Smarthouse_commHandle(void)
 char* bend;
 bend = string_message.message + sprintf(string_message.message, "prova=");
 bend+= sprintf(bend, "%d\n", test.prova);
-printString(buffer);
+printString(string_message.message);
 	Smarthouse_flushInputBuffers();
 	if(test.prova!=0)
 	{

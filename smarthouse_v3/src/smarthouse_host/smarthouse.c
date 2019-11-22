@@ -4,6 +4,7 @@
 #include "smarthouse_client.h"
 #include "smarthouse_shell_globals.h"
 
+
 const char *banner[]={
 	"Smarthouse",
 	"usage:",
@@ -50,8 +51,18 @@ int main(int argc, char** argv)
 printf("prova:%d\n", test.prova);
 test.prova=1;
 printf("prova:%d\n", test.prova);
+
+int i = 15;
+char c;
+while (1){
 	PacketStatus status=SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
+	
 	printf("valore di ritorno della sendPacket: %d\n", status);
+i--;
+scanf ("%c",&c);
+}
+
+
 /*************************FINE: PACCHETTO DI PROVA*/
 	//Creare il thread per la lettura dalla seriale
 //	printf("looping...");
