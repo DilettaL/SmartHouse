@@ -1,0 +1,8 @@
+# Questo file permette di effettuare dei git add di intere cartelle ma di non aggiungere i file .hlf e .hex e .o delle compilazioni.
+# solo per evitare problemi di compatibilità
+
+# Ignoro tutti i .elf del firmware
+*.elf
+
+# Ignoro tutti i .o dell'host
+*.o
