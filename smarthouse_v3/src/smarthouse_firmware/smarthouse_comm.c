@@ -99,11 +99,16 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
   return status;
 }
 
+
+char buffer[128];
+char* bend;
+
 void Smarthouse_flushInputBuffers(void)
 {	
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
+bend+= sprintf(bend, "%x\t", c);
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
@@ -124,22 +129,22 @@ void Smarthouse_flushInputBuffers(void)
 */
 
 
+
 void Smarthouse_commHandle(void)
 {
-char buffer[128];
-char* bend = buffer + sprintf(buffer, "prova=");
+bend = buffer + sprintf(buffer, "prova=");
 bend+= sprintf(bend, "%d\n", test.prova);
 
 	Smarthouse_flushInputBuffers();
 	if(test.prova!=0)
 	{
-bend+= sprintf(bend, "ACCENDI LED\n");
+//bend+= sprintf(bend, "ACCENDI LED\n");
 //		DigIO_setDirection(10, 1);
 //		DigIO_setValue(10, 1);
 	}
 	else
 	{
-bend+= sprintf(bend, "errore\n");
+//bend+= sprintf(bend, "errore\n");
 //		DigIO_setValue(10, 0);
 	}
 
