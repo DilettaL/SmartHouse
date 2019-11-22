@@ -101,10 +101,9 @@ PacketStatus Smarthouse_sendPacket(PacketHeader* p){
 
 
 
-
+char buffer2[128];
 void Smarthouse_flushInputBuffers(void)
 {	
-char buffer2[128];
 char *bend2=buffer2+sprintf(buffer2, "elementi di ingresso:\n");
 	while (UART_rxBufferFull(uart))
 	{
