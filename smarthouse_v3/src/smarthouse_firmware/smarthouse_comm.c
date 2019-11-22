@@ -116,7 +116,7 @@ bend2+= sprintf(bend2, "%x\t", c);
 			printf("Errore\n");
 		}
 	}
-	printfString(buffer2);
+	printString(buffer2);
 	delayMs(1000);
 }
 
