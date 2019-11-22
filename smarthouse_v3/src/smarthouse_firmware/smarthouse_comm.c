@@ -132,13 +132,14 @@ printString(buffer);
 delayMs (1000);
 */
 	Smarthouse_flushInputBuffers();
-	if(test.prova==1)
+	if(test.prova!=0)
 	{
-		DigIO_setDirection(13, 1);
-		DigIO_setValue(13, 1);
+		DigIO_setDirection(10, 1);
+		DigIO_setValue(10, 1);
 	}
 	else
 	{
+		DigIO_setValue(10, 0);
 	}
 
 /*	Smarthouse_sendPacket((PacketHeader*)&test);
