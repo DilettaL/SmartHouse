@@ -155,11 +155,12 @@ static void _readPacket(SmarthouseClient* cl)
 {
 	volatile int packet_complete=0;
 	while (! packet_complete)
-	{
+	{		
 		uint8_t c;
 		int n=read(cl->fd, &c, 1);
 		if (n)
 		{
+printf ("carattere : %x\n", c);
 			fflush(stdout);
 			PacketStatus status = PacketHandler_rxByte(&cl->packet_handler, c);
 			if (0 && status<0)
