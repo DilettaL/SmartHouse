@@ -107,13 +107,13 @@ char *bend2=buffer2+sprintf(buffer2, "elementi di ingresso:\n");
 	while (UART_rxBufferFull(uart))
 	{
 		uint8_t c=UART_getChar(uart);
-bend2+= sprintf(bend2, "%x\t", c);
+//bend2+= sprintf(bend2, "%x\t", c);
 	    	PacketStatus status=PacketHandler_rxByte(&packet_handler, c);
 		if(status<0)
 		{
 			printf("Errore\n");
 		}
-bend2+=sprintf(bend2, "prova\n");
+bend2+=sprintf(bend2, "Sulla roma l'aquila\n");
 	}
 printString(buffer2);
 	delayMs(1000);
@@ -134,7 +134,7 @@ void Smarthouse_commHandle(void)
 char buffer[128];
 char* bend;
 	Smarthouse_flushInputBuffers();
-bend = buffer+sprintf(buffer, "prova: %d\n", test.prova);
+//end = buffer+sprintf(buffer, "prova: %d\n", test.prova);
 printString(buffer);
 /*	if(test.prova!=0)
 	{
