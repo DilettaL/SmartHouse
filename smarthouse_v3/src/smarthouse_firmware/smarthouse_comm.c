@@ -113,7 +113,7 @@ char *bend2=buffer2+sprintf(buffer2, "elementi di ingresso:\n");
 		{
 			printf("Errore\n");
 		}
-bend2+=sprintf(bend2, "Sulla roma l'aquila\n");
+bend2+=sprintf(bend2, "stiamo ricevendo??\n");
 	}
 printString(buffer2);
 	delayMs(1000);
@@ -135,7 +135,7 @@ char buffer[128];
 char* bend;
 	Smarthouse_flushInputBuffers();
 //end = buffer+sprintf(buffer, "prova: %d\n", test.prova);
-printString(buffer);
+//printString(buffer);
 /*	if(test.prova!=0)
 	{
 bend+= sprintf(bend, "ACCENDI LED\n");
