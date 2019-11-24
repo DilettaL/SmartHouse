@@ -1,0 +1,15 @@
+1) Testare collegamento host-firmware.
+Host invia pacchetto di prova.
+Firmware deve accendere un led
+L'host invia correttamente il pacchetto (stampa dei caratteri tramite terminale, inserendo printf in packet_handler.c. Si stampa sia tutto il contenuto del pacchetto, che solo il payload (prova sulla verifica della trasmissione)), mentre il firmware non lo riceve. Perché?
+(Nel momento in cui riceviamo il pacchetto possiamo stamparne il contenuto e verificare la sua corretta ricezione con un led)
+
+2)
+Lo stesso problema lo abbiamo in modo pari e opposto tra firmware-host. La soluzione è sempre la stessa?
+
+3)
+Errori della seriale nell'invio del programma:
+-ioctl: problema caricamento del driver
+-avrdude: stk500v2_receivemessage(): timeout
+
+
