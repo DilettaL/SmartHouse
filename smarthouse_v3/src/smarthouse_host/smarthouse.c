@@ -52,15 +52,8 @@ printf("prova:%d\n", test.prova);
 test.prova=1;
 printf("prova:%d\n", test.prova);
 
-
-char c;
-while (1){
-	PacketStatus status=SmarthouseClient_sendPacket(client, (PacketHeader*)&test);
-	
-	printf("valore di ritorno della sendPacket: %d\n", status);
-
-scanf ("%c",&c);
-}
+PacketStatus status=SmarthouseClient_sendPacket(client, (PacketHeader*)&test);	
+printf("valore di ritorno della sendPacket: %d\n", status);	
 
 
 /*************************FINE: PACCHETTO DI PROVA*/

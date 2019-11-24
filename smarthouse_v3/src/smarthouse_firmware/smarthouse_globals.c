@@ -37,7 +37,8 @@ TestPacket test=
 	.prova=0
 };
 
-StringMessagePacket string_message = {
+StringMessagePacket string_message =
+{
 	{
 		.type=MESSAGE_PACKET_ID,
 		.size=sizeof(StringMessagePacket),

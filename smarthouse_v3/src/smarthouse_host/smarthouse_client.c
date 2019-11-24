@@ -150,7 +150,7 @@ static void _flushBuffer(SmarthouseClient* cl)
 //printf ("%x\n",c);
 	}
 }
-
+ 
 static void _readPacket(SmarthouseClient* cl)
 {
 	volatile int packet_complete=0;
@@ -160,7 +160,6 @@ static void _readPacket(SmarthouseClient* cl)
 		int n=read(cl->fd, &c, 1);
 		if (n)
 		{
-printf ("carattere : %x\n", c);
 			fflush(stdout);
 			PacketStatus status = PacketHandler_rxByte(&cl->packet_handler, c);
 			if (0 && status<0)
@@ -188,8 +187,8 @@ PacketStatus SmarthouseClient_sendPacket(SmarthouseClient* cl, PacketHeader* p)/
 	_flushBuffer(cl);
 	pthread_mutex_unlock(&cl->read_mutex);
 	pthread_mutex_unlock(&cl->write_mutex);
-	_readPacket(cl);
-	printf("%s\n", cl->string_message.message);
+//	_readPacket(cl);
+//	printf("%s\n", cl->string_message.message);
 /*uint8_t i=0;
 uint8_t* pt = (uint8_t* )&cl->test.header;
 while(i!=sizeof(TestPacket))
