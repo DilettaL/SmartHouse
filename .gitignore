@@ -6,3 +6,5 @@
 
 # Ignoro tutti i .o dell'host
 *.o
+
+*.out
