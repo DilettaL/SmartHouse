@@ -20,19 +20,17 @@ typedef struct TestPacket{
 
 TestPacket test = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";
 
-TestPacket test_buffer;
-
 PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
 	if (type!=TEST_PACKET_ID || size!=sizeof(TestPacket))
 		return 0;
-	return (PacketHeader*) &test_buffer;
+	return (PacketHeader*) &test;
 }
 
 PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
 {
 	++header->seq;
-	memcpy (&test_buffer, header, sizeof(TestPacket));
+	memcpy (&test, header, sizeof(TestPacket));
 	return Success;
 }
 
@@ -69,8 +67,6 @@ int main (int argc, char** argv)
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 	int global_seq = 0;
 
-
-
 	while (1)
 	{
 		flushInputBuffers();
@@ -87,6 +83,5 @@ int main (int argc, char** argv)
 		delayMs(10);
 		flushOutputBuffers();
 	}
-
 
 }
