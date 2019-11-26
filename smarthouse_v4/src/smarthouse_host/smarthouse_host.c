@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "packet_handler.h"
 #include "serial_linux.h"
 #include <assert.h>
@@ -81,7 +82,7 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-//	test_H.prova = 1;
+	test_H.prova = 1;
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
