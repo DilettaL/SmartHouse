@@ -18,21 +18,19 @@ typedef struct TestPacket{
 
 TestPacket test_H = { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0};
 
-
-TestPacket test_host_buffer;
-
 PacketHeader* test_host_initializeBuffer(PacketType type,
 				       PacketSize size,
 				       void* args __attribute__((unused))) {
 	if (type!=TEST_PACKET_ID || size!=sizeof(TestPacket))
 		return 0;
-	return (PacketHeader*) &test_host_buffer;
+	return (PacketHeader*) &test_H;
 }
 
 
 PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
+	memcpy(&test_H, header, sizeof(TestPacket));
 	printf("HOST: Ricevuto test packet %d\n", test_H.prova);
 	fflush(stdout);
 	return Success;
