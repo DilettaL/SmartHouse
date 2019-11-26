@@ -17,22 +17,23 @@ typedef struct TestPacket{
 
 #define TEST_PACKET_ID 1
 
-TestPacket test_H = { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0};
+TestPacket test = { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0};
+
+TestPacket test_buffer;
 
 PacketHeader* test_host_initializeBuffer(PacketType type,
 				       PacketSize size,
 				       void* args __attribute__((unused))) {
 	if (type!=TEST_PACKET_ID || size!=sizeof(TestPacket))
 		return 0;
-	return (PacketHeader*) &test_H;
+	return (PacketHeader*) &test_buffer;
 }
-
 
 PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
-	memcpy(&test_H, header, sizeof(TestPacket));
-	printf("HOST: Ricevuto test packet %d\n", test_H.prova);
+	memcpy(test, header, header->size);
+	printf("HOST: Ricevuto test.packet %d\n", test.prova);
 	fflush(stdout);
 	return Success;
 }
@@ -47,8 +48,6 @@ PacketOperations test_ops = {
 	test_host_onReceive,
 	0
 };
-
-
 
 int main (int argc, char **argv)
 {
@@ -82,7 +81,6 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-	test_H.prova = 1;
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
