@@ -21,7 +21,7 @@ HEADERS = serial_linux.h\
 	packet_header.h\
 	packet_operations.h\
 
-BINS=smarthouse_host.out
+BINS=smarthouse_host
 
 .phony:	clean all
 
@@ -40,4 +40,5 @@ smarthouse: smarthouse.o $(OBJS) $(LOBJS)
 
 clean:
 	rm -rf $(OBJS) $(BINS) *~ *.d *.o
+
 

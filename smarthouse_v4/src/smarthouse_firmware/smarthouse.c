@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "packet_handler.h"
 #include "digio.h"
 #include "uart.h"
@@ -17,6 +18,8 @@ typedef struct TestPacket{
 
 #define TEST_PACKET_ID 1
 
+TestPacket test = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";
+
 TestPacket test_buffer;
 
 PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
@@ -29,6 +32,7 @@ PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args
 PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
 {
 	++header->seq;
+	memcpy (&test_buffer, header, sizeof(TestPacket));
 	return Success;
 }
 
@@ -65,13 +69,19 @@ int main (int argc, char** argv)
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 	int global_seq = 0;
 
-	TestPacket test = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";
+
 
 	while (1)
 	{
 		flushInputBuffers();
 		test.header.seq = global_seq;
 		++global_seq;
+		
+		if (test.prova == 1) 
+		{
+		DigIO_setDirection(10, 1);
+		DigIO_setValue(10, 1);
+		}
 
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
 		delayMs(10);
