@@ -73,7 +73,7 @@ int main (int argc, char** argv)
 		test.header.seq = global_seq;
 		++global_seq;
 		
-		if (test_buffer.prova == 1) 
+		if (test.prova == 1) 
 		{
 		DigIO_setDirection(10, 1);
 		DigIO_setValue(10, 1);

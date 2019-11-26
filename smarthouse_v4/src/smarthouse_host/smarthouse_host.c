@@ -67,7 +67,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 
 	
-	for (int i=0; i<30; ++i)
+	for (int i=0; i<1000; ++i)
 	{
 		volatile int packet_complete=0;
 		while (! packet_complete) 
@@ -83,7 +83,7 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-	test_H.prova = 1;
+//	test_H.prova = 1;
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
