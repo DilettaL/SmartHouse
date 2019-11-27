@@ -1,24 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "packet_handler.h"
+#include "smarthouse_packets.h"
 #include "digio.h"
 #include "uart.h"
 #include "delay.h"
 
-uint8_t l = 1;
-
 static struct UART* uart;
 static PacketHandler packet_handler;
 
-//definiamo pacchetto
-#pragma pack(push, 1)
-typedef struct TestPacket{
-	PacketHeader header;
-	uint8_t prova;
-} TestPacket;
-#pragma pack(pop)
-
-#define TEST_PACKET_ID 1
 TestPacket test  = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";;
 TestPacket test_buffer;
 PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
@@ -35,8 +25,7 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 	if(test.prova>0)
 	{
 		DigIO_setDirection(10, 1);
-		DigIO_setValue(10, (l%2));
-		l++;
+		DigIO_setValue(10, 1);
 	}
 	return Success;
 }

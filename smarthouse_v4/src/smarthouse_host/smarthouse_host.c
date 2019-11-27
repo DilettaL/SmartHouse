@@ -1,21 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "packet_handler.h"
-#include "serial_linux.h"
 #include <assert.h>
+#include "serial_linux.h"
+#include "packet_handler.h"
+#include "smarthouse_packets.h"
 
 struct UART* uart;
 PacketHandler packet_handler;
-
-#pragma pack(push, 1)
-typedef struct TestPacket{
-  PacketHeader header;
-  uint8_t prova;
-} TestPacket;
-#pragma pack(pop)
-
-#define TEST_PACKET_ID 1
 
 TestPacket test= { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0}; 
 TestPacket test_buffer;

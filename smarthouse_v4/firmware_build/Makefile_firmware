@@ -30,6 +30,7 @@ OBJS=	packet_handler.o\
 HEADERS=packet_handler.h\
 	packet_operations.h\
 	packet_header.h\
+	smarthouse_packets.h\
 	digio.h\
 	uart.h\
 	pins.h\
