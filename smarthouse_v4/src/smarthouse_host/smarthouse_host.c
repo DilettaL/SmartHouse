@@ -32,8 +32,8 @@ PacketHeader* test_host_initializeBuffer(PacketType type,
 PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
-//	memcpy(test, header, header->size);
-	printf("HOST: type %d\n", header->type);
+	memcpy(&test, header, header->size);
+	printf("HOST: type %d\tValoreprova%d\n", header->type, test.prova);
 	fflush(stdout);
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
 	return Success;
@@ -66,8 +66,8 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 
 	
-//	for (int i=0; i<1000; ++i)
-//	{
+	for (int i=0; i<10; ++i)
+	{
 		volatile int packet_complete=0;
 		while (! packet_complete) 
 		{
@@ -86,9 +86,9 @@ int main (int argc, char **argv)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
-		usleep(1000);
+		usleep(1000000);
 		}
-//	}
+	}
 return 0;
 }
 

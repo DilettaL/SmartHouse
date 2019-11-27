@@ -30,7 +30,6 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 {
 	++header->seq;
 //	memcpy(test, header, header->size);
-//	PacketHandler_sendPacket(&packet_handler, test);
 	if(header->type == TEST_PACKET_ID)
 	{
 		DigIO_setDirection(10, 1);
@@ -77,7 +76,7 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test.header.seq = global_seq;
 		++global_seq;
-		
+test.prova++;
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
 		delayMs(10);
 		flushOutputBuffers();
