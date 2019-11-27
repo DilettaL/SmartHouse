@@ -18,7 +18,7 @@ OBJS =  #	shell_commands.o\
 HEADERS =	serial_linux.h\
 	packet_handler.h\
 	packet_header.h\
-	smarthouse_packets.h\
+#	smarthouse_packets.h\
 	packet_operations.h\
 
 BINS=smarthouse_host

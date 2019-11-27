@@ -1,10 +1,20 @@
 #include <stdio.h>
 #include <string.h>
 #include "packet_handler.h"
-#include "smarthouse_packets.h"
+//#include "smarthouse_packets.h"
 #include "digio.h"
 #include "uart.h"
 #include "delay.h"
+
+
+#pragma pack(push, 1)
+typedef struct TestPacket{
+	PacketHeader header;
+	uint8_t prova;
+} TestPacket;
+
+#define TEST_PACKET_ID 1
+#pragma pack(pop)
 
 static struct UART* uart;
 static PacketHandler packet_handler;
