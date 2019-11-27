@@ -57,7 +57,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 
 	test.prova=0; 
-	for (int i=0; i<10; ++i)
+	for (int i=0; i<100; ++i)
 	{
 		volatile int packet_complete=0;
 		while (! packet_complete) 
@@ -77,7 +77,7 @@ int main (int argc, char **argv)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
-		usleep(100000);
+		usleep(100);
 		}
 	}
 return 0;
