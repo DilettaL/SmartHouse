@@ -78,7 +78,7 @@ volatile int packet_complete =1;
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
 packet_complete=0;
-		usleep(100);
+		usleep(10);
 		}
 	}
 return 0;

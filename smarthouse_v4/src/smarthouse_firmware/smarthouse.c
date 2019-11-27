@@ -9,6 +9,21 @@
 static struct UART* uart;
 static PacketHandler packet_handler;
 
+void flushInputBuffers(void) {
+	while (UART_rxBufferFull(uart))
+	{
+		uint8_t c=UART_getChar(uart);
+		PacketHandler_rxByte(&packet_handler, c);
+	}
+}
+
+int flushOutputBuffers(void)
+{
+	while (packet_handler.tx_size)
+		UART_putChar(uart, PacketHandler_txByte(&packet_handler));
+	return packet_handler.tx_size;
+}
+
 TestPacket test  = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";;
 TestPacket test_buffer;
 PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
@@ -28,6 +43,9 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 		DigIO_setValue(10, 1);
 	}
 	test.prova++;
+PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+delayMs(10);
+flushOutputBuffers();
 	return Success;
 }
 
@@ -39,21 +57,6 @@ PacketOperations test_ops = {
 	test_onReceive,
 	0
 };
-
-void flushInputBuffers(void) {
-	while (UART_rxBufferFull(uart))
-	{
-		uint8_t c=UART_getChar(uart);
-		PacketHandler_rxByte(&packet_handler, c);
-	}
-}
-
-int flushOutputBuffers(void)
-{
-	while (packet_handler.tx_size)
-		UART_putChar(uart, PacketHandler_txByte(&packet_handler));
-	return packet_handler.tx_size;
-}
 
 int main (int argc, char** argv)
 {
@@ -69,10 +72,6 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test.header.seq = global_seq;
 		++global_seq;
-
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
-		delayMs(10);
-		flushOutputBuffers();
 	}
 
 }
