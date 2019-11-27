@@ -32,8 +32,8 @@ PacketHeader* test_host_initializeBuffer(PacketType type,
 PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
-	memcpy(test, header, header->size);
-	printf("HOST: Ricevuto test.packet %d\n", test.prova);
+//	memcpy(test, header, header->size);
+	printf("HOST: Pacchetto %d\n", header->size);
 	fflush(stdout);
 	return Success;
 }

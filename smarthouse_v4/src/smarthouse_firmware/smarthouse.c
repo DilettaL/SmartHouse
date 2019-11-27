@@ -29,8 +29,13 @@ PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args
 PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
 {
 	++header->seq;
-	memcpy(test, header, header->size);
-	PacketHandler_sendPacket(&packet_handler, test);
+//	memcpy(test, header, header->size);
+//	PacketHandler_sendPacket(&packet_handler, test);
+	if(header->type == TEST_PACKET_ID)
+	{
+		DigIO_setDirection(10, 1);
+		DigIO_setValue(10, 1);
+	}
 	return Success;
 }
 
