@@ -17,8 +17,7 @@ typedef struct TestPacket{
 
 #define TEST_PACKET_ID 1
 
-TestPacket test = { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0};
-
+TestPacket test= { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0}; 
 TestPacket test_buffer;
 
 PacketHeader* test_host_initializeBuffer(PacketType type,
@@ -65,7 +64,7 @@ int main (int argc, char **argv)
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 
-	
+	test.prova=0; 
 	for (int i=0; i<10; ++i)
 	{
 		volatile int packet_complete=0;
