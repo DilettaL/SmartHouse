@@ -5,6 +5,8 @@
 #include "uart.h"
 #include "delay.h"
 
+uint8_t l = 1;
+
 static struct UART* uart;
 static PacketHandler packet_handler;
 
@@ -33,7 +35,8 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 	if(test.prova>0)
 	{
 		DigIO_setDirection(10, 1);
-		DigIO_setValue(10, 1);
+		DigIO_setValue(10, (l%2));
+		l++;
 	}
 	return Success;
 }

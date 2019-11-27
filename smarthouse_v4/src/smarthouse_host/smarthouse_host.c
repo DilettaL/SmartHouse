@@ -85,7 +85,7 @@ int main (int argc, char **argv)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
-		usleep(1000000);
+		usleep(100000);
 		}
 	}
 return 0;
