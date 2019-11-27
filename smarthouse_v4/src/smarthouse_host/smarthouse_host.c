@@ -66,8 +66,8 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 
 	
-	for (int i=0; i<1000; ++i)
-	{
+//	for (int i=0; i<1000; ++i)
+//	{
 		volatile int packet_complete=0;
 		while (! packet_complete) 
 		{
@@ -88,7 +88,7 @@ int main (int argc, char **argv)
 			ssize_t res = write(fd,&c,1);
 		usleep(1000);
 		}
-	}
+//	}
 return 0;
 }
 
