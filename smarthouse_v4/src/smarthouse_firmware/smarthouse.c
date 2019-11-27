@@ -17,7 +17,7 @@ typedef struct TestPacket{
 #pragma pack(pop)
 
 #define TEST_PACKET_ID 1
-
+TestPacket test = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";
 TestPacket test_buffer;
 PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
@@ -29,8 +29,8 @@ PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args
 PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
 {
 	++header->seq;
-//	memcpy(test, header, header->size);
-	if(header->type == TEST_PACKET_ID)
+	memcpy(&test, header, header->size);
+	if(test.prova>0)
 	{
 		DigIO_setDirection(10, 1);
 		DigIO_setValue(10, 1);
@@ -70,7 +70,6 @@ int main (int argc, char** argv)
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 	int global_seq = 0;
-	TestPacket test = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";
 	while (1)
 	{
 		flushInputBuffers();
