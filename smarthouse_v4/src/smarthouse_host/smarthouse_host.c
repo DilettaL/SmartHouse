@@ -33,8 +33,9 @@ PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 //	memcpy(test, header, header->size);
-	printf("HOST: Pacchetto %d\n", header->size);
+	printf("HOST: type %d\n", header->type);
 	fflush(stdout);
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
 	return Success;
 }
 
