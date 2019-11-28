@@ -1,19 +1,22 @@
 28/11/2019
 Siamo arrivati al punto in cui riusciamo a mandare i pacchetti tra host/firmware e il programma funziona creando l'header dei pacchetti (smarthouse_packets.h)
 1o Problema: non sempre l firmware riceve correttamente il pacchetto
-	Test: invamo da host ->firmware pacchetto con prova =8 e stampiamo ciò che inviamo. 
-	Lato firmware in ricezione rispondiamo con un 7
-2o Problema: una volta risolto il problema dell'invio del pacchetto, si può implementare il pacchetto di stato per l'host, che
+
+2o: abbiamo aggiunto i thread per evitare il conflitto tra la ricezione dell'host e la trasmissione del firmware.
+	il thread della seriale ha un errore =3 significa che si sta aspettando un thread che non esiste.
+
+------------------------------------------------------------------------------------------------------------------
+3o Problema: una volta risolto il problema dell'invio del pacchetto, si può implementare il pacchetto di stato per l'host, che
 	descriva le azioni svolte dal firmware. Nel nostro caso è un pacchetto molto semplice con un flag per capire la
 	corretta accensione del led.
 
-3o Problema: testati invio e ricezione per host e firmware del pacchetto di prova si può implemenare il pacchetto per il
+4o Problema: testati invio e ricezione per host e firmware del pacchetto di prova si può implemenare il pacchetto per il
 	funzionamento dei pin digitali, sia per la configurazione sia per lo stato.
 	In questo caso dobbiamo capire dove inserire la funzione che ha il compito di "smistare" i pacchetti, ovvero se
 	richiamarla nella on Receive del firmware, oppure se portla dopo la flushInputBuffer nel while infinito.
 	(io direi di metterla nel while)
 	Questo lo testiamo inizialmente con le stampe sull'host, rimandando il pacchetto inviato con qualche modifica
-4o Problema: Utilizziamo un pacchetto di stato per lo studio dei pin digitali
+5o Problema: Utilizziamo un pacchetto di stato per lo studio dei pin digitali
 
 [
 	Per riconoscere un pacchetto di stato/config per i pin analogici/digitali non usiamo il numero ma usiamo il nome
@@ -32,8 +35,8 @@ Siamo arrivati al punto in cui riusciamo a mandare i pacchetti tra host/firmware
 	}
 ]
 
-5o Problema: implementiamo il pacchetto analogico e lo testiamo con le stampe
+6o Problema: implementiamo il pacchetto analogico e lo testiamo con le stampe
 
-6o Problema: implementiamo il pacchetto di stato per i pin analogici
+7o Problema: implementiamo il pacchetto di stato per i pin analogici
 
-7o Problema: implementiamo la shell (in parte già fatta in smarthouse_v3)
+8o Problema: implementiamo la shell (in parte già fatta in smarthouse_v3)

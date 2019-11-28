@@ -131,7 +131,7 @@ while(count!=0 ){
 count = pthread_join(serial, NULL)  ;
 	printf ("--count = %d\n", count);
 	if (count == 3)
-		count = 0;
+	{return 0;}
 }
 //****
 	}
