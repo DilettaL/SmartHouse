@@ -9,11 +9,19 @@
     var.header.seq=0;				\
   }\
 
+
+#pragma pack(push, 1)
+typedef struct TestPacket{
+	PacketHeader header;
+	uint8_t ack;
+} TestPacket;
+#define ACK_ID 0
+#pragma pack(pop)
+
 #pragma pack(push, 1)
 typedef struct TestPacket{
 	PacketHeader header;
 	uint8_t prova;
 } TestPacket;
-
 #define TEST_PACKET_ID 1
 #pragma pack(pop)
