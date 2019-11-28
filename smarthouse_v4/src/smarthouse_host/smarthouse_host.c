@@ -74,8 +74,8 @@ int main (int argc, char **argv)
 
 
 pthread_t serial;
-//pthread_attr_t attr_serial;
-//pthread_attr_init(&attr_serial);
+pthread_attr_t attr_serial;
+pthread_attr_init(&attr_serial);
 int fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
@@ -131,7 +131,7 @@ while(	( count = pthread_join(serial, NULL) ) !=0 ){
 }
 //****
 	}
-//pthread_attr_destroy(&attr_serial);	
+pthread_attr_destroy(&attr_serial);	
 	return 0;
 }
 
