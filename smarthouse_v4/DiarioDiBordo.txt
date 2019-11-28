@@ -1,0 +1,42 @@
+28/11/2019
+Siamo arrivati al punto in cui riusciamo a mandare i pacchetti tra host/firmware e il programma funziona creando l'header dei pacchetti (smarthouse_packets.h)
+1o Problema: non sempre l firmware riceve correttamente il pacchetto
+	Un altro test che possiamo fare è impostare nel lato firmware (quando si accende il led prova =0) e poniamo prova =1 
+	nell'Host
+	Con questo test ci aspettiamo che l'Host stampi zero e allo stesso tempo si accenda il led, in quanto al firmware
+	arriva comunque il pacchetto con prova =1.
+
+2o Problema: una volta risolto il problema dell'invio del pacchetto, si può implementare il pacchetto di stato per l'host, che
+	descriva le azioni svolte dal firmware. Nel nostro caso è un pacchetto molto semplice con un flag per capire la
+	corretta accensione del led.
+
+3o Problema: testati invio e ricezione per host e firmware del pacchetto di prova si può implemenare il pacchetto per il
+	funzionamento dei pin digitali, sia per la configurazione sia per lo stato.
+	In questo caso dobbiamo capire dove inserire la funzione che ha il compito di "smistare" i pacchetti, ovvero se
+	richiamarla nella on Receive del firmware, oppure se portla dopo la flushInputBuffer nel while infinito.
+	(io direi di metterla nel while)
+	Questo lo testiamo inizialmente con le stampe sull'host, rimandando il pacchetto inviato con qualche modifica
+4o Problema: Utilizziamo un pacchetto di stato per lo studio dei pin digitali
+
+[
+	Per riconoscere un pacchetto di stato/config per i pin analogici/digitali non usiamo il numero ma usiamo il nome
+	dell'ID (es. TEST_PACKET_ID)
+	Per ogni tipo di pacchetto possiamo richiamare una funzione diversa.
+	In ingresso a questa funzione possiamo mandare il pacchetto e l'indirizzo alla sua area di memoria.
+	esempio:
+	void functions_smarthouse(PacketHeader *pacchetto)
+	{
+		//dobbiamo capire che pacchetto sia tra i 4 (per ora possibili)
+		switch (pacchetto->type)
+		{
+			case :
+		}
+		
+	}
+]
+
+5o Problema: implementiamo il pacchetto analogico e lo testiamo con le stampe
+
+6o Problema: implementiamo il pacchetto di stato per i pin analogici
+
+7o Problema: implementiamo la shell (in parte già fatta in smarthouse_v3)
