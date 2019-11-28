@@ -112,9 +112,7 @@ if (control)
 			}
 		}
 */
-//****
-while(	pthread_join(serial, NULL)!=0 );
-//****
+
 test.prova=8;
 PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
 printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
@@ -124,6 +122,9 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 			ssize_t res = write(fd,&c,1);
 		usleep(10);
 		}
+	//****
+while(	pthread_join(serial, NULL)!=0 );
+//****
 	}
 pthread_attr_destroy(&attr_serial);	
 	return 0;
