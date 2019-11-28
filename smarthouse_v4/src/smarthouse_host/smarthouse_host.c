@@ -76,7 +76,7 @@ int main (int argc, char **argv)
 pthread_t serial;
 pthread_attr_t attr_serial;
 pthread_attr_init(&attr_serial);
-int fd=serial_open(argv[1]);
+fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -86,7 +86,7 @@ int fd=serial_open(argv[1]);
 		return 0;
 	
 
-int control=pthread_create(&serial, NULL, &listen_serial, NULL);
+int control=pthread_create(&serial, &attr_serial, &listen_serial, NULL);
 if (control)
 {
     	printf("ERROR; return code from pthread_create()\n");
