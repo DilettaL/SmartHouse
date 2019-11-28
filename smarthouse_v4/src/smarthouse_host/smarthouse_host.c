@@ -6,6 +6,12 @@
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 
+///***
+#include <pthread.h>
+#include <stdlib.h>
+
+///***
+
 struct UART* uart;
 PacketHandler packet_handler;
 
@@ -40,25 +46,11 @@ PacketOperations test_ops = {
 	0
 };
 
-int main (int argc, char **argv)
+///****
+int fd;
+void *listen_serial()
 {
-	assert(argc>1);
-	int fd=serial_open(argv[1]);
-	if(fd<0)
-		return 0;
-	if (serial_set_interface_attribs(fd, 115200, 0) <0)
-		return 0;
-	serial_set_blocking(fd, 1); 
-	if  (! fd)
-		return 0;
-
-	PacketHandler_initialize(&packet_handler);
-	PacketHandler_installPacket(&packet_handler, &test_ops);
-
-	test.prova=8; 
-	for (int i=0; i<1000; ++i)
-	{
-		volatile int packet_complete =0;
+volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
 			uint8_t c;
@@ -72,6 +64,57 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
+}
+
+///*****
+int main (int argc, char **argv)
+{
+	assert(argc>1);
+//****
+pthread_t serial;
+pthread_attr_t attr_serial;
+pthread_attr_init(&attr_serial);
+fd=serial_open(argv[1]);
+	if(fd<0)
+		return 0;
+	if (serial_set_interface_attribs(fd, 115200, 0) <0)
+		return 0;
+	serial_set_blocking(fd, 1); 
+	if  (! fd)
+		return 0;
+	
+
+int control=pthread_create(&serial, &attr_serial, listen_serial, NULL);
+if (control)
+{
+    	printf("ERROR; return code from pthread_create()\n");
+        exit(-1);
+}
+//****
+	PacketHandler_initialize(&packet_handler);
+	PacketHandler_installPacket(&packet_handler, &test_ops);
+
+	test.prova=8; 
+	for (int i=0; i<1000; ++i)
+	{
+/*		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+					printf("%d",status);
+				fflush(stdout);
+				packet_complete = (status==SyncChecksum);
+			}
+		}
+*/
+//****
+while(	pthread_join(serial, NULL)!=0 );
+//****
 test.prova=8;
 PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
 printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
@@ -82,8 +125,11 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		usleep(10);
 		}
 	}
-return 0;
+pthread_attr_destroy(&attr_serial);	
+	return 0;
 }
+
+
 
 
 
