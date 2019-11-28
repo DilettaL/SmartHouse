@@ -24,9 +24,8 @@ PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 	memcpy(&test, header, header->size);
-	printf("HOST: type %d\tValoreprova%d\n", header->type, test.prova);
+	printf("Host On receive (mi aspetto 7): test-> %d\theader-> %d\n", test.prova, *((uint8_t*)header+4) );
 	fflush(stdout);
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
 	return Success;
 }
 
@@ -56,7 +55,7 @@ int main (int argc, char **argv)
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 
-	test.prova=0; 
+	test.prova=8; 
 	for (int i=0; i<1000; ++i)
 	{
 		volatile int packet_complete =0;
@@ -73,6 +72,9 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
+test.prova=8;
+PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
+printf("Host Transmission (mi aspetto 8): test-> %d\n", test.prova);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);

@@ -37,12 +37,13 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 {
 	++header->seq;
 	memcpy(&test, header, header->size);
-	if(test.prova>0)
+	if(test.prova ==8)
 	{
-		DigIO_setDirection(10, 1);
-		DigIO_setValue(10, 1);
+//		DigIO_setDirection(10, 1);
+//		DigIO_setValue(10, 1);
+		test.prova=7;
 	}
-	test.prova++;
+//	test.prova++;
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
 	return Success;
 }

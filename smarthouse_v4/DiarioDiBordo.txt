@@ -1,11 +1,8 @@
 28/11/2019
 Siamo arrivati al punto in cui riusciamo a mandare i pacchetti tra host/firmware e il programma funziona creando l'header dei pacchetti (smarthouse_packets.h)
 1o Problema: non sempre l firmware riceve correttamente il pacchetto
-	Un altro test che possiamo fare è impostare nel lato firmware (quando si accende il led prova =0) e poniamo prova =1 
-	nell'Host
-	Con questo test ci aspettiamo che l'Host stampi zero e allo stesso tempo si accenda il led, in quanto al firmware
-	arriva comunque il pacchetto con prova =1.
-
+	Test: invamo da host ->firmware pacchetto con prova =8 e stampiamo ciò che inviamo. 
+	Lato firmware in ricezione rispondiamo con un 7
 2o Problema: una volta risolto il problema dell'invio del pacchetto, si può implementare il pacchetto di stato per l'host, che
 	descriva le azioni svolte dal firmware. Nel nostro caso è un pacchetto molto semplice con un flag per capire la
 	corretta accensione del led.
