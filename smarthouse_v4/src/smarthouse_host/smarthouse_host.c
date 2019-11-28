@@ -24,15 +24,8 @@ PacketStatus test_host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 	memcpy(&test, header, header->size);
-<<<<<<< HEAD
-	printf("HOST: type %d\tValoreprova%d\t\tValoreHeader%d\n", header->type, test.prova, *( (uint8_t*)header +4 ) );
-	printf("HOST:        \t   SEQprova%d\t   SEQHeader%d\t SEQHeader%d\n", test.header.seq, header->seq, *( (uint16_t*)header +1) );
-	fflush(stdout);
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) header);
-=======
 	printf("Host On receive (mi aspetto 7): test-> %d\theader-> %d\n", test.prova, *((uint8_t*)header+4) );
 	fflush(stdout);
->>>>>>> af0caf433d903e0efa36137314dc663168f8b2a7
 	return Success;
 }
 
