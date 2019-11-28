@@ -55,6 +55,7 @@ volatile int packet_complete =0;
 		{
 			uint8_t c;
 			int n=read (fd, &c, 1);
+printf ("risultato= %d\n", n);
 			if (n) 
 			{
 				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
@@ -71,6 +72,8 @@ int main (int argc, char **argv)
 {
 	assert(argc>1);
 //****
+
+
 pthread_t serial;
 pthread_attr_t attr_serial;
 pthread_attr_init(&attr_serial);
@@ -123,7 +126,10 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		usleep(10);
 		}
 	//****
-while(	pthread_join(serial, NULL)!=0 );
+int count;
+while(	( count = pthread_join(serial, NULL) ) !=0 ){
+	printf ("--count = %d\n", count);
+}
 //****
 	}
 pthread_attr_destroy(&attr_serial);	
