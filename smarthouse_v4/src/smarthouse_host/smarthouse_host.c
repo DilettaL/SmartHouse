@@ -97,12 +97,6 @@ if (control)
 	test.prova=8; 
 	for (int i=0; i<1000; ++i)
 	{
-control=pthread_create(&serial, &attr_serial, &listen_serial, NULL);
-if (control)
-{
-    	printf("ERROR; return code from pthread_create()\n");
-        exit(-1);
-}
 /*		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
