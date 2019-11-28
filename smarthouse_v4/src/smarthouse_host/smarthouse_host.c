@@ -63,7 +63,7 @@ volatile int packet_complete =0;
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-	return NULL;
+	return (void*) 0;
 }
 
 ///*****
@@ -72,7 +72,7 @@ int main (int argc, char **argv)
 	assert(argc>1);
 //****
 
-
+int thread_exit;
 pthread_t serial;
 pthread_attr_t attr_serial;
 pthread_attr_init(&attr_serial);
@@ -126,7 +126,7 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		}
 	//****
 int count=0;
-while(	( count = pthread_join(serial, NULL) ) !=0 ){
+while(	( count = pthread_join(serial, (void*)&thread_exit) ) !=0 ){
 	printf ("--count = %d\n", count);
 }
 //****
