@@ -74,12 +74,12 @@ int main (int argc, char **argv)
 		}
 test.prova=8;
 PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
-printf("Host Transmission (mi aspetto 8): test-> %d\n", test.prova);
+printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
-		usleep(1000);
+		usleep(10);
 		}
 	}
 return 0;

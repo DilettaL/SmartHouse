@@ -39,8 +39,8 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 	memcpy(&test, header, header->size);
 	if(test.prova ==8)
 	{
-//		DigIO_setDirection(10, 1);
-//		DigIO_setValue(10, 1);
+		DigIO_setDirection(10, 1);
+		DigIO_setValue(10, 1);
 		test.prova=7;
 	}
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
@@ -64,15 +64,15 @@ int main (int argc, char** argv)
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ops);
 	int global_seq = 0;
-	test.prova=0;
+	test.prova=7;
 	while (1)
 	{
 		flushInputBuffers();
 		test.header.seq = global_seq;
 		++global_seq;
-//		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
 		delayMs(10);
 		flushOutputBuffers();
 	}
-
+	
 }
