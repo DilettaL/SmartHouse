@@ -47,6 +47,7 @@ PacketOperations test_ops = {
 
 ///****
 int fd;
+
 void *listen_serial()
 {
 volatile int packet_complete =0;
@@ -63,7 +64,9 @@ volatile int packet_complete =0;
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-	return NULL;
+	pthread_exit(0);
+	
+
 }
 
 ///*****
@@ -123,9 +126,12 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		usleep(10);
 		}
 	//****
-int count=0;
-while(	( count = pthread_join(serial, NULL) ) !=0 ){
+int count=1;
+while(count!=0 ){
+count = pthread_join(serial, NULL)  ;
 	printf ("--count = %d\n", count);
+	if (count == 3)
+		count = 0;
 }
 //****
 	}
