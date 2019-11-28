@@ -43,7 +43,7 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 		DigIO_setValue(10, 1);
 	}
 	test.prova++;
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) header);
 	return Success;
 }
 
@@ -70,7 +70,7 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test.header.seq = global_seq;
 		++global_seq;
-//PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
 		delayMs(10);
 		flushOutputBuffers();
 	}
