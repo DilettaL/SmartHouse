@@ -9,7 +9,6 @@
 ///***
 #include <pthread.h>
 #include <stdlib.h>
-
 ///***
 
 struct UART* uart;
@@ -55,7 +54,6 @@ volatile int packet_complete =0;
 		{
 			uint8_t c;
 			int n=read (fd, &c, 1);
-printf ("risultato= %d\n", n);
 			if (n) 
 			{
 				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
@@ -65,6 +63,7 @@ printf ("risultato= %d\n", n);
 				packet_complete = (status==SyncChecksum);
 			}
 		}
+	return NULL;
 }
 
 ///*****
@@ -75,9 +74,9 @@ int main (int argc, char **argv)
 
 
 pthread_t serial;
-pthread_attr_t attr_serial;
-pthread_attr_init(&attr_serial);
-fd=serial_open(argv[1]);
+//pthread_attr_t attr_serial;
+//pthread_attr_init(&attr_serial);
+int fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -87,7 +86,7 @@ fd=serial_open(argv[1]);
 		return 0;
 	
 
-int control=pthread_create(&serial, &attr_serial, listen_serial, NULL);
+int control=pthread_create(&serial, NULL, &listen_serial, NULL);
 if (control)
 {
     	printf("ERROR; return code from pthread_create()\n");
@@ -126,13 +125,13 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		usleep(10);
 		}
 	//****
-int count;
+int count=0;
 while(	( count = pthread_join(serial, NULL) ) !=0 ){
 	printf ("--count = %d\n", count);
 }
 //****
 	}
-pthread_attr_destroy(&attr_serial);	
+//pthread_attr_destroy(&attr_serial);	
 	return 0;
 }
 
