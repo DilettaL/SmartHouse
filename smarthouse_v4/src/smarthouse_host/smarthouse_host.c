@@ -64,9 +64,7 @@ volatile int packet_complete =0;
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-	pthread_exit(0);
-	
-
+	return NULL;
 }
 
 ///*****
@@ -119,17 +117,27 @@ if (control)
 test.prova=8;
 PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
 printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
+
+while(packet_handler.tx_size)
+		{
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+		usleep(10);
+		}
+ 
+	//****
+int count;
+while( (count=pthread_join(serial, NULL)) != 0 )
+{
+	printf ("count1: %d\n", count);
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
+	printf ("count2: %d\n", count);	
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
 		usleep(10);
 		}
-	//****
-int count;
-while( (count=pthread_join(serial, NULL)) !=0)
-{
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);	
 }
 
 //****
