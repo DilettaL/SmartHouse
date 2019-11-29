@@ -10,15 +10,15 @@
   }\
 
 #pragma pack(push, 1)
-typedef struct TestPacket{
+typedef struct TestConfigPacket{
 	PacketHeader header;
 	uint8_t prova;
-} TestPacket;
-#define TEST_PACKET_ID 1
+} TestConfigPacket;
+#define TEST_CONFIG_PACKET_ID 1
 
-typedef struct ReturnPacket{
+typedef struct TestStatusPacket{
 	PacketHeader header;
 	uint8_t ack;
-} ReturnPacket;
-#define RETURN_PACKET_ID 2
+} TestStatusPacket;
+#define TEST_STATUS_PACKET_ID 2
 #pragma pack(pop)

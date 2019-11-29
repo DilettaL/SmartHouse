@@ -9,62 +9,63 @@
 struct UART* uart;
 PacketHandler packet_handler;
 
-TestPacket test= { {TEST_PACKET_ID, sizeof (TestPacket), 0 }, 0}; 
-TestPacket test_buffer;
-
-PacketHeader* test_host_initializeBuffer(PacketType type,
-				       PacketSize size,
-				       void* args __attribute__((unused))) {
-	if (type!=TEST_PACKET_ID || size!=sizeof(TestPacket))
-		return 0;
-	return (PacketHeader*) &test_buffer;
-}
-
-PacketStatus test_host_onReceive(PacketHeader* header,
-			       void* args __attribute__((unused))) {
-	++header->seq;
-	memcpy(&test, header, header->size);
-	printf("Host On receive (mi aspetto 7): test-> %d\theader-> %d\n", test.prova, *((uint8_t*)header+4) );
-	fflush(stdout);
-	return Success;
-}
-
-PacketOperations test_ops = {
-	1,
-	sizeof(TestPacket),
-	test_host_initializeBuffer,
-	0,
-	test_host_onReceive,
-	0
-};
+TestConfigPacket test_config= { {TEST_CONFIG_PACKET_ID, sizeof (TestConfigPacket), 0 }, 0}; 
+TestConfigPacket test_config_buffer;
 
 #define ACK 0x99
-ReturnPacket returnP = { {RETURN_PACKET_ID, sizeof(ReturnPacket), 0}, ACK};
-ReturnPacker return_buffer;
-PacketHeader* return_initiaizeBuffer (PacketType type, PacketSize size, void* args __attribute__((unused))) 
-{
-	if (type!=RETURN_PACKET_ID || size!=sizeof(ReturnPacket))
+TestStatusPacket test_status = { {TEST_STATUS_PACKET_ID, sizeof(TestStatusPacket), 0}, ACK};
+TestStatusPacket test_status_buffer;
+
+
+PacketHeader* host_initializeBuffer(PacketType type,
+				       PacketSize size,
+				       void* args __attribute__((unused))) {
+	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
+	{	return (PacketHeader*) &test_config_buffer;}
+	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
+	{	return (PacketHeader*) &test_status_buffer;}
+	else
+	{
+		printf("Errore, nessun tipo di pacchetto è stato ricevuto\n");
 		return 0;
-	return (PacketHeader*) &return_buffer;
+	}
 }
 
-PacketStatus return_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
-{
+PacketStatus host_onReceive(PacketHeader* header,
+			       void* args __attribute__((unused))) {
 	++header->seq;
-	memcpy(&returnP, header, header->size);
+	switch (header->type)
+	{
+		case TEST_CONFIG_PACKET_ID:
+			memcpy(&test_config, header, header->size);
+			break;
+		case TEST_STATUS_PACKET_ID:	
+			memcpy(&test_status, header, header->size);
+/*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
+			break;
+		default:
+			break;
+	}
 	return Success;
-}	
-
-PacketOperations return_ops = {
-	2,
-	sizeof(ReturnPacket),
-	return_initialiBuffer,
+}
+PacketOperations test_config_ops = {
+	1,
+	sizeof(TestConfigPacket),
+	host_initializeBuffer,
 	0,
-	return_onReceive,
+	host_onReceive,
 	0
 };
 
-///*****
+PacketOperations test_status_ops = {
+	2,
+	sizeof(TestStatusPacket),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
 int main (int argc, char **argv)
 {
 	assert(argc>1);
@@ -77,50 +78,35 @@ int main (int argc, char **argv)
 	if  (! fd)
 		return 0;
 	PacketHandler_initialize(&packet_handler);
-	PacketHandler_installPacket(&packet_handler, &test_ops);
-	PacketHandler_installPacket(&packet_handler, &return_ops);
+	PacketHandler_installPacket(&packet_handler, &test_config_ops);
+	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 
-	test.prova=8; 
-	
-	int ackTEST
-	for (int i=0; i<10; ++i)
+	for (int i=0; i<1000; ++i)
 	{
-		while (ackTEST == 1)
+		test_config.prova=1;
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
+		while(packet_handler.tx_size)
 		{
-			volatile int packet_complete =0;
-			while ( !packet_complete ) 
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
+		}
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			if (n) 
 			{
-				uint8_t c;
-				int n=read (fd, &c, 1);
-				if (n) 
-				{
-					PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-					if (status<0)
-						printf("%d",status);
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
 					fflush(stdout);
-					packet_complete = (status==SyncChecksum);
 				}
-			}
-
-		}
-
-		for (int k = 0; k < 50; k++)
-		{
-			test.prova=8;
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
-			printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
-			while(packet_handler.tx_size)
-			{
-				uint8_t c=PacketHandler_txByte(&packet_handler);
-				ssize_t res = write(fd,&c,1);
-				usleep(10);
+				packet_complete = (status==SyncChecksum);
 			}
 		}
-	} 
+	}	
 	return 0;
 }
-
-
-
-
-

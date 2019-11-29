@@ -24,89 +24,76 @@ int flushOutputBuffers(void)
 	return packet_handler.tx_size;
 }
 
-TestPacket test  = { {TEST_PACKET_ID, sizeof(TestPacket), 0}, 0 }; 	//il campo "prova = 0";;
-TestPacket test_buffer;
-PacketHeader* test_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
-{
-	if (type!=TEST_PACKET_ID || size!=sizeof(TestPacket))
-		return 0;
-	return (PacketHeader*) &test_buffer;
-}
-
-PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
-{
-	++header->seq;
-	memcpy(&test, header, header->size);
-	if(test.prova ==8)
-	{
-//		DigIO_setDirection(10, 1);
-//		DigIO_setValue(10, 1);
-		test.prova=7;
-	}
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &returnP);
-//****
-	delayMs(10);
-	flushOutputBuffers();
-//****
-	return Success;
-}
-
-PacketOperations test_ops = {
-	1,
-	sizeof(TestPacket),
-	test_initializeBuffer,
-	0,
-	test_onReceive,
-	0
-};
+TestConfigPacket test_config = { {TEST_CONFIG_PACKET_ID, sizeof(TestConfigPacket), 0}, 0 }; 	//il campo "prova = 0";;
+TestStatusPacket test_config_buffer;
 
 #define ACK 0x99
-ReturnPacket returnP = { {RETURN_PACKET_ID, sizeof(ReturnPacket), 0}, ACK};
-ReturnPacker return_buffer;
-PacketHeader* return_initiaizeBuffer (PacketType type, PacketSize size, void* args __attribute__((unused))) 
+TestStatusPacket test_status = { {TEST_STATUS_PACKET_ID, sizeof(TestStatusPacket), 0}, ACK};
+TestStatusPacket test_status_buffer;
+
+PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
-	if (type!=RETURN_PACKET_ID || size!=sizeof(ReturnPacket))
-		return 0;
-	return (PacketHeader*) &return_buffer;
+	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
+	{	return (PacketHeader*) &test_config_buffer;	}
+	else if(type==TEST_STATUS_PACKET_ID && size==sizeof(TestStatusPacket))
+	{	return (PacketHeader*) &test_status_buffer;	}
+	else
+	{	return 0; }
 }
 
-PacketStatus return_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
+PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
 {
 	++header->seq;
-	memcpy(&returnP, header, header->size);
-	
+	switch (header->type)
+	{
+		case TEST_CONFIG_PACKET_ID:
+			memcpy(&test_config, header, header->size);
+/*DEBUG*/		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+			break;
+		case TEST_STATUS_PACKET_ID:
+			memcpy(&test_status, header, header->size);
+			break;
+		default:
+			break;
+	}
+	delayMs(10);
+	flushOutputBuffers();
 	return Success;
-}	
-
-
-PacketOperations return_ops = {
-	2,
-	sizeof(ReturnPacket),
-	return_initializeBuffer,
+}
+PacketOperations test_config_ops = {
+	1,
+	sizeof(TestConfigPacket),
+	firmware_initializeBuffer,
 	0,
-	return_onReceive,
+	firmware_onReceive,
 	0
 };
 
-
+PacketOperations test_status_ops = {
+	2,
+	sizeof(TestStatusPacket),
+	firmware_initializeBuffer,
+	0,
+	firmware_onReceive,
+	0
+};	
 
 int main (int argc, char** argv)
 {
 	DigIO_init();
 	uart = UART_init(0,115200);
 	PacketHandler_initialize(&packet_handler);
-	PacketHandler_installPacket(&packet_handler, &test_ops);
-	PacketHandler_installPacket(&packet_handler, &returnP_ops);
+	PacketHandler_installPacket(&packet_handler, &test_config_ops);
+	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	int global_seq = 0;
-	test.prova=0;
 	while (1)
 	{
 		flushInputBuffers();
-		test.header.seq = global_seq;
+		test_config.header.seq = global_seq;
 		++global_seq;
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
-		delayMs(10);
-		flushOutputBuffers();
+//		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+//		delayMs(10);
+//		flushOutputBuffers();
 	}
 	
 }
