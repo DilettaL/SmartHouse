@@ -6,6 +6,7 @@
 #include "uart.h"
 #include "delay.h"
 
+uint8_t sync;
 static struct UART* uart;
 static PacketHandler packet_handler;
 
@@ -56,6 +57,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		default:
 			break;
 	}
+	sync=1;
 	delayMs(10);
 	flushOutputBuffers();
 	return Success;
@@ -86,14 +88,18 @@ int main (int argc, char** argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	int global_seq = 0;
+	sync=0;
 	while (1)
 	{
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
-		delayMs(10);
-		flushOutputBuffers();
+		if(sync==0)
+		{
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_config);
+			delayMs(10);
+			flushOutputBuffers();
+		}
 	}
 	
 }
