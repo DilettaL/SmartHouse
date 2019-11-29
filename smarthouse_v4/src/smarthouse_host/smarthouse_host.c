@@ -126,14 +126,12 @@ printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
 		usleep(10);
 		}
 	//****
-int count=1;
-while(count!=0 ){
-count = pthread_join(serial, NULL)  ;
-	printf ("--count = %d\n", count);
-	if (count == 3)
-	{exit(0);}
-	printf ("%d\n", count);
+int count;
+while( (count=pthread_join(serial, NULL)) !=0)
+{
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);	
 }
+
 //****
 	}
 pthread_attr_destroy(&attr_serial);	
