@@ -29,14 +29,38 @@ PacketStatus test_host_onReceive(PacketHeader* header,
 	return Success;
 }
 
-
-
 PacketOperations test_ops = {
 	1,
 	sizeof(TestPacket),
 	test_host_initializeBuffer,
 	0,
 	test_host_onReceive,
+	0
+};
+
+#define ACK 0x99
+ReturnPacket returnP = { {RETURN_PACKET_ID, sizeof(ReturnPacket), 0}, ACK};
+ReturnPacker return_buffer;
+PacketHeader* return_initiaizeBuffer (PacketType type, PacketSize size, void* args __attribute__((unused))) 
+{
+	if (type!=RETURN_PACKET_ID || size!=sizeof(ReturnPacket))
+		return 0;
+	return (PacketHeader*) &return_buffer;
+}
+
+PacketStatus return_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
+{
+	++header->seq;
+	memcpy(&returnP, header, header->size);
+	return Success;
+}	
+
+PacketOperations return_ops = {
+	2,
+	sizeof(ReturnPacket),
+	return_initialiBuffer,
+	0,
+	return_onReceive,
 	0
 };
 
@@ -54,32 +78,43 @@ int main (int argc, char **argv)
 		return 0;
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ops);
+	PacketHandler_installPacket(&packet_handler, &return_ops);
 
 	test.prova=8; 
-	for (int i=0; i<1000; ++i)
+	
+	int ackTEST
+	for (int i=0; i<10; ++i)
 	{
-		volatile int packet_complete =0;
-		while ( !packet_complete ) 
+		while (ackTEST == 1)
 		{
-			uint8_t c;
-			int n=read (fd, &c, 1);
-			if (n) 
+			volatile int packet_complete =0;
+			while ( !packet_complete ) 
 			{
-				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-				if (status<0)
-					printf("%d",status);
-				fflush(stdout);
-				packet_complete = (status==SyncChecksum);
+				uint8_t c;
+				int n=read (fd, &c, 1);
+				if (n) 
+				{
+					PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+					if (status<0)
+						printf("%d",status);
+					fflush(stdout);
+					packet_complete = (status==SyncChecksum);
+				}
 			}
+
 		}
-		test.prova=8;
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
-		printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
-		while(packet_handler.tx_size)
+
+		for (int k = 0; k < 50; k++)
 		{
-			uint8_t c=PacketHandler_txByte(&packet_handler);
-			ssize_t res = write(fd,&c,1);
-			usleep(10);
+			test.prova=8;
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test);
+			printf("%d]\tHost Transmission (mi aspetto 8): test-> %d\n", i, test.prova);
+			while(packet_handler.tx_size)
+			{
+				uint8_t c=PacketHandler_txByte(&packet_handler);
+				ssize_t res = write(fd,&c,1);
+				usleep(10);
+			}
 		}
 	} 
 	return 0;

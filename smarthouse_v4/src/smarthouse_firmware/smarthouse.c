@@ -39,11 +39,11 @@ PacketStatus test_onReceive(PacketHeader* header, void* args __attribute__((unus
 	memcpy(&test, header, header->size);
 	if(test.prova ==8)
 	{
-		DigIO_setDirection(10, 1);
-		DigIO_setValue(10, 1);
+//		DigIO_setDirection(10, 1);
+//		DigIO_setValue(10, 1);
 		test.prova=7;
 	}
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &returnP);
 //****
 	delayMs(10);
 	flushOutputBuffers();
@@ -60,22 +60,53 @@ PacketOperations test_ops = {
 	0
 };
 
+#define ACK 0x99
+ReturnPacket returnP = { {RETURN_PACKET_ID, sizeof(ReturnPacket), 0}, ACK};
+ReturnPacker return_buffer;
+PacketHeader* return_initiaizeBuffer (PacketType type, PacketSize size, void* args __attribute__((unused))) 
+{
+	if (type!=RETURN_PACKET_ID || size!=sizeof(ReturnPacket))
+		return 0;
+	return (PacketHeader*) &return_buffer;
+}
+
+PacketStatus return_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
+{
+	++header->seq;
+	memcpy(&returnP, header, header->size);
+	
+	return Success;
+}	
+
+
+PacketOperations return_ops = {
+	2,
+	sizeof(ReturnPacket),
+	return_initializeBuffer,
+	0,
+	return_onReceive,
+	0
+};
+
+
+
 int main (int argc, char** argv)
 {
 	DigIO_init();
 	uart = UART_init(0,115200);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ops);
+	PacketHandler_installPacket(&packet_handler, &returnP_ops);
 	int global_seq = 0;
-	test.prova=7;
+	test.prova=0;
 	while (1)
 	{
 		flushInputBuffers();
 		test.header.seq = global_seq;
 		++global_seq;
-//		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
-//		delayMs(10);
-//		flushOutputBuffers();
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
+		delayMs(10);
+		flushOutputBuffers();
 	}
 	
 }
