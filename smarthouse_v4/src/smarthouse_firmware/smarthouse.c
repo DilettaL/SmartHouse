@@ -91,9 +91,9 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-//		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test);
-//		delayMs(10);
-//		flushOutputBuffers();
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+		delayMs(10);
+		flushOutputBuffers();
 	}
 	
 }
