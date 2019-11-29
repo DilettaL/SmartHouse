@@ -49,6 +49,11 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	{
 		case TEST_CONFIG_PACKET_ID:
 			memcpy(&test_config, header, header->size);
+/*DEBUG*/		DigIO_setDirection(10, 1);
+			DigIO_setValue(10, 1);
+			delayMs(1000);
+			DigIO_setDirection(10, 1);
+			DigIO_setValue(10, 0);
 /*DEBUG*/		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
