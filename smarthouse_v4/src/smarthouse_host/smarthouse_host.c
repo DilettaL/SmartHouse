@@ -64,7 +64,7 @@ PacketHeader* host_initializeBuffer(PacketType type,
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
-/*DeBUG*/printf("okokok\n");
+/*DeBUG*/printf("%d\n", header->type);
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
