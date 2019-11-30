@@ -46,6 +46,8 @@ DigitalStatusPacket digital_status_buffer;
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
 				       void* args __attribute__((unused))) {
+/*DEBUG*/printf("Type:%d\tSize:%d\n", type, size);
+
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
 	{	return (PacketHeader*) &test_config_buffer;}
 	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
@@ -64,7 +66,7 @@ PacketHeader* host_initializeBuffer(PacketType type,
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
-/*DeBUG*/printf("%d\n", header->type);
+///*DeBUG*/printf("%d\n", header->type);
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
@@ -72,6 +74,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
+printf("OK:%d\n", test_status.ack);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
@@ -82,7 +85,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		default:
 			break;
 	}
-/*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
+///*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
 	return Success;
 }
 PacketOperations test_config_ops = {
@@ -137,11 +140,11 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
-	digital_config.set_digital=1;
+	test_config.prova=1;	//digital_config.set_digital=1;
 	for (int i=0; i<1000; ++i)
 	{
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&digital_config);
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, digital_config.set_digital);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	//digital_config);
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);	//digital_config.set_digital);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
