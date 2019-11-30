@@ -42,7 +42,7 @@ DigitalStatusPacket digital_status=
 };
 
 DigitalStatusPacket digital_status_buffer;
-*/
+
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
 				       void* args __attribute__((unused))) {
@@ -50,11 +50,11 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	{	return (PacketHeader*) &test_config_buffer;}
 	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
 	{	return (PacketHeader*) &test_status_buffer;}
-/*	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
+	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
-*/	else
+	else
 	{
 		printf("Errore, nessun tipo di pacchetto è stato ricevuto\n");
 		return 0;
@@ -68,39 +68,75 @@ PacketStatus host_onReceive(PacketHeader* header,
 	{
 		case TEST_CONFIG_PACKET_ID:
 			memcpy(&test_config, header, header->size);
-/*DEBUG*/printf("Sync\n");
+//DEBUGprintf("Sync\n");
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
-/*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
+//DEBUG		printf("Host Receive: %d\n", test_status.ack);
 			break;
-/*		case DIGITAL_CONFIG_PACKET_ID:
+		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
 
 			break;
-*/		default:
+		default:
 			break;
 	}
 	return Success;
 }
+
+*/
+
+PacketHeader* config_host_initializeBuffer (PacketType type,
+				       PacketSize size,
+				       void* args __attribute__((unused))) {
+	if(type!= TEST_CONFIG_PACKET_ID || size != sizeof(TestConfigPacket))
+	{return 0;}
+	return (PacketHeader*) &test_config_buffer;
+}
+
+PacketStatus config_host_onReceive(PacketHeader* header,
+			       void* args __attribute__((unused))) {
+	++header->seq;
+	memcpy(&test_config, header, header->size);
+printf("Sync\n");
+	return Success;
+}
+
+
 PacketOperations test_config_ops = {
 	1,	//TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
-	host_initializeBuffer,
+	config_host_initializeBuffer,
 	0,
-	host_onReceive,
+	config_host_onReceive,
 	0
 };
+
+PacketHeader* status_host_initializeBuffer (PacketType type,
+				       PacketSize size,
+				       void* args __attribute__((unused))) {
+	if(type!= TEST_STATUS_PACKET_ID || size != sizeof(TestStatusPacket))
+	{return 0;}
+	return (PacketHeader*) &test_status_buffer;
+}
+
+PacketStatus status_host_onReceive(PacketHeader* header,
+			       void* args __attribute__((unused))) {
+	++header->seq;
+	memcpy(&test_status, header, header->size);
+printf("Host Receive->ACK: %d\n", test_status.ack);
+	return Success;
+}
 
 PacketOperations test_status_ops = {
 	2,	//TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
-	host_initializeBuffer,
+	status_host_initializeBuffer,
 	0,
-	host_onReceive,
+	status_host_onReceive,
 	0
 };
 
@@ -139,12 +175,12 @@ int main (int argc, char **argv)
 //	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 //	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	test_config.prova=1;	//digital_config.set_digital=1;
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
+/*DEBUG*/printf("-1]\tHost Transmission (mi aspetto 1): test-> %d\n", test_config.prova);
 	usleep(10000);
 	for (int i=0; i<1000; ++i)
 	{
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	//digital_config);
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);	//digital_config.set_digital);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);

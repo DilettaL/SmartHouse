@@ -58,18 +58,18 @@ DigitalStatusPacket digital_status=
 };
 
 DigitalStatusPacket digital_status_buffer;
-*/
+
 PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
 	{	return (PacketHeader*) &test_config_buffer;	}
 	else if(type==TEST_STATUS_PACKET_ID && size==sizeof(TestStatusPacket))
 	{	return (PacketHeader*) &test_status_buffer;	}
-/*	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
+	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
-*/	else
+	else
 	{	return 0; }
 }
 
@@ -81,12 +81,12 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		case TEST_CONFIG_PACKET_ID:
 			memcpy(&test_config, header, header->size);
 
-/*DEBUG*/		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+//DEBUG		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
 			memcpy(&test_status, header, header->size);
 			break;
-/*		case DIGITAL_CONFIG_PACKET_ID:
+		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			if(digital_config.set_digital==1)
 			{
@@ -98,7 +98,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
 			break;
-*/		default:
+		default:
 			break;
 	}
 	sync=1;
@@ -106,21 +106,50 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	flushOutputBuffers();
 	return Success;
 }
+*/
+PacketHeader* config_firmware_initializeBuffer (PacketType type,
+				       PacketSize size,
+				       void* args __attribute__((unused))) {
+	if(type!= TEST_CONFIG_PACKET_ID || size != sizeof(TestConfigPacket))
+	{return 0;}
+	return (PacketHeader*) &test_config_buffer;
+}
+
+PacketStatus config_firmware_onReceive(PacketHeader* header,
+			       void* args __attribute__((unused))) {
+	++header->seq;
+	memcpy(&test_config, header, header->size);
+PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+	return Success;
+}
 PacketOperations test_config_ops = {
 	1,	//TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
-	firmware_initializeBuffer,
+	config_firmware_initializeBuffer,
 	0,
-	firmware_onReceive,
+	config_firmware_onReceive,
 	0
 };
+PacketHeader* status_firmware_initializeBuffer (PacketType type,
+				       PacketSize size,
+				       void* args __attribute__((unused))) {
+	if(type!= TEST_STATUS_PACKET_ID || size != sizeof(TestStatusPacket))
+	{return 0;}
+	return (PacketHeader*) &test_status_buffer;
+}
 
+PacketStatus status_firmware_onReceive(PacketHeader* header,
+			       void* args __attribute__((unused))) {
+	++header->seq;
+	memcpy(&test_status, header, header->size);
+	return Success;
+}
 PacketOperations test_status_ops = {
 	2,	//TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
-	firmware_initializeBuffer,
+	status_firmware_initializeBuffer,
 	0,
-	firmware_onReceive,
+	status_firmware_onReceive,
 	0
 };	
 
