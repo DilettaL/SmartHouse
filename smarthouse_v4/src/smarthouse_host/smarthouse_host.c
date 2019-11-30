@@ -64,6 +64,7 @@ PacketHeader* host_initializeBuffer(PacketType type,
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
+/*DeBUG*/printf("okokok\n");
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
@@ -71,7 +72,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
-/*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
@@ -82,6 +82,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		default:
 			break;
 	}
+/*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
 	return Success;
 }
 PacketOperations test_config_ops = {
