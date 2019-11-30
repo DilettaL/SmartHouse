@@ -30,7 +30,7 @@ TestStatusPacket test_status_buffer;
 };
 
 DigitalConfigPacket digital_config_buffer;
-*/
+
 DigitalStatusPacket digital_status=
 {
 	{
@@ -42,7 +42,7 @@ DigitalStatusPacket digital_status=
 };
 
 DigitalStatusPacket digital_status_buffer;
-
+*/
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
 				       void* args __attribute__((unused))) {
@@ -52,9 +52,9 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	{	return (PacketHeader*) &test_status_buffer;}
 /*	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
-*/	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
+	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
-	else
+*/	else
 	{
 		printf("Errore, nessun tipo di pacchetto è stato ricevuto\n");
 		return 0;
@@ -72,21 +72,22 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
+/*DEBUG*/		printf("Host Receive: %d\n", test_status.ack);
 			break;
 /*		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			break;
-*/		case DIGITAL_STATUS_PACKET_ID:
+		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/		printf("Host Receive: %d\n", digital_status.status_digital);
+
 			break;
-		default:
+*/		default:
 			break;
 	}
 	return Success;
 }
 PacketOperations test_config_ops = {
-	TEST_CONFIG_PACKET_ID,
+	1,	//TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
 	host_initializeBuffer,
 	0,
@@ -95,7 +96,7 @@ PacketOperations test_config_ops = {
 };
 
 PacketOperations test_status_ops = {
-	TEST_STATUS_PACKET_ID,
+	2,	//TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
 	host_initializeBuffer,
 	0,
@@ -111,7 +112,7 @@ PacketOperations test_status_ops = {
 	host_onReceive,
 	0
 };
-*/
+
 PacketOperations digital_status_ops = {
 	DIGITAL_STATUS_PACKET_ID,
 	sizeof(DigitalStatusPacket),
@@ -120,7 +121,7 @@ PacketOperations digital_status_ops = {
 	host_onReceive,
 	0
 };
-
+*/
 int main (int argc, char **argv)
 {
 	assert(argc>1);
@@ -136,7 +137,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 //	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
-	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
+//	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	test_config.prova=1;	//digital_config.set_digital=1;
 	for (int i=0; i<1000; ++i)
 	{

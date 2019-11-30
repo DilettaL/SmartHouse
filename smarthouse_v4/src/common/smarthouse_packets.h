@@ -9,6 +9,13 @@
     var.header.seq=0;				\
   }\
 
+typedef enum
+{
+	ledOff=0,
+	ledOn=1,
+	dimmer=2,
+	input_digital=3
+} DigitalOperations;
 #pragma pack(push, 1)
 typedef struct TestConfigPacket{
 	PacketHeader header;
@@ -22,15 +29,8 @@ typedef struct TestStatusPacket{
 } TestStatusPacket;
 #define TEST_STATUS_PACKET_ID 2
 
-typedef enum
-{
-	ledOff=0,
-	ledOn=1,
-	dimmer=2,
-	input_digital=3
-} DigitalOperations;
 
-typedef struct DigitalConfigPacket{
+/*typedef struct DigitalConfigPacket{
 	PacketHeader header;
 	uint8_t pin_digital;
 	DigitalOperations set_digital;
@@ -44,5 +44,6 @@ typedef struct DigitalStatusPacket{
 	DigitalOperations status_digital;
 //mancano i campi per prelevare i valori dei risultati e l'intensity
 }DigitalStatusPacket;
-#define DIGITAL_STATUS_PACKET_ID 4
+#define DIGITAL_STATUS_PACKET_ID 3
+*/
 #pragma pack(pop)

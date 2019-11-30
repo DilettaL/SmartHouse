@@ -46,7 +46,7 @@ TestStatusPacket test_status_buffer;
 };
 
 DigitalConfigPacket digital_config_buffer;
-*/
+
 DigitalStatusPacket digital_status=
 {
 	{
@@ -58,7 +58,7 @@ DigitalStatusPacket digital_status=
 };
 
 DigitalStatusPacket digital_status_buffer;
-
+*/
 PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
@@ -67,9 +67,9 @@ PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* 
 	{	return (PacketHeader*) &test_status_buffer;	}
 /*	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
-*/	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
+	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
-	else
+*/	else
 	{	return 0; }
 }
 
@@ -80,8 +80,8 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	{
 		case TEST_CONFIG_PACKET_ID:
 			memcpy(&test_config, header, header->size);
-/*DEBUG*/		digital_status.status_digital=1;
-/*DEBUG*/		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+
+/*DEBUG*/		PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
 			memcpy(&test_status, header, header->size);
@@ -95,10 +95,10 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			}
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
-*/		case DIGITAL_STATUS_PACKET_ID:
+		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
 			break;
-		default:
+*/		default:
 			break;
 	}
 	sync=1;
@@ -107,7 +107,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	return Success;
 }
 PacketOperations test_config_ops = {
-	TEST_CONFIG_PACKET_ID,
+	1,	//TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
 	firmware_initializeBuffer,
 	0,
@@ -116,7 +116,7 @@ PacketOperations test_config_ops = {
 };
 
 PacketOperations test_status_ops = {
-	TEST_STATUS_PACKET_ID,
+	2,	//TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
 	firmware_initializeBuffer,
 	0,
@@ -132,7 +132,7 @@ PacketOperations test_status_ops = {
 	firmware_onReceive,
 	0
 };
-*/
+
 PacketOperations digital_status_ops = {
 	DIGITAL_STATUS_PACKET_ID,
 	sizeof(DigitalStatusPacket),
@@ -141,7 +141,7 @@ PacketOperations digital_status_ops = {
 	firmware_onReceive,
 	0
 };
-
+*/
 int main (int argc, char** argv)
 {
 	DigIO_init();
@@ -150,7 +150,7 @@ int main (int argc, char** argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 //	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
-	PacketHandler_installPacket(&packet_handler, &digital_status_ops);	
+//	PacketHandler_installPacket(&packet_handler, &digital_status_ops);	
 	int global_seq = 0;
 	sync=0;
 	while (1)
