@@ -139,6 +139,8 @@ int main (int argc, char **argv)
 //	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 //	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	test_config.prova=1;	//digital_config.set_digital=1;
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
+	usleep(10000);
 	for (int i=0; i<1000; ++i)
 	{
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	//digital_config);
