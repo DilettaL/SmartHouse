@@ -91,6 +91,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 				DigIO_setDirection(10, 1);
 				DigIO_setValue(10, 1);
 			}
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);

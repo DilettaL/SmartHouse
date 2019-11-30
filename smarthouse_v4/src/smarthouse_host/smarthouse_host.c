@@ -140,7 +140,7 @@ int main (int argc, char **argv)
 	for (int i=0; i<1000; ++i)
 	{
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&digital_config);
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, digital_config.set_digital);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
