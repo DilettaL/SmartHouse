@@ -97,7 +97,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	{
 		case TEST_CONFIG_PACKET_ID:
 			memcpy(&test_config, header, header->size);
-/*DEBUG*/digital_status.status_digital=3;
+/*DEBUG*/digital_status.status_digital=input_digital;
 PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
