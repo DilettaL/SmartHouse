@@ -24,7 +24,7 @@ void Dimmer(uint8_t pin, uint8_t intensity)
 void InputDigital(uint8_t pin)
 {
 	DigIO_setDirection(pin, Input);
-	DigIO_setValue(pin, 1);
+	//DigIO_setValue(pin, 1);
 	digital_status.inputs=DigIO_getValue(pin);
 }
 
