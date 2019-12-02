@@ -114,6 +114,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	digital_config.pin_digital=10;
+	digital_config.set_digital=ledOn;
 	for (int i=0; i<1000; ++i)
 	{
 		volatile int packet_complete =0;

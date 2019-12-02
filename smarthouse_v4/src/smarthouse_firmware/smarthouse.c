@@ -4,7 +4,6 @@
 #include "smarthouse_functions.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
-#include "digio.h"
 #include "uart.h"
 #include "delay.h"
 
