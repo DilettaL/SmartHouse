@@ -6,3 +6,6 @@ extern TestStatusPacket test_status;
 
 extern DigitalConfigPacket digital_config;
 extern DigitalStatusPacket digital_status;
+
+extern AnalogConfigPacket analog_config;
+extern AnalogStatusPacket analog_status;

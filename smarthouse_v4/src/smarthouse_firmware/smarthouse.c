@@ -4,6 +4,7 @@
 #include "smarthouse_functions.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
+#include "adc.h"
 #include "digio.h"
 #include "pwm.h"
 #include "uart.h"
@@ -33,6 +34,8 @@ TestStatusPacket test_config_buffer;
 TestStatusPacket test_status_buffer;
 DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
+AnalogConfigPacket analog_config_buffer;
+AnalogStatusPacket analog_status_buffer;
 
 PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
@@ -44,6 +47,10 @@ PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* 
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
+	else if (type== ANALOG_CONFIG_PACKET_ID && size==sizeof(AnalogConfigPacket))
+	{	return (PacketHeader*) &analog_config_buffer;}
+	else if (type== ANALOG_STATUS_PACKET_ID && size==sizeof(AnalogStatusPacket))
+	{	return (PacketHeader*) &analog_status_buffer;}	
 	else
 	{	return 0; }
 }
@@ -57,15 +64,23 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&test_config, header, header->size);
 			break;
 		case TEST_STATUS_PACKET_ID:
-			memcpy(&test_status, header, header->size);
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-			memcpy(&digital_status, header, header->size);
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+			break;
+		case ANALOG_CONFIG_PACKET_ID:
+			memcpy(&analog_config, header, header->size);
+			Smarthouse_analog();
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
+			break;
+		case ANALOG_STATUS_PACKET_ID:
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
 			break;
 		default:
 			break;
@@ -112,18 +127,43 @@ PacketOperations digital_status_ops = {
 	0
 };
 
+PacketOperations analog_config_ops = {
+	ANALOG_CONFIG_PACKET_ID,
+	sizeof(AnalogConfigPacket),
+	firmware_initializeBuffer,
+	0,
+	firmware_onReceive,
+	0
+};
+
+PacketOperations analog_status_ops = {
+	ANALOG_STATUS_PACKET_ID,
+	sizeof(AnalogStatusPacket),
+	firmware_initializeBuffer,
+	0,
+	firmware_onReceive,
+	0
+};
+
 int main (int argc, char** argv)
 {
 	DigIO_init();
 	PWM_init();
+	Adc_init();
 	uart = UART_init(0,115200);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
-	PacketHandler_installPacket(&packet_handler, &digital_status_ops);	
+	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
+	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
+	PacketHandler_installPacket(&packet_handler, &analog_status_ops);	
 	int global_seq = 0;
 	sync=0;
+//TEST ADC INIZIO PWM
+PWM_enable(10, 1);
+PWM_setDutyCycle(100, 100);
+//TEST ADC FINE PWM
 	while (1)
 	{
 		flushInputBuffers();

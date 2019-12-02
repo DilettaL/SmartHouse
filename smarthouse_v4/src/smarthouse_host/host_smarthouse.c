@@ -15,6 +15,8 @@ TestConfigPacket test_config_buffer;
 TestStatusPacket test_status_buffer;
 DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
+AnalogConfigPacket analog_config_buffer;
+AnalogStatusPacket analog_status_buffer;
 
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
@@ -27,6 +29,11 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
+	else if (type== ANALOG_CONFIG_PACKET_ID && size==sizeof(AnalogConfigPacket))
+	{	return (PacketHeader*) &analog_config_buffer;}
+	else if (type== ANALOG_STATUS_PACKET_ID && size==sizeof(AnalogStatusPacket))
+	{	return (PacketHeader*) &analog_status_buffer;}	
+	
 	else
 	{
 		printf("Errore, nessun tipo di pacchetto è stato ricevuto\n");
@@ -40,7 +47,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
-			memcpy(&test_config, header, header->size);
 /*DEBUG*/printf("Errore\n");
 			break;
 		case TEST_STATUS_PACKET_ID:	
@@ -48,12 +54,22 @@ PacketStatus host_onReceive(PacketHeader* header,
 /*DEBUG	*/printf("Sync\n");
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
-			memcpy(&digital_config, header, header->size);
 /*DEBUG*/printf("Errore\n");
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
 /*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\tSet_digital (aspetto1)=%d\tinput_digital=%d\n", digital_status.pin_digital, digital_status.set_digital, digital_status.inputs);
+			break;
+		case ANALOG_CONFIG_PACKET_ID:
+/*DEBUG*/printf("Errore\n");
+			break;
+		case ANALOG_STATUS_PACKET_ID:
+			memcpy(&analog_status, header, header->size);
+/*DEBUG*/printf("RECEIVE: Pin: %d\tSamples:\n", analog_status.pin_analog);
+/*DEBUG*/for(int i=0; i<analog_status.samples; i++)
+	{
+		printf("%ld\n", result[i]);
+	}
 			break;
 		default:
 			break;
@@ -97,6 +113,24 @@ PacketOperations digital_status_ops = {
 	0
 };
 
+PacketOperations analog_config_ops = {
+	ANALOG_CONFIG_PACKET_ID,
+	sizeof(AnalogConfigPacket),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
+PacketOperations analog_status_ops = {
+	ANALOG_STATUS_PACKET_ID,
+	sizeof(AnalogStatusPacket),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
 int main (int argc, char **argv)
 {
 	assert(argc>1);
@@ -113,8 +147,10 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
-	digital_config.pin_digital=10;
-	digital_config.set_digital=input_digital;
+	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
+	PacketHandler_installPacket(&packet_handler, &analog_status_ops);	
+	anolog_config.pin_analog=3;
+	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)
 	{
 		volatile int packet_complete =0;
@@ -133,8 +169,8 @@ int main (int argc, char **argv)
 			}
 		}
 
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&digital_config);	
-/*DEBUG*/printf("%d]\tHost Transmission Numero Pin:%d\n", i, digital_config.pin_digital);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&analog_config);	
+/*DEBUG*/printf("%d]\tHost Transmission Numero Pin:%d\n", i, analog_config.pin_analog);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);

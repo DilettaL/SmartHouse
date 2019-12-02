@@ -47,4 +47,19 @@ typedef struct DigitalStatusPacket{
 }DigitalStatusPacket;
 #define DIGITAL_STATUS_PACKET_ID 4
 
+typedef struct AnalogConfigPacket{
+	PacketHeader header;
+	uint8_t pin_analog;
+	uint8_t samples;
+}AnalogConfigPacket;
+#define ANALOG_CONFIG_PACKET_ID 5
+
+typedef struct AnalogStatusPacket{
+	PacketHeader header;
+	uint8_t pin_analog;
+	uint8_t samples;
+	uint16_t *result;
+//manca i valori di ritorno
+}AnalogStatusPacket;
+#define ANALOG_STATUS_PACKET_ID 6
 #pragma pack(pop)

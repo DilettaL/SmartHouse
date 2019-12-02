@@ -1,5 +1,6 @@
 #include "smarthouse_functions.h"
 #include "digio.h"
+#include "adc.h"
 #include "pwm.h"
 
 //digital functions
@@ -51,4 +52,11 @@ void Smarthouse_digital(void)
 	digital_status.pin_digital=digital_config.pin_digital;
 	digital_status.set_digital=digital_config.set_digital;
 //	return &digital_status;
+}
+
+//analog function
+void Smarthouse_analog(void)
+{
+	SetAdc(analog_config.pin_analog);
+	analog_status.result=RunAdc(analog_config.samples);
 }
