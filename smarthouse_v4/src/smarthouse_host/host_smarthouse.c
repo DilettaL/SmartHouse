@@ -53,7 +53,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\tSet_digital (aspetto1)=%d\tintensity=%d\n", digital_status.pin_digital, digital_status.set_digital);
+/*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\tSet_digital (aspetto1)=%d\tintensity=%d\n", digital_status.pin_digital, digital_status.set_digital, digital_status.intensity);
 			break;
 		default:
 			break;
@@ -115,7 +115,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	digital_config.pin_digital=10;
 	digital_config.set_digital=dimmer;
-	digital_config.intensity=100;
+	digital_config.intensity=255;
 	for (int i=0; i<1000; ++i)
 	{
 		volatile int packet_complete =0;
