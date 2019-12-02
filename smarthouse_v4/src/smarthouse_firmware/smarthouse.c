@@ -25,7 +25,7 @@ int flushOutputBuffers(void)
 	return packet_handler.tx_size;
 }
 
-TestConfigPacket test_config = { {TEST_CONFIG_PACKET_ID, sizeof(TestConfigPacket), 0}, 0 }; 	//il campo "prova = 0";;
+TestConfigPacket test_config = { {TEST_CONFIG_PACKET_ID, sizeof(TestConfigPacket), 0}, 6 }; 	//il campo "prova = 0";;
 TestStatusPacket test_config_buffer;
 
 #define ACK 0x99

@@ -179,14 +179,7 @@ int main (int argc, char **argv)
 	usleep(10000);
 	for (int i=0; i<1000; ++i)
 	{
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
-		while(packet_handler.tx_size)
-		{
-			uint8_t c=PacketHandler_txByte(&packet_handler);
-			ssize_t res = write(fd,&c,1);
-			usleep(10);
-		}
+
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
@@ -201,6 +194,15 @@ int main (int argc, char **argv)
 				}
 				packet_complete = (status==SyncChecksum);
 			}
+		}
+
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
+		while(packet_handler.tx_size)
+		{
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
 		}
 	}	
 	return 0;
