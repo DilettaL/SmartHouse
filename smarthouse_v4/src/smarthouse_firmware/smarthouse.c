@@ -4,6 +4,7 @@
 #include "smarthouse_functions.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
+#include "digio.h"
 #include "uart.h"
 #include "delay.h"
 
@@ -60,7 +61,6 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital(&digital_config);
-			digital_status.pin_digital=digital_config.pin_digital;
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:

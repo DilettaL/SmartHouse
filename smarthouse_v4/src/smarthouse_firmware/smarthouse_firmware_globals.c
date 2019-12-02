@@ -41,5 +41,5 @@ DigitalStatusPacket digital_status=
 		.seq=0
 	},
 	.pin_digital=0,
-	.status_digital=0
+	.set_digital=0
 };

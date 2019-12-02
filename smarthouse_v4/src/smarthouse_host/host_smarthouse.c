@@ -53,7 +53,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\n", digital_status.pin_digital);
+/*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\tSet_digital (aspetto1)=%d\n", digital_status.pin_digital, digital_status.set_digital);
 			break;
 		default:
 			break;
