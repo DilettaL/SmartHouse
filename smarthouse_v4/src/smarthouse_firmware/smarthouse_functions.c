@@ -21,6 +21,13 @@ void Dimmer(uint8_t pin, uint8_t intensity)
 	PWM_setDutyCycle(pin, intensity);
 }
 
+void InputDigital(uint8_t pin)
+{
+	DigIO_setDirection(pin, Input);
+	DigIO_setValue(pin, 1);
+	digital_status.inputs=DigIO_getValue(pin);
+}
+
 void Smarthouse_digital(void)
 {
 	switch (digital_config.set_digital)
@@ -36,7 +43,7 @@ void Smarthouse_digital(void)
 			digital_status.intensity=digital_config.intensity;
 			break;
 		case input_digital:
-			LedOff(digital_config.pin_digital);
+			InputDigital(digital_config.pin_digital);
 			break;
 		default:
 			break;

@@ -35,7 +35,6 @@ typedef struct DigitalConfigPacket{
 	uint8_t pin_digital;
 	uint8_t set_digital;
 	uint8_t intensity;
-	uint8_t inputs;
 }DigitalConfigPacket;
 #define DIGITAL_CONFIG_PACKET_ID 3
 
@@ -44,7 +43,7 @@ typedef struct DigitalStatusPacket{
 	uint8_t pin_digital;
 	uint8_t set_digital;
 	uint8_t intensity;
-//mancano i campi per prelevare i valori dei risultati
+	uint8_t inputs;
 }DigitalStatusPacket;
 #define DIGITAL_STATUS_PACKET_ID 4
 

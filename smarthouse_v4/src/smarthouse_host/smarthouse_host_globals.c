@@ -29,8 +29,7 @@ DigitalConfigPacket digital_config =
 	},
 	.pin_digital=0,
 	.set_digital=0,
-	.intensity=0,
-	.inputs=0
+	.intensity=0
 };
 
 DigitalStatusPacket digital_status=
@@ -42,5 +41,6 @@ DigitalStatusPacket digital_status=
 	},
 	.pin_digital=0,
 	.set_digital=0,
-	.intensity=0
+	.intensity=0,
+	.inputs=0
 };
