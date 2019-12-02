@@ -30,21 +30,21 @@ TestStatusPacket test_status = {
 };
 TestStatusPacket test_status_buffer;
 
-/*DigitalConfigPacket digital_config =
+DigitalConfigPacket digital_config =
 {
 	{
-		DIGITAL_CONFIG_PACKET_ID,
-		sizeof(DigitalConfigPacket),
-		0
+		.type=DIGITAL_CONFIG_PACKET_ID,
+		.size=sizeof(DigitalConfigPacket),
+		.seq=0
 	},
-	0,
-	0,
-	0,
-	0
+	.pin_digital=0,
+	.set_digital=0,
+	.intensity=0,
+	.inputs=0
 };
 
 DigitalConfigPacket digital_config_buffer;
-*/
+
 DigitalStatusPacket digital_status=
 {
 	{
@@ -52,6 +52,7 @@ DigitalStatusPacket digital_status=
 		.size=sizeof(DigitalStatusPacket),
 		.seq=0
 	},
+	.pin_digital=0,
 	.status_digital=0
 };
 
@@ -64,9 +65,9 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	{	return (PacketHeader*) &test_config_buffer;}
 	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
 	{	return (PacketHeader*) &test_status_buffer;}
-/*	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
+	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
-*/	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
+	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
 	else
 	{
@@ -88,12 +89,13 @@ PacketStatus host_onReceive(PacketHeader* header,
 			memcpy(&test_status, header, header->size);
 /*DEBUG	*/printf("Sync\n");
 			break;
-/*		case DIGITAL_CONFIG_PACKET_ID:
+		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
+/*DEBUG*/printf("Errore\n");
 			break;
-*/		case DIGITAL_STATUS_PACKET_ID:
+		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/printf("RECEIVE:DigitalOperation (status)=%d\n", digital_status.status_digital);
+/*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\n", digital_status.pin_digital);
 			break;
 		default:
 			break;
@@ -101,25 +103,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 	return Success;
 }
 
-/*
-
-PacketHeader* config_host_initializeBuffer (PacketType type,
-				       PacketSize size,
-				       void* args __attribute__((unused))) {
-	if(type!= TEST_CONFIG_PACKET_ID || size != sizeof(TestConfigPacket))
-	{return 0;}
-	return (PacketHeader*) &test_config_buffer;
-}
-
-PacketStatus config_host_onReceive(PacketHeader* header,
-			       void* args __attribute__((unused))) {
-	++header->seq;
-	memcpy(&test_config, header, header->size);
-printf("Errore\n");
-	return Success;
-}
-
-*/
 PacketOperations test_config_ops = {
 	TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
@@ -128,23 +111,7 @@ PacketOperations test_config_ops = {
 	host_onReceive,
 	0
 };
-/*
-PacketHeader* status_host_initializeBuffer (PacketType type,
-				       PacketSize size,
-				       void* args __attribute__((unused))) {
-	if(type!= TEST_STATUS_PACKET_ID || size != sizeof(TestStatusPacket))
-	{return 0;}
-	return (PacketHeader*) &test_status_buffer;
-}
 
-PacketStatus status_host_onReceive(PacketHeader* header,
-			       void* args __attribute__((unused))) {
-	++header->seq;
-	memcpy(&test_status, header, header->size);
-printf("Sync\n");
-	return Success;
-}
-*/
 PacketOperations test_status_ops = {
 	TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
@@ -154,7 +121,7 @@ PacketOperations test_status_ops = {
 	0
 };
 
-/*PacketOperations digital_config_ops = {
+PacketOperations digital_config_ops = {
 	DIGITAL_CONFIG_PACKET_ID,
 	sizeof(DigitalConfigPacket),
 	host_initializeBuffer,
@@ -162,7 +129,7 @@ PacketOperations test_status_ops = {
 	host_onReceive,
 	0
 };
-*/
+
 PacketOperations digital_status_ops = {
 	DIGITAL_STATUS_PACKET_ID,
 	sizeof(DigitalStatusPacket),
@@ -186,13 +153,11 @@ int main (int argc, char **argv)
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-//	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
+	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
-/*DEBUG*/test_config.prova=1;	//digital_config.set_digital=1;
-printf("DigitalStatus=%d\n", digital_status.status_digital);
+	digital_config.pin_digital=10;
 	for (int i=0; i<1000; ++i)
 	{
-
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
@@ -209,8 +174,8 @@ printf("DigitalStatus=%d\n", digital_status.status_digital);
 			}
 		}
 
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\tDigitalStatus=%d\n", i, test_config.prova, digital_status.status_digital);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&digital_config);	
+/*DEBUG*/printf("%d]\tHost Transmission Numero Pin:%d\n", i, digital_config.pin_digital);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);

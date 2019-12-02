@@ -30,20 +30,21 @@ typedef struct TestStatusPacket{
 #define TEST_STATUS_PACKET_ID 2
 
 
-/*typedef struct DigitalConfigPacket{
+typedef struct DigitalConfigPacket{
 	PacketHeader header;
 	uint8_t pin_digital;
-	DigitalOperations set_digital;
+	uint8_t set_digital;
 	uint8_t intensity;
 	uint8_t inputs;
 }DigitalConfigPacket;
 #define DIGITAL_CONFIG_PACKET_ID 3
-*/
+
 typedef struct DigitalStatusPacket{
 	PacketHeader header;
+	uint8_t pin_digital;
 	uint8_t status_digital;
 //mancano i campi per prelevare i valori dei risultati e l'intensity
 }DigitalStatusPacket;
-#define DIGITAL_STATUS_PACKET_ID 3
+#define DIGITAL_STATUS_PACKET_ID 4
 
 #pragma pack(pop)
