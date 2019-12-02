@@ -21,13 +21,15 @@ AVRDUDE_FLAGS += -D -q -V -C /usr/share/arduino/hardware/tools/avr/../avrdude.co
 AVRDUDE_FLAGS += -c wiring
 
 
-OBJS=	packet_handler.o\
+OBJS=	smarthouse_firmware_globals.o\
+	packet_handler.o\
 	digio.o\
 	uart.o\
 	pins.o\
 	delay.o\
 	
-HEADERS=packet_handler.h\
+HEADERS=smarthouse_firmware_globals.h\
+	packet_handler.h\
 	packet_operations.h\
 	packet_header.h\
 	smarthouse_packets.h\

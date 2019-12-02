@@ -34,9 +34,10 @@ b Test in cui queste funzione combinate
 		
 	}
 ]
-
+----------------------------------------------------------------------------------------------------------------------
 6o Problema: implementiamo il pacchetto analogico e lo testiamo con le stampe
 
 7o Problema: implementiamo il pacchetto di stato per i pin analogici
+-----------------------------------------------------------------------------------------------------------------------
 
 8o Problema: implementiamo la shell (in parte già fatta in smarthouse_v3)
