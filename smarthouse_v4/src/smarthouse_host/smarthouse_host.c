@@ -93,7 +93,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 */		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/printf("DigitalOperation (status, mi aspetto +1 del precedente)=%d\n", digital_status.status_digital);
+/*DEBUG*/printf("RECEIVE:DigitalOperation (status)=%d\n", digital_status.status_digital);
 			break;
 		default:
 			break;
@@ -188,7 +188,8 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 //	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
-	test_config.prova=1;	//digital_config.set_digital=1;
+/*DEBUG*/test_config.prova=1;	//digital_config.set_digital=1;
+printf("DigitalStatus=%d\n", digital_status.status_digital);
 	for (int i=0; i<1000; ++i)
 	{
 
@@ -209,7 +210,7 @@ int main (int argc, char **argv)
 		}
 
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);	
-/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\n", i, test_config.prova);
+/*DEBUG*/	printf("%d]\tHost Transmission (mi aspetto 1): test-> %d\tDigitalStatus=%d\n", i, test_config.prova, digital_status.status_digital);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
