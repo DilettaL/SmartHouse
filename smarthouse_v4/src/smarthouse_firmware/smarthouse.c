@@ -106,8 +106,8 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&digital_config, header, header->size);
 			if(digital_config.pin_digital==10)
 			{
-				DigIO_setDirection(10, 1);
-				DigIO_setValue(10, 1);
+				DigIO_setDirection(digital_config.pin_digital, 1);
+				DigIO_setValue(digital_config.pin_digital, 1);
 			}
 			digital_status.pin_digital=digital_config.pin_digital;
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
