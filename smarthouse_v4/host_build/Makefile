@@ -23,7 +23,7 @@ HEADERS =	serial_linux.h\
 	smarthouse_packets.h\
 	packet_operations.h\
 
-BINS=smarthouse_host
+BINS=host_smarthouse
 
 .phony:	clean all
 
@@ -37,7 +37,7 @@ all:	$(BINS)
 %.o:	$(PREFIX)/src/smarthouse_host/%.c 
 	$(CC) $(CC_OPTS) -c  $<
 
-smarthouse_host: smarthouse_host.o $(OBJS) $(LOBJS)
+host_smarthouse: host_smarthouse.o $(OBJS) $(LOBJS)
 	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LOBJS) $(LIBS)
 
 clean:

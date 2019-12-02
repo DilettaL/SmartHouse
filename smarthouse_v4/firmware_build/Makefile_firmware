@@ -22,6 +22,7 @@ AVRDUDE_FLAGS += -c wiring
 
 
 OBJS=	smarthouse_firmware_globals.o\
+	smarthouse_functions.o\
 	packet_handler.o\
 	digio.o\
 	uart.o\
@@ -29,6 +30,7 @@ OBJS=	smarthouse_firmware_globals.o\
 	delay.o\
 	
 HEADERS=smarthouse_firmware_globals.h\
+	smarthouse_functions.h\
 	packet_handler.h\
 	packet_operations.h\
 	packet_header.h\

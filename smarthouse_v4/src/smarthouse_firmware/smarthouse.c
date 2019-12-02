@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "smarthouse_firmware_globals.h"
+#include "smarthouse_functions.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 #include "digio.h"
@@ -61,8 +62,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&digital_config, header, header->size);
 			if(digital_config.pin_digital==10)
 			{
-				DigIO_setDirection(digital_config.pin_digital, 1);
-				DigIO_setValue(digital_config.pin_digital, 1);
+				Smarthouse_digital();
 			}
 			digital_status.pin_digital=digital_config.pin_digital;
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
