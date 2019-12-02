@@ -150,7 +150,7 @@ PacketOperations test_status_ops = {
 };
 */
 PacketOperations digital_status_ops = {
-	DIGITAL_STATUS_PACKET_ID,
+	3,//DIGITAL_STATUS_PACKET_ID,
 	sizeof(DigitalStatusPacket),
 	host_initializeBuffer,
 	0,
