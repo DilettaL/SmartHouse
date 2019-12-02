@@ -9,11 +9,25 @@
 struct UART* uart;
 PacketHandler packet_handler;
 
-TestConfigPacket test_config= { {TEST_CONFIG_PACKET_ID, sizeof (TestConfigPacket), 0 }, 0}; 
+TestConfigPacket test_config= {
+	{
+		.type=TEST_CONFIG_PACKET_ID,
+		.size=sizeof (TestConfigPacket),
+		.seq=0
+	},
+	.prova=0
+}; 
 TestConfigPacket test_config_buffer;
 
 #define ACK 0x99
-TestStatusPacket test_status = { {TEST_STATUS_PACKET_ID, sizeof(TestStatusPacket), 0}, ACK};
+TestStatusPacket test_status = {
+	{
+		.type=TEST_STATUS_PACKET_ID,
+		.size=sizeof(TestStatusPacket),
+		.seq=0
+	},
+	.ack=ACK
+};
 TestStatusPacket test_status_buffer;
 
 /*DigitalConfigPacket digital_config =
@@ -34,11 +48,11 @@ DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status=
 {
 	{
-		DIGITAL_STATUS_PACKET_ID,
-		sizeof(DigitalStatusPacket),
-		0
+		.type=DIGITAL_STATUS_PACKET_ID,
+		.size=sizeof(DigitalStatusPacket),
+		.seq=0
 	},
-	0
+	.status_digital=0
 };
 
 DigitalStatusPacket digital_status_buffer;
