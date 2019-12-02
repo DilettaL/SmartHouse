@@ -25,6 +25,7 @@ OBJS=	smarthouse_firmware_globals.o\
 	smarthouse_functions.o\
 	packet_handler.o\
 	digio.o\
+	pwm.o\
 	uart.o\
 	pins.o\
 	delay.o\
@@ -36,6 +37,7 @@ HEADERS=smarthouse_firmware_globals.h\
 	packet_header.h\
 	smarthouse_packets.h\
 	digio.h\
+	pwm.h\
 	uart.h\
 	pins.h\
 	delay.h\

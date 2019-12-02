@@ -43,7 +43,8 @@ typedef struct DigitalStatusPacket{
 	PacketHeader header;
 	uint8_t pin_digital;
 	uint8_t set_digital;
-//mancano i campi per prelevare i valori dei risultati e l'intensity
+	uint8_t intensity;
+//mancano i campi per prelevare i valori dei risultati
 }DigitalStatusPacket;
 #define DIGITAL_STATUS_PACKET_ID 4
 

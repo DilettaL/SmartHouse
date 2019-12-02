@@ -1,5 +1,6 @@
 #include "smarthouse_functions.h"
 #include "digio.h"
+#include "pwm.h"
 
 //digital functions
 void LedOff(uint8_t pin)
@@ -14,21 +15,28 @@ void LedOn(uint8_t pin)
 	DigIO_setValue(pin, 1);
 }
 
-void Smarthouse_digital(DigitalConfigPacket *packet)
+void Dimmer(uint8_t pin, uint8_t intensity)
+{	
+	PWM_enable(pin, 1);
+	PWM_setDutyCycle(pin, intensity);
+}
+
+void Smarthouse_digital(void)
 {
-	switch (packet->set_digital)
+	switch (digital_config.set_digital)
 	{
 		case ledOff:
-			LedOff(packet->pin_digital);
+			LedOff(digital_config.pin_digital);
 			break;
 		case ledOn:
-			LedOn(packet->pin_digital);
+			LedOn(digital_config.pin_digital);
 			break;
 		case dimmer:
-			LedOff(packet->pin_digital);
+			Dimmer(digital_config.pin_digital, digital_config.intensity);
+			digital_status.intensity=digital_config.intensity;
 			break;
 		case input_digital:
-			LedOff(packet->pin_digital);
+			LedOff(digital_config.pin_digital);
 			break;
 		default:
 			break;
