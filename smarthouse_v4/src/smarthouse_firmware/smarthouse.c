@@ -60,10 +60,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
-			if(digital_config.pin_digital==10)
-			{
-				Smarthouse_digital();
-			}
+			Smarthouse_digital(&digital_config);
 			digital_status.pin_digital=digital_config.pin_digital;
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;

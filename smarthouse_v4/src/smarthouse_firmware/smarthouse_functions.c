@@ -2,13 +2,35 @@
 #include "digio.h"
 
 //digital functions
+void LedOff(uint8_t pin)
+{
+	DigIO_setDirection(pin, Output);
+	DigIO_setValue(pin, 0);
+}
+
 void LedOn(uint8_t pin)
 {
 	DigIO_setDirection(pin, Output);
 	DigIO_setValue(pin, 1);
 }
 
-void Smarthouse_digital(void)
+void Smarthouse_digital(DigitalConfigPacket *packet)
 {
-	LedOn(10);
+	switch (packet->set_digital)
+	{
+		case ledOff:
+			LedOff(packet->pin_digital);
+			break;
+		case ledOn:
+			LedOn(packet->pin_digital);
+			break;
+		case dimmer:
+			LedOff(packet->pin_digital);
+			break;
+		case input_digital:
+			LedOff(packet->pin_digital);
+			break;
+		default:
+			break;
+	}
 }
