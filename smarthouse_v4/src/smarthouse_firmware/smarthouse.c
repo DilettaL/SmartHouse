@@ -97,6 +97,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	{
 		case TEST_CONFIG_PACKET_ID:
 			memcpy(&test_config, header, header->size);
+			digital_status.status_digital++;
 PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
@@ -140,7 +141,7 @@ PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 }
 */
 PacketOperations test_config_ops = {
-	1,	//TEST_CONFIG_PACKET_ID,
+	TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
 	firmware_initializeBuffer,
 	0,
@@ -164,7 +165,7 @@ PacketStatus status_firmware_onReceive(PacketHeader* header,
 }
 */
 PacketOperations test_status_ops = {
-	2,	//TEST_STATUS_PACKET_ID,
+	TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
 	firmware_initializeBuffer,
 	0,
@@ -182,7 +183,7 @@ PacketOperations test_status_ops = {
 };
 */
 PacketOperations digital_status_ops = {
-	3,	//DIGITAL_STATUS_PACKET_ID,
+	DIGITAL_STATUS_PACKET_ID,
 	sizeof(DigitalStatusPacket),
 	firmware_initializeBuffer,
 	0,

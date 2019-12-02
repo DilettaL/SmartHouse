@@ -93,7 +93,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 */		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/printf("Correct Receive Digital Status Packet\n");
+/*DEBUG*/printf("DigitalOperation (status, mi aspetto +1 del precedente)=%d\n", digital_status.status_digital);
 			break;
 		default:
 			break;
@@ -121,7 +121,7 @@ printf("Errore\n");
 
 */
 PacketOperations test_config_ops = {
-	1,	//TEST_CONFIG_PACKET_ID,
+	TEST_CONFIG_PACKET_ID,
 	sizeof(TestConfigPacket),
 	host_initializeBuffer,
 	0,
@@ -146,7 +146,7 @@ printf("Sync\n");
 }
 */
 PacketOperations test_status_ops = {
-	2,	//TEST_STATUS_PACKET_ID,
+	TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
 	host_initializeBuffer,
 	0,
@@ -164,7 +164,7 @@ PacketOperations test_status_ops = {
 };
 */
 PacketOperations digital_status_ops = {
-	3,//DIGITAL_STATUS_PACKET_ID,
+	DIGITAL_STATUS_PACKET_ID,
 	sizeof(DigitalStatusPacket),
 	host_initializeBuffer,
 	0,

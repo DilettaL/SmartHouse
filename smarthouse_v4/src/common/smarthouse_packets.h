@@ -41,7 +41,7 @@ typedef struct TestStatusPacket{
 */
 typedef struct DigitalStatusPacket{
 	PacketHeader header;
-	uint8_t status_digital;
+	DigitalOperations status_digital;
 //mancano i campi per prelevare i valori dei risultati e l'intensity
 }DigitalStatusPacket;
 #define DIGITAL_STATUS_PACKET_ID 3
