@@ -38,12 +38,12 @@ typedef struct TestStatusPacket{
 	uint8_t inputs;
 }DigitalConfigPacket;
 #define DIGITAL_CONFIG_PACKET_ID 3
-
+*/
 typedef struct DigitalStatusPacket{
 	PacketHeader header;
 	DigitalOperations status_digital;
 //mancano i campi per prelevare i valori dei risultati e l'intensity
 }DigitalStatusPacket;
 #define DIGITAL_STATUS_PACKET_ID 3
-*/
+
 #pragma pack(pop)
