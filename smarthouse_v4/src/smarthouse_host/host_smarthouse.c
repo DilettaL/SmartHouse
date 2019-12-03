@@ -6,6 +6,31 @@
 #include "smarthouse_host_globals.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
+const char *banner[]={
+	"Smarthouse",
+	"usage:",
+	"$>Smarthouse	...",
+	"to choice operation insert one of this commands(then choice the pin and other settings):",
+	"$>Smarthouse	ledOn",
+	"$>Smarthouse	dimmer",
+	"$>Smarthouse	digital input",
+	"$>Smarthouse	ledOff",
+	"$>Smarthouse	adc",
+	"to request a status packet insert(then choice packet type):",
+	"$>Smarthouse	request",
+	"to exit insert:",
+	"$>Smarthouse	quit"
+};
+
+void printBanner(void)
+{
+	const char*const* line=banner;
+	while (*line)
+	{
+		printf("%s\n",*line);
+		line++;
+	}
+}
 
 struct UART* uart;
 PacketHandler packet_handler;
@@ -68,7 +93,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 /*DEBUG*/printf("RECEIVE: Pin: %d\tSamples:\n", analog_status.pin_analog);
 /*DEBUG*/for(uint16_t i=0; i<analog_status.samples; i++)
 	{
-		printf("%d\n", analog_status.result[i]);
+		printf("%ld\n", analog_status.result+i);
 	}
 			break;
 		default:
@@ -149,7 +174,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);	
-	analog_config.pin_analog=3;
+	anolog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)
 	{

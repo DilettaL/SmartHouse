@@ -36,7 +36,6 @@ uint16_t* RunAdc(uint8_t numb_samples)
 //MANCA CONTROLLO SUL NUMERO DI CAMPIONI RICHIESTO
 	//Each data is converts with n samples
 	uint16_t *result=(uint16_t*)malloc(sizeof(uint16_t)*numb_samples);
-	uint16_t *temp=&result[0];
 	uint16_t count;
 	for(count=0; count<numb_samples; count++)
 	{
@@ -46,7 +45,6 @@ uint16_t* RunAdc(uint8_t numb_samples)
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
 	}
-	free (result);
-	return temp;	
+	return result;	
 }
 
