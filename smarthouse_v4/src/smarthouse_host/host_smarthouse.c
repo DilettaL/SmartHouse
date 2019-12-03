@@ -97,7 +97,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 /*DEBUG*/printf("RECEIVE: Pin: %d\tSamples:\n", analog_status.pin_analog);
 /*DEBUG*/for(uint16_t i=0; i<analog_status.samples; i++)
 	{
-		printf("%ld\n", analog_status.result+i);
+		printf("%d\n", analog_status.result+i);
 	}
 			break;
 		default:
@@ -209,7 +209,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	printf("Shell Start\n");	
-	anolog_config.pin_analog=3;
+	analog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)
 	{
