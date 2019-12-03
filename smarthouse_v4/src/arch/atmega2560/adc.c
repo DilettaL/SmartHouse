@@ -1,6 +1,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <avr/io.h>
 #include "adc.h"
 #include "uart.h"
@@ -30,12 +31,12 @@ void SetAdc(uint8_t pin)
 	ADCSRB |= (mapping->select_adc_adcsrb);
 }
 
-uint8_t* RunAdc(uint8_t numb_samples)
+uint16_t* RunAdc(uint8_t numb_samples)
 {
 //MANCA CONTROLLO SUL NUMERO DI CAMPIONI RICHIESTO
 	//Each data is converts with n samples
-	uint16_t result[numb_samples];
-	uint8_t count;
+	uint16_t *result=(uint16_t*)malloc(sizeof(uint16_t)*numb_samples);
+	uint16_t count;
 	for(count=0; count<numb_samples; count++)
 	{
 		// start single convertion
@@ -44,6 +45,6 @@ uint8_t* RunAdc(uint8_t numb_samples)
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
 	}
-	return &result;	
+	return result;	
 }
 
