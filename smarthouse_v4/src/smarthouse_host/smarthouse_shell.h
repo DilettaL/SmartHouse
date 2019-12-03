@@ -1,7 +1,7 @@
 #pragma once
 #include "smarthouse_host_globals.h"
 
-typedef int (*CmdFn)(char* response, char** args);
+typedef int (*CmdFn)(void);//char* response, char** args);
 
 typedef struct
 {

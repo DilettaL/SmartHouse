@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "smarthouse_shell.h"
-uint8_t setPin(void)
+int setPin(void)
 {
-	uint8_t pin;
-	print("insert pin:\n");
-	scanf("%ld\n", &pin);
-	if(pin >=0 && pin<=15)
+	int pin;
+	printf("insert pin:\n");
+	int control=scanf("%d\n", &pin);
+	if(pin >=0 && pin<=15 && control>=0)
 	{	return pin;	}
 	else
 	{	return -1;	}
@@ -21,11 +21,72 @@ int quitFn(void)
 
 int ledOffFn(void)
 {
+	int set_pin=setPin();
+	if(set_pin<=-1)
+	{	return -1;	}
+	digital_config.pin_digital=(uint8_t)set_pin;
+	digital_config.set_digital=ledOff;
+	return 0;
+}
+
+int ledOnFn(void)
+{
 	uint8_t set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
 	digital_config.pin_digital=set_pin;
-	digital_config.set_digital=ledOff;
+	digital_config.set_digital=ledOn;
+	return 0;
+}
+
+int dimmerFn(void)
+{
+	int intensity=0;
+	int set_pin=setPin();
+	if(set_pin<=-1)
+	{	return -1;	}
+	digital_config.pin_digital=(uint8_t)set_pin;
+	digital_config.set_digital=dimmer;
+	printf("Insert intensity:\n");
+	if(scanf("%d", &intensity)>=0)
+	{
+		digital_config.intensity=(uint8_t)intensity%256;
+		return 0;
+	}
+	else
+	{	return -1;	}
+}
+
+int digitalInputFn(void)
+{
+	int set_pin=setPin();
+	if(set_pin<=-1)
+	{	return -1;	}
+	digital_config.pin_digital=(uint8_t)set_pin;
+	digital_config.set_digital=input_digital;
+	return 0;
+}
+
+int adcFn(void)
+{
+	int sample;
+	int set_pin=setPin();
+	if(set_pin<=-1)
+	{	return -1;	}
+	analog_config.pin_analog=(uint8_t)set_pin;
+	printf("Insert number of samples:\n");
+	if(scanf("%d", &sample)>=0)
+	{
+		analog_config.samples=(uint8_t)sample;
+		return 0;
+	}
+	else
+	{	return -1;	}
+}
+
+int requestFn(void)
+{
+	return 0;
 }
 Command commands[] =
 {
@@ -62,6 +123,6 @@ Command commands[] =
 	{
 		.name= "request",
 		.cmd_fn=requestFn,
-		.hel="usage: request"
+		.help="usage: request"
 	}
 };

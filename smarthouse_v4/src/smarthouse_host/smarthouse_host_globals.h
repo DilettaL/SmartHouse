@@ -1,6 +1,8 @@
 #pragma once
 #include "smarthouse_packets.h"
 
+extern int run;
+
 extern TestConfigPacket test_config;
 extern TestStatusPacket test_status;
 
