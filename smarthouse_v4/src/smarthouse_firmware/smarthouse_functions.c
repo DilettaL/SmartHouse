@@ -57,6 +57,12 @@ void Smarthouse_digital(void)
 //analog function
 void Smarthouse_analog(void)
 {
+	uint16_t* temp;
 	SetAdc(analog_config.pin_analog);
-	analog_status.result=RunAdc(analog_config.samples);
+	analog_status.pin_analog=analog_config.pin_analog;
+	analog_status.samples=analog_config.samples;
+	
+	temp = RunAdc(analog_config.samples);
+	for (int k = 0; k < analog_config.samples ; k++)
+		analog_status.result[k]=*(temp+k);
 }

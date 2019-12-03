@@ -65,6 +65,5 @@ AnalogStatusPacket analog_status=
 	},
 	.pin_analog=0,
 	.samples=0,
-	.result=0
-//mancano i valori di ritorno
+	.result= {0,0,0,0,0,0,0,0,0,0}
 };

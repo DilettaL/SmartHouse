@@ -162,7 +162,7 @@ int main (int argc, char** argv)
 	sync=0;
 //TEST ADC INIZIO PWM
 PWM_enable(10, 1);
-PWM_setDutyCycle(100, 100);
+PWM_setDutyCycle(10, 100);
 //TEST ADC FINE PWM
 	while (1)
 	{
