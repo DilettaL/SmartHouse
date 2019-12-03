@@ -10,14 +10,13 @@ TestConfigPacket test_config= {
 	.prova=0
 }; 
 
-#define ACK 0x99
 TestStatusPacket test_status = {
 	{
 		.type=TEST_STATUS_PACKET_ID,
 		.size=sizeof(TestStatusPacket),
 		.seq=0
 	},
-	.ack=ACK
+	.sync=0
 };
 
 DigitalConfigPacket digital_config =

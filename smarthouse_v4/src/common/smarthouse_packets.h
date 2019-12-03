@@ -25,7 +25,7 @@ typedef struct TestConfigPacket{
 
 typedef struct TestStatusPacket{
 	PacketHeader header;
-	uint8_t ack;
+	uint8_t sync;
 } TestStatusPacket;
 #define TEST_STATUS_PACKET_ID 2
 

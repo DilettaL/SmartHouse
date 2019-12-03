@@ -1,6 +1,8 @@
 #include <string.h>
 #include "smarthouse_host_globals.h"
 
+int run=1;
+
 TestConfigPacket test_config= {
 	{
 		.type=TEST_CONFIG_PACKET_ID,
@@ -10,14 +12,13 @@ TestConfigPacket test_config= {
 	.prova=0
 }; 
 
-#define ACK 0x99
 TestStatusPacket test_status = {
 	{
 		.type=TEST_STATUS_PACKET_ID,
 		.size=sizeof(TestStatusPacket),
 		.seq=0
 	},
-	.ack=ACK
+	.sync=0
 };
 
 DigitalConfigPacket digital_config =
