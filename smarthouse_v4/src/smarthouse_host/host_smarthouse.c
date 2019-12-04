@@ -9,7 +9,6 @@
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 
-
 const char *banner[]={
 	"Smarthouse",
 	"usage:",
@@ -94,11 +93,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status, header, header->size);
-/*DEBUG*/printf("RECEIVE: Pin: %d\tSamples:\n", analog_status.pin_analog);
-/*DEBUG*/for(uint16_t i=0; i<analog_status.samples; i++)
-	{
-		printf("%hn\n", analog_status.result+i);
-	}
+/*DEBUG*/printf("RECEIVE\n");
 			break;
 		default:
 			break;
@@ -159,7 +154,7 @@ PacketOperations analog_status_ops = {
 	host_onReceive,
 	0
 };
-/*
+int fd;
 void readSerial(void)
 {
 	volatile int packet_complete =0;
@@ -179,7 +174,7 @@ void readSerial(void)
 	}
 }
 
-void Smarthouse_sendPacket( (PacketHeader*) packet)
+void Smarthouse_sendPacket(PacketHeader* packet)
 {
 	PacketHandler_sendPacket(&packet_handler, &packet);	
 	while(packet_handler.tx_size)
@@ -189,11 +184,11 @@ void Smarthouse_sendPacket( (PacketHeader*) packet)
 		usleep(10);
 	}
 }
-*/
+
 int main (int argc, char **argv)
 {
 	assert(argc>1);
-	int fd=serial_open(argv[1]);
+	fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -208,8 +203,14 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
+	printf("Sync\n");
+	while(test_status.sync!=1)
+	{
+		readSerial();
+		Smarthouse_sendPacket((PacketHeader*)&test_config);
+	}
 	printf("Shell Start\n");	
-	analog_config.pin_analog=3;
+	/*analog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)
 	{
@@ -238,5 +239,5 @@ printf("%d]\tHost Transmission Numero Pin:%d\n", i, analog_config.pin_analog);
 			usleep(10);
 		}
 	}	
-	return 0;
+*/	return 0;
 }
