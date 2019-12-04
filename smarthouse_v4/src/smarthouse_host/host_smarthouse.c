@@ -6,6 +6,7 @@
 #include <readline/history.h>
 #include "serial_linux.h"
 #include "smarthouse_host_globals.h"
+#include "smarthouse_shell.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 
@@ -79,7 +80,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
-/*DEBUG	*/printf("Sync\n");
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
@@ -210,6 +210,21 @@ int main (int argc, char **argv)
 		Smarthouse_sendPacket();
 	}
 	printf("Shell Start\n");	
+	while(run)
+	{
+		char *buffer = readline("Smarthouse> ");
+		if (buffer)
+		{
+			char response[10000];
+			executeCommand(response, buffer);
+			if (*buffer)
+			{//	add_history(buffer);
+				free(buffer);
+			}
+			else
+			{	run=0;	}
+		}
+	}
 	/*analog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)

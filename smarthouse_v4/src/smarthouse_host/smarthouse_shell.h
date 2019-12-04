@@ -12,3 +12,6 @@ typedef struct
 
 extern Command commands[];
 
+Command* findCommand(const char* name);
+
+int executeCommand(char* response, const char* line_);
