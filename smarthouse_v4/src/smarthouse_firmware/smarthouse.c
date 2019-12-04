@@ -61,7 +61,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
-			memcpy(&test_config, header, header->size);
+			test_status.sync=1;
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
@@ -86,7 +86,6 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		default:
 			break;
 	}
-	test_status.sync=1;
 	delayMs(10);
 	flushOutputBuffers();
 	return Success;
@@ -160,10 +159,6 @@ int main (int argc, char** argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);	
 	int global_seq = 0;
-//TEST ADC INIZIO PWM
-PWM_enable(10, 1);
-PWM_setDutyCycle(10, 100);
-//TEST ADC FINE PWM
 	while (1)
 	{
 		flushInputBuffers();
