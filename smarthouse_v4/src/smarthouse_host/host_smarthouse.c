@@ -201,7 +201,7 @@ int main (int argc, char **argv)
 		}
 	}
 	printf("Shell Start\n");	
-/*	while(run)
+	while(run)
 	{
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
@@ -231,7 +231,7 @@ int main (int argc, char **argv)
 			{	run=0;	}
 		}
 	}
-*/
+
 	/*analog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)
