@@ -164,12 +164,12 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-/*		if(test_status.sync==0)
-		{
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+//		if(test_status.sync==0)
+//		{
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_config);
 			delayMs(10);
 			flushOutputBuffers();
-		}
-*/	}
+//		}
+//	}
 	
 }

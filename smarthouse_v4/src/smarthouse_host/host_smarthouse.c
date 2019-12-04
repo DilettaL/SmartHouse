@@ -176,7 +176,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	printf("Sync\n");
-	while(test_status.sync!=1 && run==1)
+	while(test_status.sync!=1 && run==0)
 	{
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 		while(packet_handler.tx_size)
