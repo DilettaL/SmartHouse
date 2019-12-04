@@ -203,21 +203,8 @@ int main (int argc, char **argv)
 	printf("Shell Start\n");	
 	while(run)
 	{
-		volatile int packet_complete =0;
-		while ( !packet_complete ) 
-		{
-			uint8_t c;
-			int n=read (fd, &c, 1);
-			if (n) 
-			{
-				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-				if (status<0)
-				{	printf("%d",status);
-					fflush(stdout);
-				}
-				packet_complete = (status==SyncChecksum);
-			}
-		}
+
+
 		char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
@@ -235,6 +222,22 @@ int main (int argc, char **argv)
 				uint8_t c=PacketHandler_txByte(&packet_handler);
 				ssize_t res = write(fd,&c,1);
 				usleep(10);
+			}
+				volatile int packet_complete =0;
+
+			while ( !packet_complete ) 
+			{
+				uint8_t c;
+				int n=read (fd, &c, 1);
+				if (n) 
+				{
+					PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+					if (status<0)
+					{	printf("%d",status);
+						fflush(stdout);
+					}
+					packet_complete = (status==SyncChecksum);
+				}
 			}
 		}
 	}
