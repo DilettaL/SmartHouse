@@ -27,6 +27,7 @@ int ledOffFn(void)
 	{	return -1;	}
 	digital_config.pin_digital=(uint8_t)set_pin;
 	digital_config.set_digital=ledOff;
+	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
 
@@ -50,9 +51,11 @@ int dimmerFn(void)
 	digital_config.pin_digital=(uint8_t)set_pin;
 	digital_config.set_digital=dimmer;
 	printf("Insert intensity:\n");
-	if(scanf("%d", &intensity)>=0)
+	int control = scanf("%d", &intensity);
+	if(control>=0)
 	{
 		digital_config.intensity=(uint8_t)intensity%256;
+		pointer_packet=(PacketHeader*)&digital_config;
 		return 0;
 	}
 	else
@@ -66,6 +69,7 @@ int digitalInputFn(void)
 	{	return -1;	}
 	digital_config.pin_digital=(uint8_t)set_pin;
 	digital_config.set_digital=input_digital;
+	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
 
@@ -80,6 +84,7 @@ int adcFn(void)
 	if(scanf("%d", &sample)>=0)
 	{
 		analog_config.samples=(uint8_t)sample;
+		pointer_packet=(PacketHeader*)&analog_config;
 		return 0;
 	}
 	else
