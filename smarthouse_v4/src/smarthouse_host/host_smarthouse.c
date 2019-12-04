@@ -155,7 +155,7 @@ PacketOperations analog_status_ops = {
 	host_onReceive,
 	0
 };
-int fd;
+/*int fd;
 void readSerial(void)
 {
 	volatile int packet_complete =0;
@@ -184,7 +184,7 @@ void Smarthouse_sendPacket(void)
 		usleep(10);
 	}
 }
-
+*/
 int main (int argc, char **argv)
 {
 	assert(argc>1);
@@ -206,13 +206,47 @@ int main (int argc, char **argv)
 	printf("Sync\n");
 	while(test_status.sync!=1)
 	{
-		readSerial();
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
+					fflush(stdout);
+				}
+				packet_complete = (status==SyncChecksum);
+			}
+		}
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-		Smarthouse_sendPacket();
+		while(packet_handler.tx_size)
+		{
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
+		}
 	}
 	printf("Shell Start\n");	
 /*	while(run)
 	{
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
+					fflush(stdout);
+				}
+				packet_complete = (status==SyncChecksum);
+			}
+		}
 		char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
