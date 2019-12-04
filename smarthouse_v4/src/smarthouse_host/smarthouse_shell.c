@@ -150,7 +150,7 @@ Command* findCommand(const char* name)
 	return 0;
 }
 
-int executeCommand(char* response, const char* line_)
+int executeCommand(const char* line_)
 {
 
 	char line[1024];
@@ -177,29 +177,3 @@ int executeCommand(char* response, const char* line_)
 	{	printf("ERROR: no handler for command\n");	}
 	return retval;
 }
-/*
-	char* argptrs[10];
-	int argno=0;
-  	while(argno<10 && (argptrs[argno] = strtok(NULL, " ")))
-	{
-    		++argno;
-	}
-	int retval=0;
-	response[0]=0;
-	if (argno==cmd->n_args){
-    if (cmd->cmd_fn){
-      retval=(*cmd->cmd_fn)(response, argptrs);
-      if(response[0])
-        printf("%s\n",response);
-      if (retval)
-        printf("ERROR %d\n", retval);
-      else
-        printf("OK\n");
-    } else {
-      printf("ERROR: no handler for command\n");
-    }
-  } else {
-    printf("ERROR: command not issued. Wrong number of arguments\n %s\n", cmd->help);
-  }
-  return retval;
-*/

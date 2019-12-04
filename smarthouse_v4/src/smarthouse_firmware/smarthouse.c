@@ -61,6 +61,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
+			test_status.sync=1;
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
@@ -85,7 +86,6 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		default:
 			break;
 	}
-	test_status.sync=1;
 	delayMs(10);
 	flushOutputBuffers();
 	return Success;
@@ -164,12 +164,12 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-		if(test_status.sync==0)
+/*		if(test_status.sync==0)
 		{
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			delayMs(10);
 			flushOutputBuffers();
 		}
-	}
+*/	}
 	
 }

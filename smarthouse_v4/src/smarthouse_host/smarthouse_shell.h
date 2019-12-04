@@ -14,4 +14,4 @@ extern Command commands[];
 
 Command* findCommand(const char* name);
 
-int executeCommand(char* response, const char* line_);
+int executeCommand(const char* line_);

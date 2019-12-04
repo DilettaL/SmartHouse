@@ -80,6 +80,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
+			run=0;
 	printf ("SYNC\n");
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
@@ -175,8 +176,15 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	printf("Sync\n");
-	while(test_status.sync!=1)
+	while(test_status.sync!=1 && run==1)
 	{
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+		while(packet_handler.tx_size)
+		{
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
+		}
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
@@ -192,24 +200,15 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-		while(packet_handler.tx_size)
-		{
-			uint8_t c=PacketHandler_txByte(&packet_handler);
-			ssize_t res = write(fd,&c,1);
-			usleep(10);
-		}
 	}
+	run=1;
 	printf("Shell Start\n");	
 	while(run)
 	{
-
-
 		char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
-			char response[10000];
-			executeCommand(response, buffer);
+			executeCommand(buffer);
 			if (*buffer)
 			{//	add_history(buffer);
 				free(buffer);
@@ -223,28 +222,7 @@ int main (int argc, char **argv)
 				ssize_t res = write(fd,&c,1);
 				usleep(10);
 			}
-				volatile int packet_complete =0;
-
-			while ( !packet_complete ) 
-			{
-				uint8_t c;
-				int n=read (fd, &c, 1);
-				if (n) 
-				{
-					PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-					if (status<0)
-					{	printf("%d",status);
-						fflush(stdout);
-					}
-					packet_complete = (status==SyncChecksum);
-				}
-			}
 		}
-	}
-	/*analog_config.pin_analog=3;
-	analog_config.samples=10;
-	for (int i=0; i<1000; ++i)
-	{
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
@@ -260,15 +238,6 @@ int main (int argc, char **argv)
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&analog_config);	
-printf("%d]\tHost Transmission Numero Pin:%d\n", i, analog_config.pin_analog);
-		while(packet_handler.tx_size)
-		{
-			uint8_t c=PacketHandler_txByte(&packet_handler);
-			ssize_t res = write(fd,&c,1);
-			usleep(10);
-		}
-	}	
-*/	return 0;
+	}
+	return 0;
 }
