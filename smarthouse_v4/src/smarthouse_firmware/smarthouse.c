@@ -13,6 +13,7 @@
 uint8_t sync;
 static struct UART* uart;
 static PacketHandler packet_handler;
+PacketHeader *pointer_firmware=(PacketHeader*)&test_config;
 
 void flushInputBuffers(void) {
 	while (UART_rxBufferFull(uart))
@@ -62,32 +63,35 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	{
 		case TEST_CONFIG_PACKET_ID:
 			test_status.sync=1;
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+			pointer_firmware=(PacketHeader*)&test_status;
+//			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case TEST_STATUS_PACKET_ID:
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
+//			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_status);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+			pointer_firmware=(PacketHeader*)&digital_status;
+///*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+//			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			memcpy(&analog_config, header, header->size);
 			Smarthouse_analog();
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
+			pointer_firmware=(PacketHeader*)&analog_status;
+///*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
 			break;
 		case ANALOG_STATUS_PACKET_ID:
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
+		//	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
 			break;
 		default:
 			break;
 	}
-	delayMs(10);
-	flushOutputBuffers();
+//	delayMs(10);
+//	flushOutputBuffers();
 	return Success;
 }
 
@@ -166,10 +170,9 @@ int main (int argc, char** argv)
 		++global_seq;
 //		if(test_status.sync==0)
 //		{
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &test_config);
+			PacketHandler_sendPacket(&packet_handler, pointer_firmware);
 			delayMs(10);
 			flushOutputBuffers();
 //		}
-//	}
-	
+	}	
 }
