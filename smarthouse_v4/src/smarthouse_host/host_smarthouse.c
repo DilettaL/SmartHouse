@@ -80,7 +80,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
-		printf ("SYNC\n");
+	printf ("SYNC\n");
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
@@ -211,7 +211,7 @@ int main (int argc, char **argv)
 		Smarthouse_sendPacket();
 	}
 	printf("Shell Start\n");	
-	while(run)
+/*	while(run)
 	{
 		char *buffer = readline("Smarthouse> ");
 		if (buffer)
@@ -226,7 +226,7 @@ int main (int argc, char **argv)
 			{	run=0;	}
 		}
 	}
-
+*/
 	/*analog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)

@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "smarthouse_host_globals.h"
 #include "smarthouse_shell.h"
 int setPin(void)
 {
