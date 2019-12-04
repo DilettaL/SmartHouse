@@ -174,9 +174,8 @@ void readSerial(void)
 	}
 }
 
-void Smarthouse_sendPacket(PacketHeader* packet)
-{
-	PacketHandler_sendPacket(&packet_handler, &packet);	
+void Smarthouse_sendPacket(void)
+{	
 	while(packet_handler.tx_size)
 	{
 		uint8_t c=PacketHandler_txByte(&packet_handler);
@@ -207,7 +206,8 @@ int main (int argc, char **argv)
 	while(test_status.sync!=1)
 	{
 		readSerial();
-		Smarthouse_sendPacket((PacketHeader*)&test_config);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+		Smarthouse_sendPacket();
 	}
 	printf("Shell Start\n");	
 	/*analog_config.pin_analog=3;
