@@ -2,6 +2,7 @@
 #include "smarthouse_packets.h"
 
 extern int run;
+extern PacketHeader *pointer_packet;
 
 extern TestConfigPacket test_config;
 extern TestStatusPacket test_status;

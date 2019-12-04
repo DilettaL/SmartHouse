@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "smarthouse_host_globals.h"
 #include "smarthouse_shell.h"
+#include "packet_header.h"
 int setPin(void)
 {
 	int pin;
@@ -37,6 +37,7 @@ int ledOnFn(void)
 	{	return -1;	}
 	digital_config.pin_digital=set_pin;
 	digital_config.set_digital=ledOn;
+	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
 
@@ -165,7 +166,7 @@ int executeCommand(char* response, const char* line_)
 		if (retval)
 		{	printf("ERROR %d\n", retval);	}
 		else
-		{	printf("OK\n");		}
+		{	printf("Packet transmitt\n");		}
 	}
 	else
 	{	printf("ERROR: no handler for command\n");	}

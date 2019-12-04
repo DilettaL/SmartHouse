@@ -2,7 +2,7 @@
 #include "smarthouse_host_globals.h"
 
 int run=1;
-
+PacketHeader *pointer_packet=(PacketHeader*)&test_config;
 TestConfigPacket test_config= {
 	{
 		.type=TEST_CONFIG_PACKET_ID,

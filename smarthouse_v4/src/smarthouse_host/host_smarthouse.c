@@ -229,9 +229,15 @@ int main (int argc, char **argv)
 			}
 			else
 			{	run=0;	}
+			PacketHandler_sendPacket(&packet_handler, pointer_packet);
+			while(packet_handler.tx_size)
+			{
+				uint8_t c=PacketHandler_txByte(&packet_handler);
+				ssize_t res = write(fd,&c,1);
+				usleep(10);
+			}
 		}
 	}
-
 	/*analog_config.pin_analog=3;
 	analog_config.samples=10;
 	for (int i=0; i<1000; ++i)
