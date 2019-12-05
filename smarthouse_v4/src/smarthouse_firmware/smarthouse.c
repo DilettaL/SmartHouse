@@ -76,7 +76,8 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 ///*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-//			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+			
+//PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			memcpy(&analog_config, header, header->size);

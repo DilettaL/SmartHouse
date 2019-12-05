@@ -93,6 +93,23 @@ int adcFn(void)
 
 int requestFn(void)
 {
+	/*char insert[20];
+	printf("Insert the status packet type\t(Es. digital\tor\tanalog)\n");
+	scanf("%s", insert);
+	if(strcmp(insert, "digital"))
+	{
+		digital_status.pin_digital=setPin();
+		pointer_packet=(PacketHeader*)&digital_status;
+	}
+	else if(strcmp(insert,"analog"))
+	{
+		analog_status.pin_analog=setPin();
+		pointer_packet=(PacketHeader*)&analog_status;
+	}
+	else
+	{
+		printf("Error status packet\n");
+	}*/
 	return 0;
 }
 Command commands[] =

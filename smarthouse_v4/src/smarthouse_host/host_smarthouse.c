@@ -88,14 +88,14 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-/*DEBUG*/printf("RECEIVE: Acceso pin (aspetto 10) =%d\tSet_digital (aspetto1)=%d\tinput_digital=%d\n", digital_status.pin_digital, digital_status.set_digital, digital_status.inputs);
+printf("digital_status\n");
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status, header, header->size);
-/*DEBUG*/printf("RECEIVE\n");
+printf("Analog_status\n");			
 			break;
 		default:
 			break;
