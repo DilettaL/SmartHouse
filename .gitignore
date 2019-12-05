@@ -9,4 +9,5 @@
 
 *.out
 
-host_smarthouse
+/smarthouse_v?/hostbuild/host_smarthouse
+/smarthouse_v4/provaComunicazione/hostbuild/host_smarthouse
