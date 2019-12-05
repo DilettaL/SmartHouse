@@ -73,7 +73,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
 			pointer_firmware=(PacketHeader*)&digital_status;
-///*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			

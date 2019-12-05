@@ -89,6 +89,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
 printf("digital_status\n");
+			run=0;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
