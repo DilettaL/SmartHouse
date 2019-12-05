@@ -175,12 +175,13 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	run=1;
-//	digital_config.pin_digital=10;
-//	digital_config.set_digital=1;
+	digital_config.pin_digital=10;
+	digital_config.set_digital=1;
+pointer_packet=(PacketHeader*)&digital_config;
 	printf("Shell Start\n");	
 	while(run)
 	{
-		char *buffer = readline("Smarthouse> ");
+/*		char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
 			executeCommand(buffer);
@@ -190,14 +191,14 @@ int main (int argc, char **argv)
 			}
 			else
 			{	run=0;	}
-			PacketHandler_sendPacket(&packet_handler, &pointer_packet);
+*/			PacketHandler_sendPacket(&packet_handler, pointer_packet);
 			while(packet_handler.tx_size)
 			{
 				uint8_t c=PacketHandler_txByte(&packet_handler);
 				ssize_t res = write(fd,&c,1);
 				usleep(10);
 			}
-		}
+//		}
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
