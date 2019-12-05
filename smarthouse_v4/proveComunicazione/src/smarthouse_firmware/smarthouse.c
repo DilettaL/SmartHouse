@@ -111,6 +111,7 @@ PacketStatus config_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 	memcpy(&test_config, header, header->size);
+PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status);
 	return Success;
 }
 
