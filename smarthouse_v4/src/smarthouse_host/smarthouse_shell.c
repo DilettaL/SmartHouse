@@ -33,11 +33,14 @@ int ledOffFn(void)
 
 int ledOnFn(void)
 {
-	int set_pin=setPin();
+/*	int set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
 	digital_config.pin_digital=(uint8_t)set_pin;
 	digital_config.set_digital=ledOn;
+*/
+digital_config.pin_digital=10;
+digital_config.set_digital=1;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
