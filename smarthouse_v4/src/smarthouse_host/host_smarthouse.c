@@ -175,8 +175,8 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	run=1;
-	digital_config.pin_digital=10;
-	digital_config.set_digital=1;
+//	digital_config.pin_digital=10;
+//	digital_config.set_digital=1;
 	printf("Shell Start\n");	
 	while(run)
 	{
