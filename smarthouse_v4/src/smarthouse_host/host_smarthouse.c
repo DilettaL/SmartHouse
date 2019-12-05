@@ -80,8 +80,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_PACKET_ID:	
 			memcpy(&test_status, header, header->size);
-			run=0;
-	printf ("SYNC\n");
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
@@ -89,6 +87,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
 printf("digital_status\n");
+			run=0;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
@@ -175,37 +174,13 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-	printf("Sync\n");
-	while(test_status.sync!=1 && run==0)
-	{
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-		while(packet_handler.tx_size)
-		{
-			uint8_t c=PacketHandler_txByte(&packet_handler);
-			ssize_t res = write(fd,&c,1);
-			usleep(10);
-		}
-		volatile int packet_complete =0;
-		while ( !packet_complete ) 
-		{
-			uint8_t c;
-			int n=read (fd, &c, 1);
-			if (n) 
-			{
-				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-				if (status<0)
-				{	printf("%d",status);
-					fflush(stdout);
-				}
-				packet_complete = (status==SyncChecksum);
-			}
-		}
-	}
 	run=1;
+	digital_config.pin_digital=10;
+	digital_config.set_digital=1;
 	printf("Shell Start\n");	
 	while(run)
 	{
-		char *buffer = readline("Smarthouse> ");
+		/*char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
 			executeCommand(buffer);
@@ -215,7 +190,7 @@ int main (int argc, char **argv)
 			}
 			else
 			{	run=0;	}
-			PacketHandler_sendPacket(&packet_handler, pointer_packet);
+			*/PacketHandler_sendPacket(&packet_handler, (PackeHeader*)digital_config);
 			while(packet_handler.tx_size)
 			{
 				uint8_t c=PacketHandler_txByte(&packet_handler);
