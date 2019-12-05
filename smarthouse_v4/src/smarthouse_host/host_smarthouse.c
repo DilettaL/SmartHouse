@@ -190,14 +190,15 @@ int main (int argc, char **argv)
 			}
 			else
 			{	run=0;	}
-			*/PacketHandler_sendPacket(&packet_handler, (PackeHeader*)digital_config);
+
+		*/	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_config);//pointer_packet);
 			while(packet_handler.tx_size)
 			{
 				uint8_t c=PacketHandler_txByte(&packet_handler);
 				ssize_t res = write(fd,&c,1);
 				usleep(10);
 			}
-		}
+//		}
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
