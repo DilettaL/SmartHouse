@@ -9,7 +9,7 @@ LIBS=-lpthread -lreadline
 LOBJS =	serial_linux.o\
 	packet_handler.o\
 
-OBJS =  smarthouse_host_globals.o\
+OBJS =  #smarthouse_host_globals.o\
 #	smarthouse_shell.o\
 #	shell_commands.o\
 #	ventry.o\
@@ -17,7 +17,7 @@ OBJS =  smarthouse_host_globals.o\
 #	orazio_ws_server.o
 
 
-HEADERS =smarthouse_host_globals.h\
+HEADERS =#smarthouse_host_globals.h\
 	serial_linux.h\
 #	smarthouse_shell.h\
 	packet_handler.h\
