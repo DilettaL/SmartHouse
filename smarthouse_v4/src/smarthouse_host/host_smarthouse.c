@@ -198,7 +198,7 @@ int main (int argc, char **argv)
 				ssize_t res = write(fd,&c,1);
 				usleep(10);
 			}
-//		}
+		}
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
