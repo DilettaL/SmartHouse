@@ -39,11 +39,11 @@ int ledOnFn(void)
 	{	return -1;	}
 	digital_config.pin_digital=(uint8_t)set_pin;
 */
-	int pin;
+	char pin[2];
 	printf("insert pin:\n");
-	int control=scanf("%d", &pin);
+	int control=scanf("%s", &pin);
 	digital_config.set_digital=ledOn;
-	digital_config.pin_digital= (uint8_t) pin;
+	digital_config.pin_digital= (uint8_t) atoi(pin);
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
