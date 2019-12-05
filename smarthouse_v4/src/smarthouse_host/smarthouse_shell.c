@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <readline/readline.h>
 #include "smarthouse_shell.h"
 #include "packet_header.h"
 int setPin(void)
@@ -37,10 +38,12 @@ int ledOnFn(void)
 	if(set_pin<=-1)
 	{	return -1;	}
 	digital_config.pin_digital=(uint8_t)set_pin;
-*/	digital_config.set_digital=ledOn;
-
-digital_config.pin_digital=10;
-//digital_config.set_digital=1;
+*/
+	uint8_t pin;
+	printf("insert pin:\n");
+	int control=scanf("%d", &pin);
+	digital_config.set_digital=ledOn;
+	digital_config.pin_digital=pin;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
