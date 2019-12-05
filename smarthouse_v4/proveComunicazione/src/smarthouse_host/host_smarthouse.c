@@ -1,3 +1,4 @@
+//Quanto sei bella Roma
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,7 +40,7 @@ TestStatus test_status = {
 	},
 	.prova=0
 };
-int i = 0;
+int i;
 
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
@@ -150,6 +151,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	
+i=0;
 	for ( i = 0; i < 1000; i++ )
 	{
 printf("%d] ",i);
