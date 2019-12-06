@@ -29,8 +29,7 @@ int ledOnFn(void)
 	int pin;
 	printf("insert pin:\n");
 	int control=scanf("%d", &pin);
-	fflush (stdin);
-	uint8_t pint = (uint8_t)pin;
+	uint8_t pint = 10;//(uint8_t)pin;
 	digital_config.set_digital=ledOn;
 	digital_config.pin_digital= pint;
 	pointer_packet=(PacketHeader*)&digital_config;
