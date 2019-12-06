@@ -26,7 +26,8 @@ int ledOffFn(void)
 	int set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
-	digital_config.pin_digital=(uint8_t)set_pin;
+	uint8_t pint = (uint8_t)set_pin;
+	digital_config.pin_digital=pint;
 	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
@@ -34,15 +35,10 @@ int ledOffFn(void)
 
 int ledOnFn(void)
 {
-/*	int set_pin=setPin();
+	int set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
-	digital_config.pin_digital=(uint8_t)set_pin;
-*/
-	int pin;
-	printf("insert pin:\n");
-	int control=scanf("%d", &pin);
-	uint8_t pint = (uint8_t)pin;
+	uint8_t pint = (uint8_t)set_pin;
 	digital_config.set_digital=ledOn;
 	digital_config.pin_digital= pint;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -55,7 +51,8 @@ int dimmerFn(void)
 	int set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
-	digital_config.pin_digital=(uint8_t)set_pin;
+	uint8_t pint = (uint8_t)set_pin;
+	digital_config.pin_digital=pint;
 	digital_config.set_digital=dimmer;
 	printf("Insert intensity:\n");
 	int control = scanf("%d", &intensity);
@@ -74,7 +71,8 @@ int digitalInputFn(void)
 	int set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
-	digital_config.pin_digital=(uint8_t)set_pin;
+	uint8_t pint = (uint8_t)set_pin;
+	digital_config.pin_digital=pint;
 	digital_config.set_digital=input_digital;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
@@ -86,7 +84,8 @@ int adcFn(void)
 	int set_pin=setPin();
 	if(set_pin<=-1)
 	{	return -1;	}
-	analog_config.pin_analog=(uint8_t)set_pin;
+	uint8_t pint = (uint8_t)set_pin;
+	digital_config.pin_digital=pint;
 	printf("Insert number of samples:\n");
 	if(scanf("%d", &sample)>=0)
 	{
