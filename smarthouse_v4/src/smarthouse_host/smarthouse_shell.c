@@ -4,16 +4,6 @@
 #include <readline/readline.h>
 #include "smarthouse_shell.h"
 #include "packet_header.h"
-int setPin(void)
-{
-	int pin;
-	printf("insert pin:\n");
-	int control=scanf("%d\n", &pin);
-	if(pin >=0 && pin<=15 && control>=0)
-	{	return pin;	}
-	else
-	{	return -1;	}
-}
 
 int quitFn(void)
 {
