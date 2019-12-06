@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include "smarthouse_shell.h"
 #include "packet_header.h"
 
@@ -26,10 +27,8 @@ int ledOffFn(void)
 
 int ledOnFn(void)
 {
-	int pin;
 	printf("insert pin:\n");
-	int control=scanf("%d", &pin);
-	fflush (stdin);
+	char *pin = readline("Smarthouse> ");	
 	uint8_t pint = (uint8_t)pin;
 	digital_config.set_digital=ledOn;
 	digital_config.pin_digital= pint;
