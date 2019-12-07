@@ -31,6 +31,8 @@ int ledOnFn(void)
 	char *pin = readline("");
 	printf("DEBUG:%s\n", pin);
 	uint8_t pint = (uint8_t)atoi(pin);//(uint8_t)pin;
+	if(*pin)
+	{	free(pin);	}
 	digital_config.set_digital=ledOn;
 	digital_config.pin_digital= pint;
 	pointer_packet=(PacketHeader*)&digital_config;
