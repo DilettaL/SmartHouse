@@ -26,13 +26,13 @@ typedef enum
 } DigitalOperations;
 #pragma pack(push, 1)
 typedef struct TestConfigPacket{
-	PacketIndexed header;
+	PacketHeader header;
 	uint8_t prova;
 } TestConfigPacket;
 #define TEST_CONFIG_PACKET_ID 1
 
 typedef struct TestStatusPacket{
-	PacketIndexed header;
+	PacketHeader header;
 	uint8_t sync;
 } TestStatusPacket;
 #define TEST_STATUS_PACKET_ID 2
@@ -47,7 +47,7 @@ typedef struct DigitalConfigPacket{
 #define DIGITAL_CONFIG_PACKET_ID 3
 
 typedef struct DigitalStatusPacket{
-	PacketIndexed header;
+	PacketHeader header;
 	uint8_t pin_digital;
 	uint8_t set_digital;
 	uint8_t intensity;
@@ -56,7 +56,7 @@ typedef struct DigitalStatusPacket{
 #define DIGITAL_STATUS_PACKET_ID 4
 
 typedef struct AnalogConfigPacket{
-	PacketIndexed header;
+	PacketHeader header;
 	uint8_t pin_analog;
 	uint8_t samples;
 }AnalogConfigPacket;
@@ -64,7 +64,7 @@ typedef struct AnalogConfigPacket{
 
 #define SAMPLE_MAX 10
 typedef struct AnalogStatusPacket{
-	PacketIndexed header;
+	PacketHeader header;
 	uint8_t pin_analog;
 	uint8_t samples;
 	uint16_t result[SAMPLE_MAX];

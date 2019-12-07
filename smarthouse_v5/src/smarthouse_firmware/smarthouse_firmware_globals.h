@@ -4,7 +4,7 @@
 extern TestConfigPacket test_config;
 extern TestStatusPacket test_status;
 
-extern DigitalConfigPacket digital_config[NUM_PINS];
+extern DigitalConfigPacket digital_config[NUM_DIGITAL];
 extern DigitalStatusPacket digital_status;
 
 extern AnalogConfigPacket analog_config;
