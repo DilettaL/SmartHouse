@@ -60,31 +60,64 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	}
 }
 
-/*PacketStatus host_onReceive(PacketHeader* header,
+
+//////START generic _onReceive: with dedicate ops
+PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 	switch (header->type)
 	{
 		case TEST_ACK_ID:
+			++header->seq;
 			memcpy(&test_ack, header, header->size);
 			printf ("Val ACK=%d\n",test_ack.feedback_seq);
 			break;
 		case TEST_CONFIG_ID:	
+			++header->seq;
 			memcpy(&test_config, header, header->size);
-
-//////
+			return Success;
 			break;
 		case TEST_STATUS_ID:
+			++header->seq;
 			memcpy(&test_status, header, header->size);
 			printf ("test_status.prova=%d\n",test_status.prova);
-		i=1000;
+i=1000;
 			break;
 		default:
 			break;
 	}
 	return Success;
-}*/
+}
 
+PacketOperations test_ack_ops = {
+	TEST_ACK_ID,
+	sizeof(TestAck),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
+PacketOperations test_config_ops = {
+	TEST_CONFIG_ID,
+	sizeof(TestConfig),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
+PacketOperations test_status_ops = {
+	TEST_STATUS_ID,
+	sizeof(TestStatus),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+//////END generic _onReceive
+
+/*
 PacketStatus ack_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
@@ -134,7 +167,7 @@ PacketOperations test_status_ops = {
 	status_onReceive,
 	0
 };
-
+*/
 
 int main (int argc, char **argv)
 {
