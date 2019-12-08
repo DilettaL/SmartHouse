@@ -7,7 +7,7 @@
 #include "digio.h"
 #include "uart.h"
 #include "delay.h"
-
+uint8_t idx = 0;
 uint8_t sync;
 static struct UART* uart;
 static PacketHandler packet_handler;
@@ -92,10 +92,9 @@ PacketStatus host_onReceive(PacketHeader* header,
 			memcpy(&test_config, header, header->size);
 DigIO_setDirection(10, 1);
 DigIO_setValue(10, 1);
-test_status[0].prova=test_config.prova;
-test_status[1].prova=test_config.prova;
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[0]);
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[1]);
+test_status[idx%2].prova=test_config.prova;
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[idx%2]);
+++idx;
 			break;
 		case TEST_STATUS_ID:
 			++header->seq;
