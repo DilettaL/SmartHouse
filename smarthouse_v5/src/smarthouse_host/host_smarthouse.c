@@ -73,6 +73,7 @@ PacketHeader* host_initializeBuffer(PacketType type,
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
+	PacketIndexed *idx_p=(PacketHeader*)header;
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
@@ -86,7 +87,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
-printf("digital_status\n");
+printf("digital_status: pin:%d\n", digital_status[idx_p->index].pin_digital);
 			run=0;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:

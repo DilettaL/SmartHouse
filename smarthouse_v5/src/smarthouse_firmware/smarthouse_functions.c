@@ -31,33 +31,34 @@ void InputDigital(uint8_t pin)
 
 void Smarthouse_digital(void)
 {
+	uint8_t pint=digital_config.pin_digital;
 	switch (digital_config.set_digital)
 	{
 		case ledOff:
-			LedOff(digital_config[index].header.index);
+			LedOff(digital_config.pin_digital);
 			break;
 		case ledOn:
-			LedOn(digital_config[index].header.index);
+			LedOn(digital_config.pin_digital);
 			break;
 		case dimmer:
-			Dimmer(digital_config[index].header.index, digital_config[index].intensity);
-			digital_status.intensity=digital_config[index].intensity;
+			Dimmer(digital_config.pin_digital, digital_config.intensity);
+			digital_status[pint].intensity=digital_config.intensity;
 			break;
 		case input_digital:
-			InputDigital(digital_config[index].header.index);
+			InputDigital(digital_config.pin_digital);
 			break;
 		default:
 			break;
 	}
-	digital_status.pin_digital=digital_config[index].header.index
-	digital_status.set_digital=digital_config[index].set_digital;
+	digital_status[pint].pin_digital=digital_config.pin_digital;
+	digital_status[pint].set_digital=digital_config.set_digital;
 //	return &digital_status;
 }
 
 //analog function
 void Smarthouse_analog(void)
 {
-	uint16_t* temp;
+/*	uint16_t* temp;
 	SetAdc(analog_config.pin_analog);
 	analog_status.pin_analog=analog_config.pin_analog;
 	analog_status.samples=analog_config.samples;
@@ -65,4 +66,4 @@ void Smarthouse_analog(void)
 	temp = RunAdc(analog_config.samples);
 	for (int k = 0; k < analog_config.samples ; k++)
 		analog_status.result[k]=*(temp+k);
-}
+*/}

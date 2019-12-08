@@ -5,28 +5,25 @@ int run=1;
 PacketHeader *pointer_packet=(PacketHeader*)&test_config;
 TestConfigPacket test_config=
 {
-	.header.header.type=TEST_CONFIG_PACKET_ID,
-	.header.header.size=sizeof (TestConfigPacket),
-	.header.header.seq=0,
-	.header.index=0,
+	.header.type=TEST_CONFIG_PACKET_ID,
+	.header.size=sizeof (TestConfigPacket),
+	.header.seq=0,
 	.prova=0
 }; 
 
 TestStatusPacket test_status=
 {
-	.header.header.type=TEST_STATUS_PACKET_ID,
-	.header.header.size=sizeof(TestStatusPacket),
-	.header.header.seq=0,
-	.header.index=0,
+	.header.type=TEST_STATUS_PACKET_ID,
+	.header.size=sizeof(TestStatusPacket),
+	.header.seq=0,
 	.sync=0
 };
 
 DigitalConfigPacket digital_config=
 {
-	.header.header.type=DIGITAL_CONFIG_PACKET_ID,
-	.header.header.size=sizeof(DigitalConfigPacket),
-	.header.header.seq=0,
-	.header.index=0,
+	.header.type=DIGITAL_CONFIG_PACKET_ID,
+	.header.size=sizeof(DigitalConfigPacket),
+	.header.seq=0,
 	.pin_digital=0,
 	.set_digital=0,
 	.intensity=0
@@ -220,10 +217,9 @@ DigitalStatusPacket digital_status[NUM_DIGITAL]=
 
 AnalogConfigPacket analog_config=
 {
-	.header.header.type=ANALOG_CONFIG_PACKET_ID,
-	.header.header.size=sizeof(AnalogConfigPacket),
-	.header.header.seq=0,
-	.header.index=0,
+	.header.type=ANALOG_CONFIG_PACKET_ID,
+	.header.size=sizeof(AnalogConfigPacket),
+	.header.seq=0,
 	.pin_analog=0,
 	.samples=0
 };
@@ -423,6 +419,6 @@ AnalogStatusPacket analog_status[NUM_ANALOG]=
 		},
 		.pin_analog=0,
 		.samples=0,
-		.result= {'0','0','0','0','0','0','0','0','0','0'}
+		.result= {0,0,0,0,0,0,0,0,0,0}
 	}
 };

@@ -70,8 +70,8 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
-			//pointer_firmware=(PacketHeader*)&digital_status;
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status);
+			//pointer_firmware=(PacketHeader*)&digital_status
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[digital_config->pin_digital]);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status, header, header->size);
@@ -166,7 +166,7 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[0]);
 		delayMs(10);
 		flushOutputBuffers();
 	}	
