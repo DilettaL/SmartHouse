@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-//#include "smarthouse_firmware_globals.h"
+#include "smarthouse_firmware_globals.h"
 //#include "smarthouse_functions.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
@@ -29,34 +29,34 @@ int flushOutputBuffers(void)
 
 //variables for initializeBuffer
 TestAck test_ack_buffer;
-TestAck test_ack = {
+/*TestAck test_ack = {
 	{
 		.type=TEST_ACK_ID,
 		.size=sizeof(TestAck),
 		.seq=0
 	},
 	.feedback_seq=0x88
-};
+};*/
 
 TestConfig test_config_buffer;
-TestConfig test_config= {
+/*TestConfig test_config= {
 	{
 		.type=TEST_CONFIG_ID,
 		.size=sizeof (TestConfig),
 		.seq=0
 	},
 	.prova=0
-}; 
+};*/ 
 
 TestStatus test_status_buffer;
-TestStatus test_status = {
+/*TestStatus test_status = {
 	{
 		.type=TEST_STATUS_ID,
 		.size=sizeof(TestStatus),
 		.seq=0
 	},
 	.prova=1
-};
+};*/
 
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
@@ -92,7 +92,10 @@ PacketStatus host_onReceive(PacketHeader* header,
 			memcpy(&test_config, header, header->size);
 DigIO_setDirection(10, 1);
 DigIO_setValue(10, 1);
-			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status);
+test_status[0].prova=test_config.prova;
+test_status[1].prova=test_config.prova;
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[0]);
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[1]);
 			break;
 		case TEST_STATUS_ID:
 			++header->seq;

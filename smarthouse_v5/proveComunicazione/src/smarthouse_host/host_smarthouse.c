@@ -5,6 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include "serial_linux.h"
+#include "smarthouse_host_globals.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 
@@ -13,7 +14,7 @@ PacketHandler packet_handler;
 
 //variables for initializeBuffer
 TestAck test_ack_buffer;
-TestAck test_ack = {
+/*TestAck test_ack = {
 	{
 		.type=TEST_ACK_ID,
 		.size=sizeof(TestAck),
@@ -21,26 +22,26 @@ TestAck test_ack = {
 	},
 	.feedback_seq=0
 };
-
+*/
 TestConfig test_config_buffer;
-TestConfig test_config= {
+/*TestConfig test_config= {
 	{
 		.type=TEST_CONFIG_ID,
 		.size=sizeof (TestConfig),
 		.seq=0
 	},
 	.prova=0
-}; 
+};*/ 
 
 TestStatus test_status_buffer;
-TestStatus test_status = {
+/*TestStatus test_status = {
 	{
 		.type=TEST_STATUS_ID,
 		.size=sizeof(TestStatus),
 		.seq=0
 	},
 	.prova=0
-};
+};*/
 int i;
 
 PacketHeader* host_initializeBuffer(PacketType type,
@@ -79,9 +80,10 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case TEST_STATUS_ID:
 			++header->seq;
-			memcpy(&test_status, header, header->size);
-			printf ("test_status.prova=%d\n",test_status.prova);
-i=1000;
+			PacketIndexed* p_idx=(PacketIndexed*)header;
+			memcpy(&test_status+header->size*p_idx->index, header, header->size);
+			printf ("test_status[].prova=%d\n",test_status[p_idx->index].prova);
+i=998;
 			break;
 		default:
 			break;
@@ -184,8 +186,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-	
-i=0;
+	test_config.prova=0;
 	for ( i = 0; i < 1000; i++ )
 	{
 printf("%d] ",i);
@@ -196,6 +197,7 @@ printf("%d] ",i);
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
 			usleep(10);
+			test_config.prova=5;
 		}
 //Ricezione:
 		volatile int packet_complete =0;

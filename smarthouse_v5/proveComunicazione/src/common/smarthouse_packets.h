@@ -9,6 +9,8 @@
     var.header.seq=0;				\
   }\
 
+#define NUM_STATUS 2
+
 typedef struct
 {
 	PacketHeader header;

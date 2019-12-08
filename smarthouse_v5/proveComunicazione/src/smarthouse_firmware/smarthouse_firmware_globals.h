@@ -3,5 +3,5 @@
 
 extern TestAck test_ack;
 extern TestConfig test_config;
-extern TestStatus test_status;
+extern TestStatus test_status[NUM_STATUS];
 
