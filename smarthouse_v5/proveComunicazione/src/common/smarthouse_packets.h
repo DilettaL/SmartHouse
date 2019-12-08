@@ -9,8 +9,13 @@
     var.header.seq=0;				\
   }\
 
-#pragma pack(push, 1)
+typedef struct
+{
+	PacketHeader header;
+	uint8_t index;
+} PacketIndexed;
 
+#pragma pack(push, 1)
 
 typedef struct TestAck{
 	PacketHeader header;
@@ -25,10 +30,9 @@ typedef struct TestConfig{
 #define TEST_CONFIG_ID 2
 
 typedef struct TestStatus{
-	PacketHeader header;
+	PacketIndexed header;
 	uint8_t prova;
 } TestStatus;
 #define TEST_STATUS_ID 3
-
 
 #pragma pack(pop)
