@@ -186,7 +186,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-	test_config.prova=0;
+	test_config.prova=5;
 	for ( i = 0; i < 1000; i++ )
 	{
 printf("%d] ",i);
@@ -197,7 +197,6 @@ printf("%d] ",i);
 			uint8_t c=PacketHandler_txByte(&packet_handler);
 			ssize_t res = write(fd,&c,1);
 			usleep(10);
-			test_config.prova=5;
 		}
 //Ricezione:
 		volatile int packet_complete =0;
