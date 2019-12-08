@@ -1,7 +1,9 @@
 #pragma once
 #include "packet_header.h"
 
+#define NUM_TEST 1
 #define NUM_DIGITAL 13
+#define NUM_ANALOG 15 
 
   // simple macro to initialize a packet
 #define INIT_PACKET(var, id)			\
@@ -26,7 +28,7 @@ typedef enum
 } DigitalOperations;
 #pragma pack(push, 1)
 typedef struct TestConfigPacket{
-	PacketHeader header;
+	PacketIndexed header;
 	uint8_t prova;
 } TestConfigPacket;
 #define TEST_CONFIG_PACKET_ID 1
