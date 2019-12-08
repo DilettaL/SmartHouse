@@ -6,7 +6,7 @@
 #include "smarthouse_shell.h"
 #include "packet_header.h"
 
-uint8_t index=10;
+uint8_t idx=10;
 
 int quitFn(void)
 {
@@ -16,9 +16,9 @@ int quitFn(void)
 
 int ledOffFn(void)
 {
-	digital_config[index].header.index=index;
-	digital_config[index].set_digital=ledOff;
-	pointer_packet=(PacketHeader*)&digital_config+digital_config[index].header.index;
+	digital_config[idx].pin_digital= idx;
+	digital_config[idx].set_digital=ledOff;
+	pointer_packet=(PacketHeader*)&digital_config[idx];
 	return 0;
 }
 
@@ -32,9 +32,9 @@ int ledOnFn(void)
 	if(*pinc)
 	{	free(pinc);	}
 */
-	digital_config[index].pin_digital= index;
-	digital_config[index].set_digital=ledOn;
-	pointer_packet=(PacketHeader*)&digital_config+digital_config[index].header.index;
+	digital_config[idx].pin_digital= idx;
+	digital_config[idx].set_digital=ledOn;
+	pointer_packet=(PacketHeader*)&digital_config[idx];
 	return 0;
 }
 
