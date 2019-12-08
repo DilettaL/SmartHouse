@@ -4,11 +4,11 @@
 extern int run;
 extern PacketHeader *pointer_packet;
 
-extern TestConfigPacket test_config[NUM_TEST];
-extern TestStatusPacket test_status[NUM_TEST];
+extern TestConfigPacket test_config;
+extern TestStatusPacket test_status;
 
-extern DigitalConfigPacket digital_config[NUM_DIGITAL];
+extern DigitalConfigPacket digital_config;
 extern DigitalStatusPacket digital_status[NUM_DIGITAL];
 
-extern AnalogConfigPacket analog_config[NUM_ANALOG];
+extern AnalogConfigPacket analog_config;
 extern AnalogStatusPacket analog_status[NUM_ANALOG];

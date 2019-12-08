@@ -34,7 +34,7 @@ typedef struct TestConfigPacket{
 #define TEST_CONFIG_PACKET_ID 1
 
 typedef struct TestStatusPacket{
-	PacketHeader header;
+	PacketIndexed header;
 	uint8_t sync;
 } TestStatusPacket;
 #define TEST_STATUS_PACKET_ID 2
@@ -49,7 +49,7 @@ typedef struct DigitalConfigPacket{
 #define DIGITAL_CONFIG_PACKET_ID 3
 
 typedef struct DigitalStatusPacket{
-	PacketHeader header;
+	PacketIndexed header;
 	uint8_t pin_digital;
 	uint8_t set_digital;
 	uint8_t intensity;
@@ -58,7 +58,7 @@ typedef struct DigitalStatusPacket{
 #define DIGITAL_STATUS_PACKET_ID 4
 
 typedef struct AnalogConfigPacket{
-	PacketHeader header;
+	PacketIndexed header;
 	uint8_t pin_analog;
 	uint8_t samples;
 }AnalogConfigPacket;
@@ -66,7 +66,7 @@ typedef struct AnalogConfigPacket{
 
 #define SAMPLE_MAX 10
 typedef struct AnalogStatusPacket{
-	PacketHeader header;
+	PacketIndexed header;
 	uint8_t pin_analog;
 	uint8_t samples;
 	uint16_t result[SAMPLE_MAX];
