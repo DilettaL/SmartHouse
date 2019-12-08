@@ -81,9 +81,9 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case TEST_STATUS_ID:
 			++header->seq;
 			PacketIndexed* p_idx=(PacketIndexed*)header;
-			memcpy(&test_status+header->size*p_idx->index, header, header->size);
+			memcpy(&test_status+(header->size)*(p_idx->index), header, header->size);
 			printf ("test_status[].prova=%d\n",test_status[p_idx->index].prova);
-i=998;
+//i=998;
 			break;
 		default:
 			break;
@@ -186,9 +186,10 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-	test_config.prova=5;
+	
 	for ( i = 0; i < 1000; i++ )
 	{
+	test_config.prova=5;
 printf("%d] ",i);
 //Invio: void send (void)
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
