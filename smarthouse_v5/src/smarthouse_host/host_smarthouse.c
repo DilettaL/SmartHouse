@@ -87,7 +87,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 /*DEBUG*/printf("Errore\n");
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-			memcpy(&digital_status+idx_p->index, header, header->size);
+			memcpy(&digital_status[idx_p->index], header, header->size);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
 			run=0;
 			break;
