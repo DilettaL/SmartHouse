@@ -65,25 +65,25 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&test_config, header, header->size);
 			break;
 		case TEST_STATUS_PACKET_ID:
-			memcpy(&test_status, header, header->size);
+//			memcpy(&test_status, header, header->size);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
 			//pointer_firmware=(PacketHeader*)&digital_status
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[digital_config->pin_digital]);
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[digital_config.pin_digital]);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-			memcpy(&digital_status, header, header->size);
+//			memcpy(&digital_status, header, header->size);
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			memcpy(&analog_config, header, header->size);
 			Smarthouse_analog();
 			//pointer_firmware=(PacketHeader*)&analog_status;
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status);
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[analog_config.pin_analog]);
 			break;
 		case ANALOG_STATUS_PACKET_ID:
-			memcpy(&analog_status, header, header->size);
+//			memcpy(&analog_status, header, header->size);
 			break;
 		default:
 			break;
@@ -166,7 +166,7 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status[0]);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status);
 		delayMs(10);
 		flushOutputBuffers();
 	}	

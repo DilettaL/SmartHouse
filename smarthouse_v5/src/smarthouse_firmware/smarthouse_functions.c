@@ -22,11 +22,12 @@ void Dimmer(uint8_t pin, uint8_t intensity)
 	PWM_setDutyCycle(pin, intensity);
 }
 
-void InputDigital(uint8_t pin)
+uint8_t InputDigital(uint8_t pin)
 {
 	DigIO_setDirection(pin, Input);
 	//DigIO_setValue(pin, 1);
-	digital_status.inputs=DigIO_getValue(pin);
+	uint8_t value=DigIO_getValue(pin);
+	return value;
 }
 
 void Smarthouse_digital(void)
@@ -45,7 +46,7 @@ void Smarthouse_digital(void)
 			digital_status[pint].intensity=digital_config.intensity;
 			break;
 		case input_digital:
-			InputDigital(digital_config.pin_digital);
+			digital_status[pint].inputs=InputDigital(digital_config.pin_digital);
 			break;
 		default:
 			break;
@@ -58,12 +59,13 @@ void Smarthouse_digital(void)
 //analog function
 void Smarthouse_analog(void)
 {
-/*	uint16_t* temp;
+	uint16_t* temp;
+	uint8_t pint=analog_config.pin_analog;
 	SetAdc(analog_config.pin_analog);
-	analog_status.pin_analog=analog_config.pin_analog;
-	analog_status.samples=analog_config.samples;
+	analog_status[pint].pin_analog=analog_config.pin_analog;
+	analog_status[pint].samples=analog_config.samples;
 	
 	temp = RunAdc(analog_config.samples);
 	for (int k = 0; k < analog_config.samples ; k++)
-		analog_status.result[k]=*(temp+k);
-*/}
+		analog_status[pint].result[k]=*(temp+k);
+}

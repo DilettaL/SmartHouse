@@ -1,7 +1,6 @@
 #pragma once
 #include "packet_header.h"
 
-#define NUM_TEST 1
 #define NUM_DIGITAL 13
 #define NUM_ANALOG 15 
 
