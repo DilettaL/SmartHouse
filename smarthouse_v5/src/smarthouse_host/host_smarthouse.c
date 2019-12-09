@@ -74,6 +74,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 	PacketIndexed *idx_p=(PacketHeader*)header;
+uint8_t indice=idx_p->index;
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
@@ -86,8 +87,8 @@ PacketStatus host_onReceive(PacketHeader* header,
 /*DEBUG*/printf("Errore\n");
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-			memcpy(&digital_status, header, header->size);
-printf("digital_status: pin:%d\n", digital_status[idx_p->index].pin_digital);
+			memcpy(&digital_status+indice, header, header->size);
+printf("Digital\tPin(10):%d\tConfiguration(1):%d\n", indice, digital_status[indice].set_digital);
 			run=0;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
@@ -176,13 +177,13 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	run=1;
-//	digital_config.pin_digital=10;
-//	digital_config.set_digital=1;
-//pointer_packet=(PacketHeader*)&digital_config;
+	digital_config.pin_digital=10;
+	digital_config.set_digital=1;
+pointer_packet=(PacketHeader*)&digital_config;
 	printf("Shell Start\n");	
 	while(run)
 	{
-		char *buffer = readline("Smarthouse> ");
+/*		char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
 			executeCommand(buffer);
@@ -192,14 +193,14 @@ int main (int argc, char **argv)
 			}
 			else
 			{	run=0;	}
-			PacketHandler_sendPacket(&packet_handler, pointer_packet);
+*/			PacketHandler_sendPacket(&packet_handler, pointer_packet);
 			while(packet_handler.tx_size)
 			{
 				uint8_t c=PacketHandler_txByte(&packet_handler);
 				ssize_t res = write(fd,&c,1);
 				usleep(10);
 			}
-		}
+//		}
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
 		{
