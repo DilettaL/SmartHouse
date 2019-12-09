@@ -59,6 +59,7 @@ PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* 
 PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((unused))) 
 {
 	++header->seq;
+	PacketIndexed *idx_p=(PacketHeader*)header;
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
@@ -71,7 +72,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
 			//pointer_firmware=(PacketHeader*)&digital_status
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[digital_config.pin_digital]);
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[idx_p->index]);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 //			memcpy(&digital_status, header, header->size);
@@ -80,7 +81,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			memcpy(&analog_config, header, header->size);
 			Smarthouse_analog();
 			//pointer_firmware=(PacketHeader*)&analog_status;
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[analog_config.pin_analog]);
+/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[idx_p->index]);
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 //			memcpy(&analog_status, header, header->size);
