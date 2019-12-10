@@ -99,7 +99,7 @@ PacketOperations test_status_ops = {
 		usleep(10);
 	}
 	return 0;
-*/}
+}*/
 
 void* printfS()
 {
