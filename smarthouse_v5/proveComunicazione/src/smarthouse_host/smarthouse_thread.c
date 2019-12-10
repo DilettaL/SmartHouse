@@ -90,7 +90,7 @@ PacketOperations test_status_ops = {
 };
 void* printfK()
 {
-	printf ("sono il thread K\n");
+	printf ("SONO il Thread K\n");
 	return 0;
 }
 
