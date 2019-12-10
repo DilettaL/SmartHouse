@@ -95,8 +95,12 @@ printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->inde
 /*DEBUG*/printf("Errore\n");
 			break;
 		case ANALOG_STATUS_PACKET_ID:
-			memcpy(&analog_status, header, header->size);
-printf("Analog_status\n");			
+			memcpy(&analog_status[idx_p->index], header, header->size);
+printf("Analog:\n");
+for(int i=0; i<analog_status[idx_p->index].samples; i++)
+{
+	printf("Sample[%d] = %d\n", i,analog_status[idx_p->index].result[i]);
+}			
 			break;
 		default:
 			break;
@@ -177,9 +181,9 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	run=1;
-	digital_config.pin_digital=10;
-	digital_config.set_digital=1;
-pointer_packet=(PacketHeader*)&digital_config;
+	analog_config.pin_analog=10;
+	analog_config.samples=10;
+pointer_packet=(PacketHeader*)&analog_config;
 	printf("Shell Start\n");	
 	while(run)
 	{
