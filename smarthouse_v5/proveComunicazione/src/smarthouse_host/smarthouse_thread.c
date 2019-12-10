@@ -90,13 +90,6 @@ PacketOperations test_status_ops = {
 };
 void* printfK()
 {
-	printf ("sono il thread K\n");
-	return 0;
-}
-
-void* printfS()
-{
-
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 	while(packet_handler.tx_size)
 	{
@@ -104,6 +97,11 @@ void* printfS()
 		ssize_t res = write(fd,&c,1);
 		usleep(10);
 	}
+	return 0;
+}
+
+void* printfS()
+{
 	//Ricezione:
 	volatile int packet_complete =0;
 	while ( !packet_complete ) 
