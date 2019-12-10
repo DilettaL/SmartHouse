@@ -134,7 +134,7 @@ int main (int argc, char **argv)
 	assert(argc>1);
 	fd=serial_open(argv[1]);
 	if(fd<0)
-		return 0;
+		return 0;1
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
 		return 0;
 	serial_set_blocking(fd, 1); 
@@ -160,13 +160,14 @@ int main (int argc, char **argv)
 		printf("Errore\n");
 		return 0;
 	}
-//	while(run);
+	while(run)
+	{
 	void* retval_keyboard;
 	pthread_join(keyboard, &retval_keyboard);
 
 	void* retval_serial;
 	pthread_join(serial, &retval_serial);
-
+	}
 	pthread_attr_destroy(&keyboard_attr);
 	pthread_attr_destroy(&serial_attr);
 	return 0;	

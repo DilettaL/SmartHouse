@@ -61,10 +61,7 @@ TestStatus test_status_buffer;
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
 				       void* args __attribute__((unused))) {
-/*
-DigIO_setDirection(10, 1);
-DigIO_setValue(10, 1);
-*/
+
 	if (type==TEST_ACK_ID && size==sizeof(TestAck))
 	{	return (PacketHeader*) &test_ack_buffer;}
 	else if (type==TEST_CONFIG_ID && size == sizeof(TestConfig))
