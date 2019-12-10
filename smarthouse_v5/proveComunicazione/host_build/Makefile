@@ -25,8 +25,9 @@ HEADERS =smarthouse_host_globals.h\
 	smarthouse_packets.h\
 	packet_operations.h\
 
-BINS=host_smarthouse\
-	smarthouse_thread
+BINS=smarthouse_thread\
+	#host_smarthouse\
+	
 
 .phony:	clean all
 
@@ -40,8 +41,8 @@ all:	$(BINS)
 %.o:	$(PREFIX)/src/smarthouse_host/%.c 
 	$(CC) $(CC_OPTS) -c  $<
 
-host_smarthouse: host_smarthouse.o $(OBJS) $(LOBJS)
-	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LOBJS) $(LIBS)
+#host_smarthouse: host_smarthouse.o $(OBJS) $(LOBJS)
+#	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LOBJS) $(LIBS)
 
 smarthouse_thread: smarthouse_thread.o $(OBJS) $(LOBJS)
 	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LOBJS) $(LIBS)

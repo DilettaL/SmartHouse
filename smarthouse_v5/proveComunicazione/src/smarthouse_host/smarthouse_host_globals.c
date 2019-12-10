@@ -20,22 +20,14 @@ TestConfig test_config= {
 	.prova=0
 }; 
 
-TestStatus test_status [NUM_STATUS] =
+TestStatus test_status=
 {
 	{
-		.header.header.type=TEST_STATUS_ID,
-		.header.header.size=sizeof(TestStatus),
-		.header.header.seq=0,
-		.header.index=0,
-		.prova=1
+		.type=TEST_STATUS_ID,
+		.size=sizeof(TestStatus),
+		.seq=0,
 	},
-	{
-		.header.header.type=TEST_STATUS_ID,
-		.header.header.size=sizeof(TestStatus),
-		.header.header.seq=0,
-		.header.index=1,
-		.prova=1
-	}	
+	.prova=1	
 };
 
 

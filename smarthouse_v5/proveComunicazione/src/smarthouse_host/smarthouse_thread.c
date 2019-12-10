@@ -7,7 +7,8 @@
 #include "smarthouse_host_globals.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
-
+int run =1;
+int fd;
 struct UART* uart;
 PacketHandler packet_handler;
 
@@ -45,13 +46,13 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case TEST_CONFIG_ID:	
 			++header->seq;
 			memcpy(&test_config, header, header->size);
-			return Success;
+//			return Success;
 			break;
 		case TEST_STATUS_ID:
 			++header->seq;
-			PacketIndexed* p_idx=(PacketIndexed*)header;
-			memcpy(&test_status+(header->size)*(p_idx->index), header, header->size);
-			printf ("test_status[].prova=%d\n",test_status[p_idx->index].prova);
+			memcpy(&test_status, header, header->size);
+			printf ("test_status.prova=%d\n",test_status.prova);
+run=0;
 //i=998;
 			break;
 		default:
@@ -89,20 +90,43 @@ PacketOperations test_status_ops = {
 };
 void* printfK()
 {
-	printf("Sono il thread Keyboard\n");
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+	while(packet_handler.tx_size)
+	{
+		uint8_t c=PacketHandler_txByte(&packet_handler);
+		ssize_t res = write(fd,&c,1);
+		usleep(10);
+	}
 	return 0;
 }
 
 void* printfS()
 {
-	printf("Sono il thread Serial\n");
+	//Ricezione:
+	volatile int packet_complete =0;
+	while ( !packet_complete ) 
+	{
+		uint8_t c;
+		int n=read (fd, &c, 1);
+printf("c=%x ", c);
+		if (n) 
+		{
+			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+			if (status<0)
+			{	printf("%d",status);
+				fflush(stdout);
+			}
+			packet_complete = (status==SyncChecksum);
+		}
+	}
+printf("\n");
 	return 0;
 }
 
 int main (int argc, char **argv)
 {
-/*	assert(argc>1);
-	int fd=serial_open(argv[1]);
+	assert(argc>1);
+	fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -110,7 +134,7 @@ int main (int argc, char **argv)
 	serial_set_blocking(fd, 1); 
 	if  (! fd)
 		return 0;
-*/	PacketHandler_initialize(&packet_handler);
+	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
@@ -130,6 +154,7 @@ int main (int argc, char **argv)
 		printf("Errore\n");
 		return 0;
 	}
+	while(run);
 	void* retval_keyboard;
 	pthread_join(keyboard, &retval_keyboard);
 
