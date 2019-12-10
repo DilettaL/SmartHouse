@@ -103,7 +103,7 @@ void* printfK()
 	return 0;
 }
 
-void* printfS()
+/*void* printfS()
 {
 
 printf ("Stampa di prova\n");
@@ -128,7 +128,7 @@ printf("c=%x ", c);
 printf("\n");
 	return 0;
 }
-
+*/
 int main (int argc, char **argv)
 {
 	assert(argc>1);
@@ -145,30 +145,28 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	//Thread serial
-	pthread_t  serial;
+/*	pthread_t  serial;
 	pthread_attr_t  serial_attr;
-//	pthread_attr_init(&serial_attr);
+	pthread_attr_init(&serial_attr);
 	int s_start=pthread_create(&serial, NULL, printfS, NULL);	
-	//Thread keyboard
+*/	//Thread keyboard
 	pthread_t keyboard;
 	pthread_attr_t keyboard_attr;
 //	pthread_attr_init(&keyboard_attr);
 	int k_start=pthread_create(&keyboard, NULL, printfK ,NULL);
 	
-	if (k_start!=0 || s_start!=0)
+	if (k_start!=0)// || s_start!=0)
 	{
 		printf("Errore\n");
 		return 0;
 	}
-	while(run)
-	{
 	void* retval_keyboard;
 	pthread_join(keyboard, &retval_keyboard);
 
-	void* retval_serial;
-	pthread_join(serial, &retval_serial);
-	}
+//	void* retval_serial;
+//	pthread_join(serial, &retval_serial);
+
 	pthread_attr_destroy(&keyboard_attr);
-	pthread_attr_destroy(&serial_attr);
+//	pthread_attr_destroy(&serial_attr);
 	return 0;	
 }
