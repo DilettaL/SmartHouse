@@ -91,9 +91,9 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case TEST_CONFIG_ID:	
 			++header->seq;
 			memcpy(&test_config, header, header->size);
-/*DigIO_setDirection(10, 1);
+DigIO_setDirection(10, 1);
 DigIO_setValue(10, 1);
-test_status[idx%2].prova=test_config.prova;
+/*test_status[idx%2].prova=test_config.prova;
 */			PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status);
 			break;
 		case TEST_STATUS_ID:

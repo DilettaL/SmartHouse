@@ -91,11 +91,7 @@ PacketOperations test_status_ops = {
 void* printfK()
 {
 	printf ("SONO il Thread K\n");
-	return 0;
-}
-
-void* printfS()
-{
+	while (run){
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 	while(packet_handler.tx_size)
 	{
@@ -103,11 +99,20 @@ void* printfS()
 		ssize_t res = write(fd,&c,1);
 		usleep(10);
 	}
+	}
+	return 0;
+}
+
+void* printfS()
+{
+
+printf ("Stampa di prova\n");
+	
 	//Ricezione:
 	volatile int packet_complete =0;
 	while ( !packet_complete ) 
 	{
-		uint8_t c;
+	uint8_t c;
 		int n=read (fd, &c, 1);
 printf("c=%x ", c);
 		if (n) 
@@ -142,20 +147,20 @@ int main (int argc, char **argv)
 	//Thread serial
 	pthread_t  serial;
 	pthread_attr_t  serial_attr;
-	pthread_attr_init(&serial_attr);
-	int s_start=pthread_create(&serial, &serial_attr, printfS, NULL);	
+//	pthread_attr_init(&serial_attr);
+	int s_start=pthread_create(&serial, NULL, printfS, NULL);	
 	//Thread keyboard
 	pthread_t keyboard;
 	pthread_attr_t keyboard_attr;
-	pthread_attr_init(&keyboard_attr);
-	int k_start=pthread_create(&keyboard, &keyboard_attr, printfK ,NULL);
+//	pthread_attr_init(&keyboard_attr);
+	int k_start=pthread_create(&keyboard, NULL, printfK ,NULL);
 	
 	if (k_start!=0 || s_start!=0)
 	{
 		printf("Errore\n");
 		return 0;
 	}
-	while(run);
+//	while(run);
 	void* retval_keyboard;
 	pthread_join(keyboard, &retval_keyboard);
 
