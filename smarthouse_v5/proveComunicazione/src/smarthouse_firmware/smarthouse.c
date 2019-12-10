@@ -207,7 +207,7 @@ int main (int argc, char** argv)
 		test_ack.header.seq = global_seq;
 		++global_seq;
 
-//		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_ack);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_ack);
 		delayMs(10);
 		flushOutputBuffers();
 	}	

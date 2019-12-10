@@ -88,10 +88,9 @@ PacketOperations test_status_ops = {
 	host_onReceive,
 	0
 };
-void* printfK()
+/*void* printfK()
 {
 	printf ("SONO il Thread K\n");
-	while (run){
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 	while(packet_handler.tx_size)
 	{
@@ -99,11 +98,10 @@ void* printfK()
 		ssize_t res = write(fd,&c,1);
 		usleep(10);
 	}
-	}
 	return 0;
-}
+*/}
 
-/*void* printfS()
+void* printfS()
 {
 
 printf ("Stampa di prova\n");
@@ -128,7 +126,7 @@ printf("c=%x ", c);
 printf("\n");
 	return 0;
 }
-*/
+
 int main (int argc, char **argv)
 {
 	assert(argc>1);
@@ -145,28 +143,35 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	//Thread serial
-/*	pthread_t  serial;
+	pthread_t  serial;
 	pthread_attr_t  serial_attr;
 	pthread_attr_init(&serial_attr);
 	int s_start=pthread_create(&serial, NULL, printfS, NULL);	
-*/	//Thread keyboard
-	pthread_t keyboard;
+	//Thread keyboard
+/*	pthread_t keyboard;
 	pthread_attr_t keyboard_attr;
-//	pthread_attr_init(&keyboard_attr);
+	pthread_attr_init(&keyboard_attr);
 	int k_start=pthread_create(&keyboard, NULL, printfK ,NULL);
-	
-	if (k_start!=0)// || s_start!=0)
+*/	
+	if (s_start!=0)// || k_start!=0)
 	{
 		printf("Errore\n");
 		return 0;
 	}
-	void* retval_keyboard;
-	pthread_join(keyboard, &retval_keyboard);
+//	void* retval_keyboard;
+//	pthread_join(keyboard, &retval_keyboard);
+while(run)
+{	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+	while(packet_handler.tx_size)
+	{
+		uint8_t c=PacketHandler_txByte(&packet_handler);
+		ssize_t res = write(fd,&c,1);
+		usleep(10);
+	}
+}	void* retval_serial;
+	pthread_join(serial, &retval_serial);
 
-//	void* retval_serial;
-//	pthread_join(serial, &retval_serial);
-
-	pthread_attr_destroy(&keyboard_attr);
-//	pthread_attr_destroy(&serial_attr);
+//	pthread_attr_destroy(&keyboard_attr);
+	pthread_attr_destroy(&serial_attr);
 	return 0;	
 }
