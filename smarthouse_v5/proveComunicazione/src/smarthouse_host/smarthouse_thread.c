@@ -134,7 +134,7 @@ int main (int argc, char **argv)
 	assert(argc>1);
 	fd=serial_open(argv[1]);
 	if(fd<0)
-		return 0;1
+		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
 		return 0;
 	serial_set_blocking(fd, 1); 
