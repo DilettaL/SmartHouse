@@ -8,6 +8,7 @@
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 int run=1;
+int k = 0;
 struct UART* uart;
 PacketHandler packet_handler;
 
@@ -55,6 +56,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			memcpy(&test_status, header, header->size);
 			printf ("test_status[].prova=%d\n",test_status.prova);
 run=0;
+k=100;
 //i=998;
 			break;
 		default:
@@ -100,6 +102,8 @@ void* serialFn()
 	serial_set_blocking(fd, 1); 
 	if  (! fd)
 	{	return 0;	}
+	for (k = 0; k < 100; ++k)
+	{
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 		while(packet_handler.tx_size)
 		{
@@ -125,8 +129,9 @@ void* serialFn()
 			}
 		printf("\n");
 		}
-
-	pthread_exit(0);
+	}
+return 0;
+//	pthread_exit(0);
 }
 /*void *keyboardFn()
 {
@@ -146,11 +151,11 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 
 	pthread_t serial;
-//	pthread_create(&keyboard, NULL, keyboardFn, NULL);
+//	pthread_create (&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, NULL);	
-	while(run)
-	{
+//	while(run)
+//	{
 		pthread_join(serial, NULL);
-	}
+//	}
 	return 0;	
 }
