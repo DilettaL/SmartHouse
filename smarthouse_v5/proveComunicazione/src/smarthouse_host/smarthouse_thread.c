@@ -120,14 +120,14 @@ printf("c=%x ", c);
 	}
 	pthread_exit(0);
 }
-void *keyboardFn()
+/*void *keyboardFn()
 {
 	int c;
 	printf("Shell Open, insert value test:");
 	scanf("%d", &c);
 	printf("\n");
 	pthread_exit(0);
-}
+}*/
 
 int main (int argc, char **argv)
 {
@@ -146,11 +146,11 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 
 	pthread_t keyboard, serial;
-	pthread_create(&keyboard, NULL, keyboardFn, NULL);
+//	pthread_create(&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, &fd);	
 while(run)
 {
-	pthread_join(keyboard, NULL);
+//	pthread_join(keyboard, NULL);
 	pthread_join(serial, NULL);
 }
 	return 0;	
