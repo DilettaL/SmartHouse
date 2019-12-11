@@ -88,7 +88,7 @@ PacketOperations test_status_ops = {
 	host_onReceive,
 	0
 };
-/*void* printfK()
+void* printfK()
 {
 	printf ("SONO il Thread K\n");
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
@@ -99,12 +99,12 @@ PacketOperations test_status_ops = {
 		usleep(10);
 	}
 	return 0;
-}*/
+}
 
-void* printfS()
+/*void* printfS()
 {
 
-printf ("Stampa di prova\n");
+//printf ("Stampa di prova\n");
 	
 	//Ricezione:
 	volatile int packet_complete =0;
@@ -112,7 +112,7 @@ printf ("Stampa di prova\n");
 	{
 	uint8_t c;
 		int n=read (fd, &c, 1);
-printf("c=%x ", c);
+printf("c=%x\t", c);
 		if (n) 
 		{
 			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
@@ -125,7 +125,7 @@ printf("c=%x ", c);
 	}
 printf("\n");
 	return 0;
-}
+}*/
 
 int main (int argc, char **argv)
 {
@@ -143,35 +143,43 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	//Thread serial
-	pthread_t  serial;
-	pthread_attr_t  serial_attr;
-	pthread_attr_init(&serial_attr);
-	int s_start=pthread_create(&serial, NULL, printfS, NULL);	
+//	pthread_t  serial;
+//	int s_start=pthread_create(&serial, NULL, printfS, NULL);	
 	//Thread keyboard
-/*	pthread_t keyboard;
-	pthread_attr_t keyboard_attr;
-	pthread_attr_init(&keyboard_attr);
-	int k_start=pthread_create(&keyboard, NULL, printfK ,NULL);
-*/	
-	if (s_start!=0)// || k_start!=0)
+	pthread_t keyboard;
+	int k_start=pthread_create(&keyboard, NULL, printfK ,NULL);	
+	if (k_start!=0)// || s_start!=0)
 	{
 		printf("Errore\n");
 		return 0;
 	}
-//	void* retval_keyboard;
-//	pthread_join(keyboard, &retval_keyboard);
 while(run)
-{	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-	while(packet_handler.tx_size)
+{
+		//Ricezione:
+	volatile int packet_complete =0;
+	while ( !packet_complete ) 
 	{
-		uint8_t c=PacketHandler_txByte(&packet_handler);
-		ssize_t res = write(fd,&c,1);
-		usleep(10);
+	uint8_t c;
+		int n=read (fd, &c, 1);
+printf("c=%x\t", c);
+		if (n) 
+		{
+			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+			if (status<0)
+			{	printf("%d",status);
+				fflush(stdout);
+			}
+			packet_complete = (status==SyncChecksum);
+		}
 	}
-}	void* retval_serial;
-	pthread_join(serial, &retval_serial);
+printf("\n");
+}
+	void* retval_keyboard;
+	pthread_join(keyboard, &retval_keyboard);
+//	void* retval_serial;
+//	pthread_join(serial, &retval_serial);
 
 //	pthread_attr_destroy(&keyboard_attr);
-	pthread_attr_destroy(&serial_attr);
+//	pthread_attr_destroy(&serial_attr);
 	return 0;	
 }
