@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <pthread.h>
 #include "serial_linux.h"
 #include "smarthouse_host_globals.h"
 #include "smarthouse_shell.h"
@@ -35,7 +36,7 @@ void printBanner(void)
 		line++;
 	}
 }
-
+int run=1;
 struct UART* uart;
 PacketHandler packet_handler;
 
@@ -100,7 +101,8 @@ printf("Analog:\n");
 for(int i=0; i<analog_status[idx_p->index].samples; i++)
 {
 	printf("Sample[%d] = %d\n", i,analog_status[idx_p->index].result[i]);
-}			
+}	
+run=0;		
 			break;
 		default:
 			break;
@@ -162,10 +164,67 @@ PacketOperations analog_status_ops = {
 	0
 };
 
+void* keyboardFn()
+{
+	while(run)
+	{
+	char *buffer = readline("Smarthouse> ");
+	if (buffer)
+	{
+		executeCommand(buffer);
+		if (*buffer)
+		{//	add_history(buffer);
+			free(buffer);
+		}
+		else
+		{	run=0;	}
+	}
+	}
+	return 0;
+}
+
+void* serialFn()
+{
+	int fd=serial_open("/dev/ttyACM0");//argv[1]);
+	if(fd<0)
+		return 0;
+	if (serial_set_interface_attribs(fd, 115200, 0) <0)
+		return 0;
+	serial_set_blocking(fd, 1); 
+	if  (! fd)
+	{	return 0;}
+	while(run)
+	{
+		PacketHandler_sendPacket(&packet_handler, pointer_packet);
+		while(packet_handler.tx_size)
+		{
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
+		}
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
+					fflush(stdout);
+				}
+				packet_complete = (status==SyncChecksum);
+			}
+		}
+	}
+	return 0;
+}
+
 int main (int argc, char **argv)
 {
 	assert(argc>1);
-	int fd=serial_open(argv[1]);
+/*	int fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -173,6 +232,7 @@ int main (int argc, char **argv)
 	serial_set_blocking(fd, 1); 
 	if  (! fd)
 		return 0;
+*/
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
@@ -180,14 +240,24 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-	run=1;
+//****
+	pthread_t serial, keyboard;
+	pthread_create (&keyboard, NULL, keyboardFn, NULL);
+	pthread_create (&serial, NULL, serialFn, NULL);	
+//****
+	//run=1;
 	analog_config.pin_analog=10;
 	analog_config.samples=10;
 pointer_packet=(PacketHeader*)&analog_config;
-	printf("Shell Start\n");	
-	while(run)
+	printf("Shell Start\n");
+//****
+	pthread_join(keyboard, NULL);
+	pthread_join(serial, NULL);
+//****	
+		
+/*	while(run)
 	{
-/*		char *buffer = readline("Smarthouse> ");
+		char *buffer = readline("Smarthouse> ");
 		if (buffer)
 		{
 			executeCommand(buffer);
@@ -197,7 +267,8 @@ pointer_packet=(PacketHeader*)&analog_config;
 			}
 			else
 			{	run=0;	}
-*/			PacketHandler_sendPacket(&packet_handler, pointer_packet);
+*/
+/*			PacketHandler_sendPacket(&packet_handler, pointer_packet);
 			while(packet_handler.tx_size)
 			{
 				uint8_t c=PacketHandler_txByte(&packet_handler);
@@ -221,5 +292,6 @@ pointer_packet=(PacketHeader*)&analog_config;
 			}
 		}
 	}
+*/
 	return 0;
 }
