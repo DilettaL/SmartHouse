@@ -90,34 +90,42 @@ PacketOperations test_status_ops = {
 	0
 };
 
-void* serialFn(void *fd_)
+void* serialFn()
 {
-	int *fd=(int*)fd_;
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-	while(packet_handler.tx_size)
-	{
-		uint8_t c=PacketHandler_txByte(&packet_handler);
-		ssize_t res = write(*fd,&c,1);
-		usleep(10);
-	}
-	//Ricezione:
-	volatile int packet_complete =0;
-	while ( !packet_complete ) 
-	{
-		uint8_t c;
-		int n=read (*fd, &c, 1);
-printf("c=%x ", c);
-		if (n) 
+	int fd=serial_open("/dev/ttyACM0");//argv[1]);
+	if(fd<0)
+		return 0;
+	if (serial_set_interface_attribs(fd, 115200, 0) <0)
+		return 0;
+	serial_set_blocking(fd, 1); 
+	if  (! fd)
+	{	return 0;	}
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+		while(packet_handler.tx_size)
 		{
-			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-			if (status<0)
-			{	printf("%d",status);
-				fflush(stdout);
-			}
-			packet_complete = (status==SyncChecksum);
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
 		}
-	printf("\n");
-	}
+		//Ricezione:
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			printf("c=%x ", c);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
+					fflush(stdout);
+				}
+				packet_complete = (status==SyncChecksum);
+			}
+		printf("\n");
+		}
+
 	pthread_exit(0);
 }
 /*void *keyboardFn()
@@ -131,27 +139,18 @@ printf("c=%x ", c);
 
 int main (int argc, char **argv)
 {
-	assert(argc>1);
-	int fd=serial_open(argv[1]);
-	if(fd<0)
-		return 0;
-	if (serial_set_interface_attribs(fd, 115200, 0) <0)
-		return 0;
-	serial_set_blocking(fd, 1); 
-	if  (! fd)
-		return 0;
+//	assert(argc>1);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 
-	pthread_t keyboard, serial;
+	pthread_t serial;
 //	pthread_create(&keyboard, NULL, keyboardFn, NULL);
-	pthread_create (&serial, NULL, serialFn, &fd);	
-while(run)
-{
-//	pthread_join(keyboard, NULL);
-	pthread_join(serial, NULL);
-}
+	pthread_create (&serial, NULL, serialFn, NULL);	
+	while(run)
+	{
+		pthread_join(serial, NULL);
+	}
 	return 0;	
 }
