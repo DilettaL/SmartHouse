@@ -90,15 +90,30 @@ PacketOperations test_status_ops = {
 	0
 };
 
-/*
-void *scrive ()
+void* serialFn(void *fd_)
 {
-	char c = 'c';
-	printf ("%c", c);
-	fflush(stdout);
+	int *fd=(int *)fd_;
+
+	//Ricezione:
+	volatile int packet_complete =0;
+	while ( !packet_complete ) 
+	{
+		uint8_t c;
+		int n=read (*fd, &c, 1);
+printf("c=%x ", c);
+		if (n) 
+		{
+			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+			if (status<0)
+			{	printf("%d",status);
+				fflush(stdout);
+			}
+			packet_complete = (status==SyncChecksum);
+		}
+	printf("\n");
+	}
 	pthread_exit(0);
 }
-*/
 void *keyboardFn(void* fd_)
 {
 	int *fd= (int*)fd_;
@@ -128,31 +143,13 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 
-	pthread_t keyboard;
-//	pthread_create (&print, NULL, scrive, NULL);	
+	pthread_t keyboard, serial;
+	pthread_create (&serial, NULL, serialFn, &fd);	
 	pthread_create(&keyboard, NULL, keyboardFn, &fd);
 while(run)
 {
 	pthread_join(keyboard, NULL);
-//	pthread_join (print, NULL);	
-	//Ricezione:
-	volatile int packet_complete =0;
-	while ( !packet_complete ) 
-	{
-		uint8_t c;
-		int n=read (fd, &c, 1);
-printf("c=%x ", c);
-		if (n) 
-		{
-			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-			if (status<0)
-			{	printf("%d",status);
-				fflush(stdout);
-			}
-			packet_complete = (status==SyncChecksum);
-		}
-	printf("\n");
-	}
+	pthread_join (serial, NULL);	
 }
 	return 0;	
 }
