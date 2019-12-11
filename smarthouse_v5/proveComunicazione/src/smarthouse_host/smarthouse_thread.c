@@ -90,7 +90,9 @@ PacketOperations test_status_ops = {
 };
 void* printfK()
 {
+int c;
 	printf ("SONO il Thread K\n");
+scanf ("%d",&c);
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 	while(packet_handler.tx_size)
 	{
