@@ -7,11 +7,11 @@
 #include "smarthouse_host_globals.h"
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
-int run =1;
-int fd;
+int run=1;
 struct UART* uart;
 PacketHandler packet_handler;
 
+//variables for initializeBuffer
 TestAck test_ack_buffer;
 TestConfig test_config_buffer;
 TestStatus test_status_buffer;
@@ -33,6 +33,8 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	}
 }
 
+
+//////START generic _onReceive: with dedicate ops
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
@@ -46,12 +48,12 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case TEST_CONFIG_ID:	
 			++header->seq;
 			memcpy(&test_config, header, header->size);
-//			return Success;
+			return Success;
 			break;
 		case TEST_STATUS_ID:
 			++header->seq;
 			memcpy(&test_status, header, header->size);
-			printf ("test_status.prova=%d\n",test_status.prova);
+			printf ("test_status[].prova=%d\n",test_status.prova);
 run=0;
 //i=998;
 			break;
@@ -60,7 +62,6 @@ run=0;
 	}
 	return Success;
 }
-
 
 PacketOperations test_ack_ops = {
 	TEST_ACK_ID,
@@ -88,51 +89,19 @@ PacketOperations test_status_ops = {
 	host_onReceive,
 	0
 };
-void* printfK()
+
+void* scan()
 {
-int c;
-	printf ("SONO il Thread K\n");
-scanf ("%d",&c);
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-	while(packet_handler.tx_size)
-	{
-		uint8_t c=PacketHandler_txByte(&packet_handler);
-		ssize_t res = write(fd,&c,1);
-		usleep(10);
-	}
-	return 0;
+	int c;
+	printf("Sono il thread di esempio\n");
+	scanf("%d", &c);
+	pthread_exit(0);
 }
-
-/*void* printfS()
-{
-
-//printf ("Stampa di prova\n");
-	
-	//Ricezione:
-	volatile int packet_complete =0;
-	while ( !packet_complete ) 
-	{
-	uint8_t c;
-		int n=read (fd, &c, 1);
-printf("c=%x\t", c);
-		if (n) 
-		{
-			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-			if (status<0)
-			{	printf("%d",status);
-				fflush(stdout);
-			}
-			packet_complete = (status==SyncChecksum);
-		}
-	}
-printf("\n");
-	return 0;
-}*/
 
 int main (int argc, char **argv)
 {
 	assert(argc>1);
-	fd=serial_open(argv[1]);
+	int fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -144,44 +113,36 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-	//Thread serial
-//	pthread_t  serial;
-//	int s_start=pthread_create(&serial, NULL, printfS, NULL);	
-	//Thread keyboard
-	pthread_t keyboard;
-	int k_start=pthread_create(&keyboard, NULL, printfK ,NULL);	
-	if (k_start!=0)// || s_start!=0)
+	pthread_t esempio;
+	int control=pthread_create(&esempio, NULL, scan, NULL);
+	while(run)
 	{
-		printf("Errore\n");
-		return 0;
-	}
-while(run)
-{
-		//Ricezione:
-	volatile int packet_complete =0;
-	while ( !packet_complete ) 
-	{
-	uint8_t c;
-		int n=read (fd, &c, 1);
-printf("c=%x\t", c);
-		if (n) 
+		scan();
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+		while(packet_handler.tx_size)
 		{
-			PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-			if (status<0)
-			{	printf("%d",status);
-				fflush(stdout);
-			}
-			packet_complete = (status==SyncChecksum);
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
 		}
-	}
+		//Ricezione:
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+printf("c=%x ", c);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
+					fflush(stdout);
+				}
+				packet_complete = (status==SyncChecksum);
+			}
+		}
 printf("\n");
-}
-	void* retval_keyboard;
-	pthread_join(keyboard, &retval_keyboard);
-//	void* retval_serial;
-//	pthread_join(serial, &retval_serial);
-
-//	pthread_attr_destroy(&keyboard_attr);
-//	pthread_attr_destroy(&serial_attr);
+	}
 	return 0;	
 }
