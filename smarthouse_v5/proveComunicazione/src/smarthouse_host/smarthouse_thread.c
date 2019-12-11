@@ -92,8 +92,14 @@ PacketOperations test_status_ops = {
 
 void* serialFn(void *fd_)
 {
-	int *fd=(int *)fd_;
-
+	int *fd=(int*)fd_;
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
+	while(packet_handler.tx_size)
+	{
+		uint8_t c=PacketHandler_txByte(&packet_handler);
+		ssize_t res = write(*fd,&c,1);
+		usleep(10);
+	}
 	//Ricezione:
 	volatile int packet_complete =0;
 	while ( !packet_complete ) 
@@ -114,16 +120,12 @@ printf("c=%x ", c);
 	}
 	pthread_exit(0);
 }
-void *keyboardFn(void* fd_)
+void *keyboardFn()
 {
-	int *fd= (int*)fd_;
-	PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-	while(packet_handler.tx_size)
-	{
-		uint8_t c=PacketHandler_txByte(&packet_handler);
-		ssize_t res = write(*fd,&c,1);
-		usleep(10);
-	}
+	int c;
+	printf("Shell Open, insert value test:");
+	scanf("%d", &c);
+	printf("\n");
 	pthread_exit(0);
 }
 
@@ -144,12 +146,12 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 
 	pthread_t keyboard, serial;
+	pthread_create(&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, &fd);	
-	pthread_create(&keyboard, NULL, keyboardFn, &fd);
 while(run)
 {
 	pthread_join(keyboard, NULL);
-	pthread_join (serial, NULL);	
+	pthread_join(serial, NULL);
 }
 	return 0;	
 }
