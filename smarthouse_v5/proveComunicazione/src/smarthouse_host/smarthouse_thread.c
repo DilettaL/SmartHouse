@@ -92,6 +92,15 @@ PacketOperations test_status_ops = {
 	0
 };
 
+void* keyboardFn()
+{
+	int prova;
+	printf("inserisci valore\n");
+	scanf("%d", &prova);
+	printf("scanf:%d\n", prova);
+	return 0;
+}
+
 void* serialFn()
 {
 	int fd=serial_open("/dev/ttyACM0");//argv[1]);
@@ -104,6 +113,7 @@ void* serialFn()
 	{	return 0;	}
 	for (k = 0; k < 100; ++k)
 	{
+printf("k[%d]", k);
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 		while(packet_handler.tx_size)
 		{
@@ -149,12 +159,12 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-
-	pthread_t serial;
-//	pthread_create (&keyboard, NULL, keyboardFn, NULL);
+	pthread_t serial, keyboard;
+	pthread_create (&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, NULL);	
 //	while(run)
 //	{
+		pthread_join(keyboard, NULL);
 		pthread_join(serial, NULL);
 //	}
 	return 0;	
