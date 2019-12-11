@@ -90,17 +90,17 @@ PacketOperations test_status_ops = {
 	0
 };
 
-void* scan()
+char c = 'c';
+void *cavalli ()
 {
-	int c;
-	printf("Sono il thread di esempio\n");
-	scanf("%d", &c);
+	printf ("%c", c);
+	c++;
 	pthread_exit(0);
 }
 
 int main (int argc, char **argv)
 {
-	assert(argc>1);
+/*	assert(argc>1);
 	int fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
@@ -113,36 +113,16 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &test_ack_ops);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
-	pthread_t esempio;
-	int control=pthread_create(&esempio, NULL, scan, NULL);
-	while(run)
-	{
-		scan();
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
-		while(packet_handler.tx_size)
-		{
-			uint8_t c=PacketHandler_txByte(&packet_handler);
-			ssize_t res = write(fd,&c,1);
-			usleep(10);
-		}
-		//Ricezione:
-		volatile int packet_complete =0;
-		while ( !packet_complete ) 
-		{
-			uint8_t c;
-			int n=read (fd, &c, 1);
-printf("c=%x ", c);
-			if (n) 
-			{
-				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-				if (status<0)
-				{	printf("%d",status);
-					fflush(stdout);
-				}
-				packet_complete = (status==SyncChecksum);
-			}
-		}
-printf("\n");
-	}
+*/	
+	pthread_t PID_T;
+	pthread_create (&PID_T, NULL, cavalli, NULL);
+
+	
+	pthread_join (PID_T, NULL );
+/*	pthread_join (PID_T[1], NULL );
+	pthread_join (PID_T[2], NULL );
+	pthread_join (PID_T[3], NULL );
+	pthread_join (PID_T[4], NULL );
+*/	
 	return 0;	
 }
