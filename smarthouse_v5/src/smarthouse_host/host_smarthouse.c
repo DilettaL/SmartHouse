@@ -175,9 +175,9 @@ void* keyboardFn()
 {
 	while(run)
 	{
-		while(avaible!=false)
-		{	
+			while(!avaible);
 			char *buffer = readline("Smarthouse> ");
+			avaible=false;
 			if (buffer)
 			{
 				executeCommand(buffer);
@@ -188,8 +188,6 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			avaible=false;
-		}
 	}
 	return 0;
 }
@@ -206,6 +204,8 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
+			while(!avaible);//==false
+			avaible=false;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
