@@ -204,8 +204,8 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
-			while(!avaible);//==false
-			avaible=false;
+			while(avaible==false);//==false
+			avaible=true;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
