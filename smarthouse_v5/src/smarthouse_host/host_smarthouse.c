@@ -36,7 +36,6 @@ void printBanner(void)
 		line++;
 	}
 }
-int run=1;
 struct UART* uart;
 PacketHandler packet_handler;
 
@@ -75,34 +74,27 @@ PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
 	PacketIndexed *idx_p=(PacketHeader*)header;
-//uint8_t indice=idx_p->index;
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
-/*DEBUG*/printf("Errore\n");
 			break;
 		case TEST_STATUS_PACKET_ID:	
-			memcpy(&test_status, header, header->size);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
-/*DEBUG*/printf("Errore\n");
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
-			run=0;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
-/*DEBUG*/printf("Errore\n");
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status[idx_p->index], header, header->size);
-printf("Analog:\n");
+/*printf("Analog:\n");
 for(int i=0; i<analog_status[idx_p->index].samples; i++)
 {
 	printf("Sample[%d] = %d\n", i,analog_status[idx_p->index].result[i]);
-}	
-run=0;		
+}*/
 			break;
 		default:
 			break;
@@ -185,7 +177,8 @@ void* keyboardFn()
 
 void* serialFn()
 {
-	int fd=serial_open("/dev/ttyACM0");//argv[1]);
+	int fd=serial_open("/dev/ttyACM0");	printf("Shell Start\n");
+
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
@@ -223,16 +216,6 @@ void* serialFn()
 
 int main (int argc, char **argv)
 {
-	assert(argc>1);
-/*	int fd=serial_open(argv[1]);
-	if(fd<0)
-		return 0;
-	if (serial_set_interface_attribs(fd, 115200, 0) <0)
-		return 0;
-	serial_set_blocking(fd, 1); 
-	if  (! fd)
-		return 0;
-*/
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
@@ -240,58 +223,14 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-//****
+//Threads
+	printf("Shell Start\n");
 	pthread_t serial, keyboard;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, NULL);	
-//****
-	//run=1;
-	analog_config.pin_analog=10;
-	analog_config.samples=10;
-pointer_packet=(PacketHeader*)&analog_config;
-	printf("Shell Start\n");
-//****
+pointer_packet=(PacketHeader*)&test_config;
+//Wait threads end
 	pthread_join(keyboard, NULL);
 	pthread_join(serial, NULL);
-//****	
-		
-/*	while(run)
-	{
-		char *buffer = readline("Smarthouse> ");
-		if (buffer)
-		{
-			executeCommand(buffer);
-			if (*buffer)
-			{//	add_history(buffer);
-				free(buffer);
-			}
-			else
-			{	run=0;	}
-*/
-/*			PacketHandler_sendPacket(&packet_handler, pointer_packet);
-			while(packet_handler.tx_size)
-			{
-				uint8_t c=PacketHandler_txByte(&packet_handler);
-				ssize_t res = write(fd,&c,1);
-				usleep(10);
-			}
-//		}
-		volatile int packet_complete =0;
-		while ( !packet_complete ) 
-		{
-			uint8_t c;
-			int n=read (fd, &c, 1);
-			if (n) 
-			{
-				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-				if (status<0)
-				{	printf("%d",status);
-					fflush(stdout);
-				}
-				packet_complete = (status==SyncChecksum);
-			}
-		}
-	}
-*/
 	return 0;
 }
