@@ -195,6 +195,7 @@ void* keyboardFn()
 	return 0;
 }
 
+
 void* serialFn()
 {
 	int fd=serial_open("/dev/ttyACM0");
