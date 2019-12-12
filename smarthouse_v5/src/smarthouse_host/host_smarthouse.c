@@ -164,7 +164,7 @@ void* keyboardFn()
 {
 	while(run)
 	{
-		while(lock==true)
+		while(lock!=false)
 		{
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
@@ -180,7 +180,7 @@ void* keyboardFn()
 		}
 		lock=false;
 	}
-	if(run==0){return 0;}
+	return 0;
 }
 
 void* serialFn()
@@ -195,7 +195,7 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
-		while(lock==false)
+		while(lock!=true)
 		{
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
@@ -221,7 +221,7 @@ void* serialFn()
 				}
 		}
 	}
-	if(run==0){return 0;}
+	return 0;
 }
 
 int main (int argc, char **argv)
