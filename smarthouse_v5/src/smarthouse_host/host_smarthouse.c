@@ -40,7 +40,6 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-bool lock=true;
 
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
