@@ -98,9 +98,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
-acquire();
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
-release();
 pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
@@ -116,6 +114,7 @@ for(int i=0; i<analog_status[idx_p->index].samples; i++)
 		default:
 			break;
 	}
+	release();
 	return Success;
 }
 
@@ -189,7 +188,6 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			release();
 	}
 	return 0;
 }
