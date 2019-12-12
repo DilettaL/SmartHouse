@@ -233,7 +233,7 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-				if(packete_complete==SyncChecksum){avaible=true;}
+				if(packet_complete==SyncChecksum){avaible=true;}
 	}
 	return 0;
 }
