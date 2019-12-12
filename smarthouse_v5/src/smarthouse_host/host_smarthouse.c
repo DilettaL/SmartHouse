@@ -175,9 +175,9 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			while(!avaible);
+			while(avaible!=false)
+			{
 			char *buffer = readline("Smarthouse> ");
-			avaible=false;
 			if (buffer)
 			{
 				executeCommand(buffer);
@@ -187,6 +187,8 @@ void* keyboardFn()
 				}
 				else
 				{	run=0;	}
+			}
+			avaible=false;
 			}
 	}
 	return 0;
