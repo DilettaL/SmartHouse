@@ -40,7 +40,8 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-/*int k = 0;
+/*
+int k = 0;
 
 void acquire () {
 	while (!avaible)
@@ -227,7 +228,7 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-				if(status==SyncChecksum){avaible=true;}
+			avaible = true;
 	}
 	return 0;
 }
