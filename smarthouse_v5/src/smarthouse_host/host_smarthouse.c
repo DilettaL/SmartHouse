@@ -89,7 +89,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 	++header->seq;
 	PacketIndexed *idx_p=(PacketHeader*)header;
 	switch (header->type)
-	{
+	{ 
 		case TEST_CONFIG_PACKET_ID:
 			break;
 		case TEST_STATUS_PACKET_ID:	
