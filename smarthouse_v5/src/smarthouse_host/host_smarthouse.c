@@ -99,7 +99,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 			memcpy(&digital_status[idx_p->index], header, header->size);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
 pointer_packet=(PacketHeader*)&test_config;
-avaible=true;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
@@ -204,8 +203,8 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
-			while(avaible==false);//==false
-			avaible=true;
+			while(!avaible);//==false
+			avaible=false;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -226,6 +225,7 @@ void* serialFn()
 							fflush(stdout);
 						}
 						packet_complete = (status==SyncChecksum);
+						avaible=true;
 					}
 				}
 	}
