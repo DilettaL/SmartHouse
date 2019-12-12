@@ -2,7 +2,7 @@
 #include "smarthouse_host_globals.h"
 
 int run=1;
-//bool lock=true;
+bool avaible=true;
 PacketHeader *pointer_packet=(PacketHeader*)&test_config;
 TestConfigPacket test_config=
 {

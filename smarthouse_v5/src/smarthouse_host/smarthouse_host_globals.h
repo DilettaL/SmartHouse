@@ -3,7 +3,7 @@
 #include "smarthouse_packets.h"
 
 extern int run;
-//extern bool lock;
+extern bool avaible;
 extern PacketHeader *pointer_packet;
 
 extern TestConfigPacket test_config;

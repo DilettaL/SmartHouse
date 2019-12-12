@@ -40,8 +40,7 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-bool avaible = true;
-int k = 0;
+/*int k = 0;
 
 void acquire () {
 	while (!avaible)
@@ -51,7 +50,7 @@ void acquire () {
 
 void release () {
 	avaible = true;
-}
+}*/
 
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
@@ -100,7 +99,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			memcpy(&digital_status[idx_p->index], header, header->size);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
 pointer_packet=(PacketHeader*)&test_config;
-k = 50;
+avaible=true;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
@@ -174,10 +173,11 @@ PacketOperations analog_status_ops = {
 
 void* keyboardFn()
 {
-	do
+	while(run)
 	{
-		acquire();
-		char *buffer = readline("Smarthouse> ");
+		while(avaible!=false)
+		{	
+			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
 				executeCommand(buffer);
@@ -188,8 +188,9 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-		release ();
-	} while(run);
+			avaible=false;
+		}
+	}
 	return 0;
 }
 
@@ -205,10 +206,6 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
-		acquire ();
-		for (k = 0; k<50; ++k)
-		{
-printf ("sono dentro l'invio\n");
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -231,8 +228,6 @@ printf ("sono dentro l'invio\n");
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-		}
-		release();
 	}
 	return 0;
 }
