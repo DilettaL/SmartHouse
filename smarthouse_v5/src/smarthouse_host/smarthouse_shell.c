@@ -64,14 +64,14 @@ return 0;
 
 int digitalInputFn(void)
 {
-	int pin;
+/*	int pin;
 	printf("insert pin:\n");
 
 	uint8_t pint = (uint8_t)pin;
 	digital_config.pin_digital=pint;
 	digital_config.set_digital=input_digital;
 	pointer_packet=(PacketHeader*)&digital_config;
-	return 0;
+*/	return 0;
 }
 
 int adcFn(void)
