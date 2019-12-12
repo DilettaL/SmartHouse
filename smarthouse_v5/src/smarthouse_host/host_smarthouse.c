@@ -36,7 +36,7 @@ void printBanner(void)
 		line++;
 	}
 }
-int run=1;
+//int run=1;
 struct UART* uart;
 PacketHandler packet_handler;
 
