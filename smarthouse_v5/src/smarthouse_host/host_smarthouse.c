@@ -207,6 +207,7 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
+printf ("=\n");
 //			while(!avaible);//==false
 //			avaible=false;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
