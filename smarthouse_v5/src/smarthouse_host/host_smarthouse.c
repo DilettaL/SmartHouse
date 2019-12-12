@@ -43,6 +43,7 @@ PacketHandler packet_handler;
 /*
 int k = 0;
 */
+int busy=0;
 void acquire () {
 	while (!avaible)
 		;
@@ -177,6 +178,7 @@ void* keyboardFn()
 	while(run)
 	{
 			acquire();
+			busy=1;
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -188,6 +190,8 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
+			release();
+			busy=0;
 	}
 	return 0;
 }
@@ -219,7 +223,9 @@ void* serialFn()
 					int n=read (fd, &c, 1);
 					if (n) 
 					{
-						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+if(busy==0)
+{						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+}
 						if (status<0)
 						{	printf("%d",status);
 							fflush(stdout);
