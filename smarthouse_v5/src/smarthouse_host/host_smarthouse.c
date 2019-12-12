@@ -223,8 +223,9 @@ void* serialFn()
 					int n=read (fd, &c, 1);
 					if (n) 
 					{
+						PacketStatus status;
 if(busy==0)
-{						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+{						status = PacketHandler_rxByte(&packet_handler, c);
 }
 						if (status<0)
 						{	printf("%d",status);
