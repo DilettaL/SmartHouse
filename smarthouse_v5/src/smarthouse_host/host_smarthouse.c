@@ -225,9 +225,9 @@ void* serialFn()
 							fflush(stdout);
 						}
 						packet_complete = (status==SyncChecksum);
-						avaible=true;
 					}
 				}
+				if(status==SyncChecksum){avaible=true;}
 	}
 	return 0;
 }
