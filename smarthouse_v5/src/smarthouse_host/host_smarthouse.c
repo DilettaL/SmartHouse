@@ -172,7 +172,7 @@ void* keyboardFn()
 		else
 		{	run=0;	}
 	}
-	return 0;
+	if(run==0){return 0};
 }
 
 void* serialFn()
@@ -211,7 +211,7 @@ void* serialFn()
 			}
 		}
 	}
-	return 0;
+	if(run==0){return 0};
 }
 
 int main (int argc, char **argv)
