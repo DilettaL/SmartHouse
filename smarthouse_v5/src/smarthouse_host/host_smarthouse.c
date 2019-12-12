@@ -42,7 +42,7 @@ struct UART* uart;
 PacketHandler packet_handler;
 /*
 int k = 0;
-
+*/
 void acquire () {
 	while (!avaible)
 		;
@@ -51,7 +51,7 @@ void acquire () {
 
 void release () {
 	avaible = true;
-}*/
+}
 
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
@@ -98,9 +98,10 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
+acquire();
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
+release();
 pointer_packet=(PacketHeader*)&test_config;
-//avaible=true;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
@@ -176,8 +177,7 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			while(avaible!=false)
-			{
+			acquire();
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -189,8 +189,7 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			avaible=false;
-			}
+			release();
 	}
 	return 0;
 }
@@ -208,9 +207,6 @@ void* serialFn()
 	{	return 0;}
 	while(run)
 	{
-//printf ("=\n");
-//			while(!avaible);//==false
-//			avaible=false;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -233,7 +229,6 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-				if(packet_complete==SyncChecksum){avaible=true;}
 	}
 	return 0;
 }
