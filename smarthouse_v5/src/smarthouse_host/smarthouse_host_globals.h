@@ -1,5 +1,5 @@
 #pragma once
-//#include <stdbool.h>
+#include <stdbool.h>
 #include "smarthouse_packets.h"
 
 extern int run;
