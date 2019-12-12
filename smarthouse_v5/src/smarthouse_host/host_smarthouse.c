@@ -39,6 +39,7 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
+int num = 0;
 
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
@@ -86,6 +87,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
+num = 20;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
@@ -159,8 +161,6 @@ PacketOperations analog_status_ops = {
 
 void* keyboardFn()
 {
-	while(run)
-	{
 	char *buffer = readline("Smarthouse> ");
 	if (buffer)
 	{
@@ -172,13 +172,12 @@ void* keyboardFn()
 		else
 		{	run=0;	}
 	}
-	}
 	return 0;
 }
 
 void* serialFn()
 {
-	int fd=serial_open("/dev/ttyACM0");	printf("Shell Start\n");
+	int fd=serial_open("/dev/ttyACM0");
 
 	if(fd<0)
 		return 0;
@@ -187,7 +186,7 @@ void* serialFn()
 	serial_set_blocking(fd, 1); 
 	if  (! fd)
 	{	return 0;}
-	while(run)
+	for (num = 0; num < 20; num++)
 	{
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
 		while(packet_handler.tx_size)
@@ -224,14 +223,17 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-//Threads
 	printf("Shell Start\n");
+//Threads
 	pthread_t serial, keyboard;
+//while (run){
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, NULL);	
 pointer_packet=(PacketHeader*)&test_config;
 //Wait threads end
 	pthread_join(keyboard, NULL);
 	pthread_join(serial, NULL);
+/*Debug*/printf ("ho finito il mio primo thread\n");
+//}
 	return 0;
 }
