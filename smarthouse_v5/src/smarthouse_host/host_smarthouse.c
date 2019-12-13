@@ -75,6 +75,7 @@ PacketHeader* host_initializeBuffer(PacketType type,
 }
 void printPacket_digital(uint8_t pin)
 {
+	pthread_mutex_lock(&m2);
 	printf("Digital Mode:\t");
 	if(digital_status[pin].set_digital==0) {printf("Led off\n");}
 	else if(digital_status[pin].set_digital==1) {printf("Led on\n");}
@@ -82,10 +83,12 @@ void printPacket_digital(uint8_t pin)
 	else if(digital_status[pin].set_digital==3) {printf("Input digital\n"); printf("Value=%d\n", digital_status[pin].inputs);}
 	else {printf("Error, mode not");}
 	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);	
+	pthread_mutex_unlock(&m1);
 }
 
 void printPacket_analog(uint8_t pin)
 {
+	pthread_mutex_lock(&m2);
 	printf("Analog Mode:\n");
 	printf("Pin Analog:%d\n", analog_status[pin].pin_analog);	
 	for(int i=0; i<analog_status[pin].samples; i++)
@@ -122,7 +125,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 		default:
 			break;
 	}
-pthread_mutex_unlock(&m1);
 	return Success;
 }
 
