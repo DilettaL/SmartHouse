@@ -40,16 +40,8 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-
-void acquire () {
-	while (!avaible)
-		;
-	avaible = false;
-}
-
-void release () {
-	avaible = true;
-}
+pthread_mutex_t m1; 
+pthread_mutex_t m2;
 
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
@@ -96,6 +88,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
+pthread_mutex_lock(&m2);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
@@ -113,7 +106,7 @@ for(int i=0; i<analog_status[idx_p->index].samples; i++)
 		default:
 			break;
 	}
-lock=1;	
+pthread_mutex_unlock(&m1);
 	return Success;
 }
 
@@ -175,8 +168,7 @@ void* keyboardFn()
 {
 	while(run)
 	{
-		while(lock!=1);
-		
+			pthread_mutex_lock(&m1);
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -188,8 +180,7 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			lock=2;
-		
+			pthread_mutex_unlock(&m2);
 	}
 	return 0;
 }
@@ -207,7 +198,6 @@ void* serialFn()
 	{	return 0;	}
 	while(run)
 	{
-			while(lock!=2);
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -236,6 +226,11 @@ void* serialFn()
 
 int main (int argc, char **argv)
 {
+	int rc1=pthread_mutex_init(&m1, NULL);
+	int rc2=pthread_mutex_init(&m2, NULL);
+	assert(rc1 == 0);
+	assert(rc2 == 0);
+	pthread_mutex_lock(&m2);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
@@ -244,7 +239,6 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	pointer_packet=(PacketHeader*)&test_config;
-lock=1;
 	printf("Shell Start\n");
 //Threads
 	pthread_t serial, keyboard;
