@@ -97,23 +97,12 @@ return 0;
 
 int requestFn(void)
 {
-	/*char insert[20];
-	printf("Insert the status packet type\t(Es. digital\tor\tanalog)\n");
-	scanf("%s", insert);
-	if(strcmp(insert, "digital"))
-	{
-		digital_status.pin_digital=setPin();
-		pointer_packet=(PacketHeader*)&digital_status;
-	}
-	else if(strcmp(insert,"analog"))
-	{
-		analog_status.pin_analog=setPin();
-		pointer_packet=(PacketHeader*)&analog_status;
-	}
-	else
-	{
-		printf("Error status packet\n");
-	}*/
+	//Inserimento tipo pin
+	//Inserimento pin
+	idx=10;
+	digital_status[idx].pin_digital=idx;
+	pointer_packet=(PacketHeader*)&digital_status[idx];
+//	pointer_packet=(PacketHeader*)analog_status[idx];
 	return 0;
 }
 Command commands[] =

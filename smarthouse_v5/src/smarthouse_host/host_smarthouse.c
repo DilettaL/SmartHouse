@@ -73,7 +73,26 @@ PacketHeader* host_initializeBuffer(PacketType type,
 		return 0;
 	}
 }
+void printPacket_digital(uint8_t pin)
+{
+	printf("Digital Mode:\t");
+	if(digital_status[pin].set_digital==0) {printf("Led off\n");}
+	else if(digital_status[pin].set_digital==1) {printf("Led on\n");}
+	else if(digital_status[pin].set_digital==2) {printf("Dimmer\n"); printf("Intensity=%d\n", digital_status[pin].intensity);}
+	else if(digital_status[pin].set_digital==3) {printf("Input digital\n"); printf("Value=%d\n", digital_status[pin].inputs);}
+	else {printf("Error, mode not");}
+	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);	
+}
 
+void printPacket_analog(uint8_t pin)
+{
+	printf("Analog Mode:\n");
+	printf("Pin Analog:%d\n", analog_status[pin].pin_analog);	
+	for(int i=0; i<analog_status[pin].samples; i++)
+	{
+		printf("Sample[%d] = %d\n", i,analog_status[pin].result[i]);
+	}
+}
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
@@ -88,20 +107,17 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
-pthread_mutex_lock(&m2);
-printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
+			pthread_mutex_lock(&m2);
+			printPacket_digital(idx_p->index);
+//printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status[idx_p->index], header, header->size);
+			printPacket_analog(idx_p->index);
 			pointer_packet=(PacketHeader*)&test_config;
-/*printf("Analog:\n");
-for(int i=0; i<analog_status[idx_p->index].samples; i++)
-{
-	printf("Sample[%d] = %d\n", i,analog_status[idx_p->index].result[i]);
-}*/
 			break;
 		default:
 			break;
