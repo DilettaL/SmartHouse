@@ -43,7 +43,6 @@ PacketHandler packet_handler;
 /*
 int k = 0;
 */
-int busy=0;
 void acquire () {
 	while (!avaible)
 		;
@@ -178,7 +177,6 @@ void* keyboardFn()
 	while(run)
 	{
 			acquire();
-			busy=1;
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -191,7 +189,6 @@ void* keyboardFn()
 				{	run=0;	}
 			}
 			release();
-			busy=0;
 	}
 	return 0;
 }
@@ -206,9 +203,11 @@ void* serialFn()
 		return 0;
 	serial_set_blocking(fd, 1); 
 	if  (! fd)
-	{	return 0;}
+	{	return 0;	}
+	int rilascioRisorsa = 5;
 	while(run)
 	{
+		acquire ();
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -223,10 +222,7 @@ void* serialFn()
 					int n=read (fd, &c, 1);
 					if (n) 
 					{
-						PacketStatus status;
-if(busy==0)
-{						status = PacketHandler_rxByte(&packet_handler, c);
-}
+						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
 						if (status<0)
 						{	printf("%d",status);
 							fflush(stdout);
@@ -234,6 +230,7 @@ if(busy==0)
 						packet_complete = (status==SyncChecksum);
 					}
 				}
+		release();
 	}
 	return 0;
 }
