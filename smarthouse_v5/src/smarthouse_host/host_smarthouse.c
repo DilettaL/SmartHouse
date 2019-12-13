@@ -175,8 +175,8 @@ void* keyboardFn()
 {
 	while(run)
 	{
-		while(lock==1)
-		{
+		while(lock!=1);
+		
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -189,7 +189,7 @@ void* keyboardFn()
 				{	run=0;	}
 			}
 			lock=2;
-		}
+		
 	}
 	return 0;
 }
@@ -247,10 +247,10 @@ int main (int argc, char **argv)
 lock=1;
 	printf("Shell Start\n");
 //Threads
-	pthread_t serial, keyboard, video;
+	pthread_t serial, keyboard;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);
 	pthread_create (&serial, NULL, serialFn, NULL);
-/Wait threads end
+//Wait threads end
 	pthread_join(keyboard, NULL);
 	pthread_join(serial, NULL);
 	return 0;
