@@ -10,6 +10,6 @@
 *.out
 
 /smarthouse_v?/hostbuild/host_smarthouse
-/smarthouse_v4/provaComunicazione/hostbuild/host_smarthouse
+/smarthouse_v?/provaComunicazione/hostbuild/host_smarthouse
 
-/smarthouse_v5/provaComunicazione/hostbuild/smarthouse_thread
+/smarthouse_v?/provaComunicazione/hostbuild/smarthouse_thread
