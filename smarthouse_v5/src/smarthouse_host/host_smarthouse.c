@@ -238,7 +238,7 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-				if(c1==DIGITAL_CONFIG_PACKET_ID || c1==DIGITAL_STATUS_PACKET_ID || c1==ANALOG_CONFIG_PACKET|| c1==ANALOG_STATUS_PACKET_ID)
+				if(c1==DIGITAL_CONFIG_PACKET_ID || c1==DIGITAL_STATUS_PACKET_ID || c1==ANALOG_CONFIG_PACKET_ID || c1==ANALOG_STATUS_PACKET_ID)
 				{ pthread_mutex_unlock(&m1);}
 	}
 	return 0;
