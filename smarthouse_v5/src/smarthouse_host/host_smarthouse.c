@@ -75,7 +75,6 @@ PacketHeader* host_initializeBuffer(PacketType type,
 }
 void printPacket_digital(uint8_t pin)
 {
-pthread_mutex_lock(&m2);
 	printf("Digital Mode:\t");
 	if(digital_status[pin].set_digital==0) {printf("Led off\n");}
 	else if(digital_status[pin].set_digital==1) {printf("Led on\n");}
@@ -87,7 +86,6 @@ pthread_mutex_lock(&m2);
 
 void printPacket_analog(uint8_t pin)
 {
-pthread_mutex_lock(&m2);
 	printf("Analog Mode:\n");
 	printf("Pin Analog:%d\n", analog_status[pin].pin_analog);	
 	for(int i=0; i<analog_status[pin].samples; i++)
@@ -224,10 +222,9 @@ void* serialFn()
 				uint8_t c1;
 				while ( !packet_complete ) 
 				{
-					count++;
 					uint8_t c;
 					int n=read (fd, &c, 1);
-					if(c==DIGITAL_CONFIG_PACKET_ID || c==DIGITAL_STATUS_PACKET_ID || c==ANALOG_CONFIG_PACKET_ID || c==ANALOG_STATUS_PACKET_ID){ c1=c;}
+					if(c==DIGITAL_CONFIG_PACKET_ID || c==DIGITAL_STATUS_PACKET_ID || c==ANALOG_CONFIG_PACKET_ID || c==ANALOG_STATUS_PACKET_ID){ c1=c;pthread_mutex_lock(&m2);}
 					if (n) 
 					{
 						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
