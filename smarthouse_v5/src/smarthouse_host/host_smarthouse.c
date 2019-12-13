@@ -221,13 +221,13 @@ void* serialFn()
 					usleep(10);
 				}
 				volatile int packet_complete =0;
-				uint8_t count=0, c1;
+				uint8_t c1;
 				while ( !packet_complete ) 
 				{
 					count++;
 					uint8_t c;
 					int n=read (fd, &c, 1);
-					if(count==2){ c1=c;}
+					if(c==DIGITAL_CONFIG_PACKET_ID || c==DIGITAL_STATUS_PACKET_ID || c==ANALOG_CONFIG_PACKET_ID || c==ANALOG_STATUS_PACKET_ID){ c1=c;}
 					if (n) 
 					{
 						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
