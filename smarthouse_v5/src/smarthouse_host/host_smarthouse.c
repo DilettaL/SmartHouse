@@ -40,9 +40,7 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-/*
-int k = 0;
-*/
+int busy=0;
 void acquire () {
 	while (!avaible)
 		;
@@ -113,8 +111,8 @@ for(int i=0; i<analog_status[idx_p->index].samples; i++)
 			break;
 		default:
 			break;
-	}
-	release();
+	}	
+	busy=0;
 	return Success;
 }
 
@@ -176,7 +174,9 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			acquire();
+			while (!avaible && busy==1);
+			avaible = false;
+			busy=1;
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -188,7 +188,7 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			release();
+			avaible=true;
 	}
 	return 0;
 }
@@ -204,10 +204,10 @@ void* serialFn()
 	serial_set_blocking(fd, 1); 
 	if  (! fd)
 	{	return 0;	}
-	int rilascioRisorsa = 5;
 	while(run)
 	{
-		acquire ();
+				while (!avaible);
+				avaible = false;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -229,8 +229,8 @@ void* serialFn()
 						}
 						packet_complete = (status==SyncChecksum);
 					}
-				}
-		release();
+				}	
+			avaible=true;
 	}
 	return 0;
 }
