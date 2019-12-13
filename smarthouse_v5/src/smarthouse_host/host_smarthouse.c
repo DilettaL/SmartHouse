@@ -40,7 +40,7 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-int busy=0;
+
 void acquire () {
 	while (!avaible)
 		;
@@ -97,12 +97,13 @@ PacketStatus host_onReceive(PacketHeader* header,
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
 printf("Digital\tPin(10):%d\tdigital_pin=%d\tConfiguration(1):%d\n", idx_p->index, digital_status[idx_p->index].pin_digital, digital_status[idx_p->index].set_digital);
-pointer_packet=(PacketHeader*)&test_config;
+			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status[idx_p->index], header, header->size);
+			pointer_packet=(PacketHeader*)&test_config;
 /*printf("Analog:\n");
 for(int i=0; i<analog_status[idx_p->index].samples; i++)
 {
@@ -111,8 +112,8 @@ for(int i=0; i<analog_status[idx_p->index].samples; i++)
 			break;
 		default:
 			break;
-	}	
-	busy=0;
+	}
+	busy=1;	
 	return Success;
 }
 
@@ -174,9 +175,6 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			while (!avaible && busy==1);
-			avaible = false;
-			busy=1;
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -188,7 +186,6 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			avaible=true;
 	}
 	return 0;
 }
@@ -206,8 +203,6 @@ void* serialFn()
 	{	return 0;	}
 	while(run)
 	{
-				while (!avaible);
-				avaible = false;
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -230,7 +225,6 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}	
-			avaible=true;
 	}
 	return 0;
 }
@@ -247,10 +241,10 @@ int main (int argc, char **argv)
 	pointer_packet=(PacketHeader*)&test_config;
 	printf("Shell Start\n");
 //Threads
-	pthread_t serial, keyboard;
+	pthread_t serial, keyboard, video;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);
-	pthread_create (&serial, NULL, serialFn, NULL);	
-//Wait threads end
+	pthread_create (&serial, NULL, serialFn, NULL);
+/Wait threads end
 	pthread_join(keyboard, NULL);
 	pthread_join(serial, NULL);
 	return 0;

@@ -12,6 +12,7 @@ int quitFn(void)
 {
 	avaible=false;
 	run=0;
+	busy=0;
 	return 0;
 }
 
