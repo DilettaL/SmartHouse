@@ -227,7 +227,7 @@ void* serialFn()
 					count++;
 					uint8_t c;
 					int n=read (fd, &c, 1);
-					if(count==3){ c1=c;}
+					if(count==2){ c1=c;}
 					if (n) 
 					{
 						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
@@ -238,7 +238,7 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-				if(c1==DIGITAL_CONFIG_PACKET_ID || c1==DIGITAL_STATUS_PACKET_ID || c1==ANALOG_CONFIG_PACKET_ID|| c1==ANALOG_STATUS_PACKET_ID)
+				if(c1==DIGITAL_CONFIG_PACKET_ID || c1==DIGITAL_STATUS_PACKET_ID || c1==ANALOG_CONFIG_PACKET|| c1==ANALOG_STATUS_PACKET_ID)
 				{ pthread_mutex_unlock(&m1);}
 	}
 	return 0;
