@@ -113,7 +113,7 @@ for(int i=0; i<analog_status[idx_p->index].samples; i++)
 		default:
 			break;
 	}
-	busy=1;	
+lock=1;	
 	return Success;
 }
 
@@ -175,6 +175,8 @@ void* keyboardFn()
 {
 	while(run)
 	{
+		while(lock==1)
+		{
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -186,6 +188,8 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
+			lock=2;
+		}
 	}
 	return 0;
 }
@@ -203,6 +207,7 @@ void* serialFn()
 	{	return 0;	}
 	while(run)
 	{
+			while(lock!=2);
 				PacketHandler_sendPacket(&packet_handler, pointer_packet);
 				while(packet_handler.tx_size)
 				{
@@ -239,6 +244,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	pointer_packet=(PacketHeader*)&test_config;
+lock=1;
 	printf("Shell Start\n");
 //Threads
 	pthread_t serial, keyboard, video;

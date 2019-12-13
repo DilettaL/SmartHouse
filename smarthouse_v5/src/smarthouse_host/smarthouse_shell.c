@@ -10,9 +10,9 @@ uint8_t idx;
 
 int quitFn(void)
 {
-	avaible=false;
+//	avaible=false;
+	lock=0;
 	run=0;
-	busy=0;
 	return 0;
 }
 
