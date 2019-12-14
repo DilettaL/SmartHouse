@@ -57,7 +57,7 @@ int dimmerFn(void)
 	scanf("%d", &pin);	
 	digital_config.pin_digital= pin;
 	pointer_packet=(PacketHeader*)&digital_config;
-*/
+
 	uint8_t pint = (uint8_t)pin;
 	digital_config[index].pin_digital=index;
 	digital_config.set_digital=dimmer;
