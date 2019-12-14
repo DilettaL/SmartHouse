@@ -73,8 +73,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 /*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[idx_p->index]);
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
-			memcpy(&digital_status+size*digital_status[idx].pin_digital, header, header->size);
-/*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[idx_p->index]);
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[idx_p->index]);
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			memcpy(&analog_config, header, header->size);
@@ -83,6 +82,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 /*DEBUG*/PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[idx_p->index]);
 			break;
 		case ANALOG_STATUS_PACKET_ID:
+			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[idx_p->index]);
 			break;
 		default:
 			break;
