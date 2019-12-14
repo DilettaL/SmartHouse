@@ -40,6 +40,7 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
+int busy;
 pthread_mutex_t m1; 
 pthread_mutex_t m2;
 
@@ -81,10 +82,7 @@ void printPacket_digital(uint8_t pin)
 	else if(digital_status[pin].set_digital==2) {printf("Dimmer\n"); printf("Intensity=%d\n", digital_status[pin].intensity);}
 	else if(digital_status[pin].set_digital==3) {printf("Input digital\n"); printf("Value=%d\n", digital_status[pin].inputs);}
 	else {printf("Error, mode not");}
-	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);	
-	printf(">Smarthouse ");
-	pthread_mutex_lock(&m2);
-	pthread_mutex_unlock(&m1);
+	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);
 }
 
 void printPacket_analog(uint8_t pin)
@@ -95,9 +93,6 @@ void printPacket_analog(uint8_t pin)
 	{
 		printf("Sample[%d] = %d\n", i,analog_status[pin].result[i]);
 	}
-	printf("Smarthouse> ");
-	pthread_mutex_lock(&m2);
-	pthread_mutex_unlock(&m1);
 
 }
 PacketStatus host_onReceive(PacketHeader* header,
@@ -127,6 +122,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		default:
 			break;
 	}
+	busy=1;
 	return Success;
 }
 
@@ -189,6 +185,7 @@ void* keyboardFn()
 	while(run)
 	{
 			pthread_mutex_lock(&m1);
+			busy=0;
 			printf("Smarthouse> ");
 			char *buffer = readline("");
 //			char *buffer = readline("Smarthouse> ");
@@ -220,6 +217,9 @@ void* serialFn()
 	{	return 0;	}
 	while(run)
 	{
+		pthread_mutex_lock(&m2);
+		while(busy!=1)
+		{
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
 		while(packet_handler.tx_size)
 		{
@@ -242,6 +242,8 @@ void* serialFn()
 				packet_complete = (status==SyncChecksum);
 			}
 		}
+		}
+		pthread_mutex_unlock(&m1);
 	}
 	return 0;
 }
