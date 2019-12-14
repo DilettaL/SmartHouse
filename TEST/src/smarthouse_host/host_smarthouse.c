@@ -241,7 +241,7 @@ void* serialFn()
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-		if(busy==1;)
+		if(busy==1)
 		{
 			lock_k=0;
 			lock_s=1;
