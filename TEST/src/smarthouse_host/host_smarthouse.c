@@ -185,7 +185,6 @@ void* keyboardFn()
 	while(run)
 	{
 			pthread_mutex_lock(&m1);
-			busy=0;
 			printf("Smarthouse> ");
 			char *buffer = readline("");
 //			char *buffer = readline("Smarthouse> ");
@@ -218,8 +217,9 @@ void* serialFn()
 	while(run)
 	{
 		pthread_mutex_lock(&m2);
-		while(busy!=1)
+		while(!busy)
 		{
+printf ("busy=%d\n");
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
 		while(packet_handler.tx_size)
 		{
@@ -244,6 +244,7 @@ void* serialFn()
 		}
 		}
 		pthread_mutex_unlock(&m1);
+	busy=0;
 	}
 	return 0;
 }
