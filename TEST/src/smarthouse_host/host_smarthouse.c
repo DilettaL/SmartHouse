@@ -40,7 +40,7 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-int busy;
+int busy=0;
 pthread_mutex_t m1; 
 pthread_mutex_t m2;
 
@@ -83,6 +83,7 @@ void printPacket_digital(uint8_t pin)
 	else if(digital_status[pin].set_digital==3) {printf("Input digital\n"); printf("Value=%d\n", digital_status[pin].inputs);}
 	else {printf("Error, mode not");}
 	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);
+	busy=1;
 }
 
 void printPacket_analog(uint8_t pin)
@@ -122,7 +123,6 @@ PacketStatus host_onReceive(PacketHeader* header,
 		default:
 			break;
 	}
-	busy=1;
 	return Success;
 }
 
