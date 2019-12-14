@@ -80,6 +80,7 @@ void printPacket_digital(uint8_t pin)
 	else if(digital_status[pin].set_digital==3) {printf("Input digital\n"); printf("Value=%d\n", digital_status[pin].inputs);}
 	else {printf("Error, mode not");}
 	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);
+	printf("Smarthouse> ");
 }
 
 void printPacket_analog(uint8_t pin)
@@ -90,7 +91,7 @@ void printPacket_analog(uint8_t pin)
 	{
 		printf("Sample[%d] = %d\n", i,analog_status[pin].result[i]);
 	}
-
+	printf("Smarthouse> ");
 }
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {

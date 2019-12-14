@@ -213,7 +213,6 @@ int executeCommand(const char* name)
 	}
 	else
 	{	printf("ERROR: no handler for command\n");	}
-printf ("IL VALORE digital_config.setdigital:%d\n", digital_config.set_digital);
 	return retval;
 }
 
