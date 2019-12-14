@@ -26,7 +26,7 @@ int ledOffFn(void)
 */
 	idx=10;
 	digital_config.pin_digital= idx;
-	digital_config.set_digital=ledOff;
+	digital_config.set_digital=0;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }

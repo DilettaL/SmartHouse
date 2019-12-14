@@ -243,8 +243,8 @@ printf ("busy=%d\n");
 			}
 		}
 		}
+		busy=0;
 		pthread_mutex_unlock(&m1);
-	busy=0;
 	}
 	return 0;
 }
