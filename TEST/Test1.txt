@@ -1,0 +1,10 @@
+Cambiamenti della seguente versione:
+
+1) Implementata la scritta >Smarthouse per redere apparente la sincronizzazione giusta
+L'eventuale problema di questo cambiamento potrebbe essere il modo con cui la shell prenderebbe l'istruzione, per far fronte a ciò si:
+a) inserisce commentato in host_smarthouse.c la printf di smarthouse e si inserisce una readline senza smarthouse
+Questo problema si potrebbe ripercuotere anche sulla shell, quindi nel caso:
+
+b)si dovrebbe modificare da riga 163 a 171 smarthouse_shell.c in modo da far si che la stringa in ingresso alla funzione sia solo il nome del comando.
+
+2) Si inseriscono commentate in smarthouse_shell le varie implementazioni delle funzioni
