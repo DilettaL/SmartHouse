@@ -26,7 +26,7 @@ int ledOffFn(void)
 */
 	idx=10;
 	digital_config.pin_digital= idx;
-	digital_config.set_digital=0;
+	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
@@ -213,6 +213,7 @@ int executeCommand(const char* name)
 	}
 	else
 	{	printf("ERROR: no handler for command\n");	}
+printf ("IL VALORE digital_config.setdigital:%d\n", digital_config.set_digital);
 	return retval;
 }
 
