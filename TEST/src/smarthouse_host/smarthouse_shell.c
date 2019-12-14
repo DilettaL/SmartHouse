@@ -188,13 +188,13 @@ Command* findCommand(const char* name)
 	return 0;
 }
 
-int executeCommand(const char* line_)
+int executeCommand(const char* name)
 {
 
-	char line[1024];
+/*	char line[1024];
 	strcpy(line, line_);
   	char* name=strtok(line," ");
-	if (! name)
+*/	if (! name)
 		return -1;
 	Command* cmd=findCommand(name);
   	if (! cmd)

@@ -185,9 +185,9 @@ void* keyboardFn()
 	while(run)
 	{
 			pthread_mutex_lock(&m1);
-			//printf("Smarthouse> ");
-			//char *buffer = readline("");
-			char *buffer = readline("Smarthouse> ");
+			printf("Smarthouse> ");
+			char *buffer = readline("");
+//			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
 				executeCommand(buffer);
