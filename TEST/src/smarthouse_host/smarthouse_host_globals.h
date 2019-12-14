@@ -3,8 +3,6 @@
 #include "smarthouse_packets.h"
 
 extern int run;
-extern int lock_k;
-extern int lock_s;
 extern PacketHeader *pointer_packet;
 
 extern TestConfigPacket test_config;

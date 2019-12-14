@@ -40,7 +40,6 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
-int busy=0;
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
 TestStatusPacket test_status_buffer;
@@ -81,7 +80,6 @@ void printPacket_digital(uint8_t pin)
 	else {printf("Error, mode not");}
 	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);
 	printf("Smarthouse> ");
-	busy=1;
 }
 
 void printPacket_analog(uint8_t pin)
@@ -182,8 +180,6 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			while(lock_k!=1)
-			{
 			printf("Smarthouse> ");
 			char *buffer = readline("");
 //			char *buffer = readline("Smarthouse> ");
@@ -196,10 +192,6 @@ void* keyboardFn()
 				}
 				else
 				{	run=0;	}
-			}
-			busy=0;
-			lock_k=1;
-			lock_s=0;
 			}			
 	}
 	return 0;
@@ -218,7 +210,6 @@ void* serialFn()
 	{	return 0;	}
 	while(run)
 	{
-		while(lock_s!=0);
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
 		while(packet_handler.tx_size)
 		{
@@ -241,18 +232,12 @@ void* serialFn()
 				packet_complete = (status==SyncChecksum);
 			}
 		}
-		if(busy==1)
-		{
-			lock_k=0;
-			lock_s=1;
-		}
 	}
 	return 0;
 }
 
 int main (int argc, char **argv)
 {
-	lock_s=1;
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
