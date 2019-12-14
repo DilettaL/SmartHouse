@@ -2,6 +2,8 @@
 #include "smarthouse_host_globals.h"
 
 int run=1;
+int lock_k=0;
+int lock_s=0;
 PacketHeader *pointer_packet=(PacketHeader*)&test_config;
 TestConfigPacket test_config=
 {

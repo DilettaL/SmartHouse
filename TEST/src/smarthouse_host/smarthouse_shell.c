@@ -10,6 +10,8 @@ uint8_t idx;
 
 int quitFn(void)
 {
+	lock_k=1;
+	lock_s=1;
 	run=0;
 	return 0;
 }
