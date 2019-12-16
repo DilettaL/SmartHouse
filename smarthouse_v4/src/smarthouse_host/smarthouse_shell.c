@@ -148,9 +148,12 @@ int executeCommand(const char* line_)
 {
 	char line[1024];
 	strcpy(line, line_);
+	printf ("%s\n",line);
   	char* name=strtok(line," ");
-	if (! name)
-		return -1;
+//	name=strtok(NULL," ");
+//		printf("[%s]\n", name);
+//	if (! name)
+//		return -1;
 	Command* cmd=findCommand(name);
   	if (! cmd)
 	{
@@ -165,7 +168,8 @@ printf("pin inserito %s\n", pint);
 		pin=atoi(pint[0])*10+atoi(pint[1]);
 	}
 	else { pin=atoi(pint[0]);}
-*/	printf("Pin inserito=%d\n", pin);
+	printf("Pin inserito=%d\n", pin);
+*/
 //	char *arg=strtok(NULL, " "); //intensity, samples, request type
 //
 	int retval=0;

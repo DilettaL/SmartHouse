@@ -163,7 +163,7 @@ int main (int argc, char **argv)
 		printBanner();
 		return -1;
 	}
-	int fd=serial_open(argv[1]);
+	int fd=serial_open("/dev/ttyACM0");
 	if(fd<0)
 		return 0;
 	if (serial_set_interface_attribs(fd, 115200, 0) <0)
