@@ -173,7 +173,6 @@ Command* findCommand(const char* name)
 
 int executeCommand(const char* line_)
 {
-
 	char line[1024];
 	strcpy(line, line_);
   	char* name=strtok(line," ");

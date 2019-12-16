@@ -23,7 +23,8 @@ const char *banner[]={
 	"to request a status packet insert(then choice packet type):",
 	"$>Smarthouse	request",
 	"to exit insert:",
-	"$>Smarthouse	quit"
+	"$>Smarthouse	quit",
+	"es. dimmer 10 intensity"
 };
 
 void printBanner(void)
@@ -158,7 +159,11 @@ PacketOperations analog_status_ops = {
 
 int main (int argc, char **argv)
 {
-	assert(argc>1);
+	if(argc<1)
+	{
+		printBanner();
+		return -1;
+	}
 	int fd=serial_open(argv[1]);
 	if(fd<0)
 		return 0;
@@ -174,30 +179,15 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-	run=1;
-//	digital_config.pin_digital=10;
-//	digital_config.set_digital=1;
-//pointer_packet=(PacketHeader*)&digital_config;
-	printf("Shell Start\n");	
+	executeCommand(&argv);
 	while(run)
 	{
-		char *buffer = readline("Smarthouse> ");
-		if (buffer)
+		PacketHandler_sendPacket(&packet_handler, pointer_packet);
+		while(packet_handler.tx_size)
 		{
-			executeCommand(buffer);
-			if (*buffer)
-			{//	add_history(buffer);
-				free(buffer);
-			}
-			else
-			{	run=0;	}
-			PacketHandler_sendPacket(&packet_handler, pointer_packet);
-			while(packet_handler.tx_size)
-			{
-				uint8_t c=PacketHandler_txByte(&packet_handler);
-				ssize_t res = write(fd,&c,1);
-				usleep(10);
-			}
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
 		}
 		volatile int packet_complete =0;
 		while ( !packet_complete ) 
