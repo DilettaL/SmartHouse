@@ -179,7 +179,6 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-	executeCommand(&argv);
 	while(run)
 	{
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
