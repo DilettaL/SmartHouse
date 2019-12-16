@@ -6,6 +6,8 @@
 #include "smarthouse_shell.h"
 #include "packet_header.h"
 
+uint8_t pin;
+
 int quitFn(void)
 {
 	run=0;
@@ -14,12 +16,7 @@ int quitFn(void)
 
 int ledOffFn(void)
 {
-	int pin;
-	printf("insert pin:\n");
-
-
-	uint8_t pint = (uint8_t)pin;
-	digital_config.pin_digital=pint;
+	digital_config.pin_digital=pin;
 	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
@@ -27,70 +24,46 @@ int ledOffFn(void)
 
 int ledOnFn(void)
 {
-	printf("insert pin:\n");
-	char *pinc = readline("");
-	int pin = atoi(pinc)+atoi(pinc+1);
-	printf("DEBUG:%s-%d\n", pinc, pin);
-	uint8_t pint = (uint8_t)pin;//(uint8_t)pin;
-	if(*pinc)
-	{	free(pinc);	}
+	
+	digital_config.pin_digital= pin;
 	digital_config.set_digital=ledOn;
-	digital_config.pin_digital= pint;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
 
 int dimmerFn(void)
-{/*
-	int intensity=0;
-	int pin;
-	printf("insert pin:\n");
-	
-	uint8_t pint = (uint8_t)pin;
-	digital_config.pin_digital=pint;
+{	
+	digital_config.pin_digital= pin;
 	digital_config.set_digital=dimmer;
-	printf("Insert intensity:\n");
-	if(control>=0)
-	{
-		digital_config.intensity=(uint8_t)intensity%256;
-		pointer_packet=(PacketHeader*)&digital_config;
-		return 0;
-	}
-	else
-	{	return -1;	}
+/*
+	digital_config.intensity=(uint8_t)intensity%256;
+	return 0;
 */
 return 0;
 }
 
 int digitalInputFn(void)
 {
-	int pin;
-	printf("insert pin:\n");
-
-	uint8_t pint = (uint8_t)pin;
-	digital_config.pin_digital=pint;
+	digital_config.pin_digital=pin;
 	digital_config.set_digital=input_digital;
-	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
 }
 
 int adcFn(void)
-{/*
+{
+	digital_config.pin_digital=pin;
+	
+/*
 	int sample;
 	int pin;
 	printf ("Insert pin\n");
 
 	uint8_t pint = (uint8_t)pin;
-	digital_config.pin_digital=pint;
 	printf("Insert number of samples:\n");
 	if(scanf("%d", &sample)>=0)
 	{
 		analog_config.samples=(uint8_t)sample;
-		pointer_packet=(PacketHeader*)&analog_config;
-		return 0;
-	}
-	else
-	{	return -1;	}
+	return 0;
 */
 return 0;
 }
@@ -184,6 +157,17 @@ int executeCommand(const char* line_)
 		printf("ERROR: unknown command [%s]\n", name);
 		return -1;
 	}
+//
+	char *pint=strtok(NULL, " "); 
+printf("pin inserito %s\n", pint);
+/*	if(pint[1]!=NULL)
+	{
+		pin=atoi(pint[0])*10+atoi(pint[1]);
+	}
+	else { pin=atoi(pint[0]);}
+*/	printf("Pin inserito=%d\n", pin);
+//	char *arg=strtok(NULL, " "); //intensity, samples, request type
+//
 	int retval=0;
 	if (cmd->cmd_fn)
 	{

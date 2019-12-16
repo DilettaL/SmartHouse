@@ -77,10 +77,8 @@ PacketStatus host_onReceive(PacketHeader* header,
 	switch (header->type)
 	{
 		case TEST_CONFIG_PACKET_ID:
-/*DEBUG*/printf("Errore\n");
 			break;
 		case TEST_STATUS_PACKET_ID:	
-			memcpy(&test_status, header, header->size);
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
@@ -100,6 +98,7 @@ printf("Analog_status\n");
 		default:
 			break;
 	}
+	run =0;
 	return Success;
 }
 
@@ -179,6 +178,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
+	executeCommand(*argv);
 	while(run)
 	{
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
