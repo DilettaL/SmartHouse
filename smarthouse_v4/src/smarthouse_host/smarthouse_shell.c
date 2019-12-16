@@ -117,7 +117,19 @@ Command commands[] =
 		.name= "request",
 		.cmd_fn=requestFn,
 		.help="usage: request"
-	}
+	}/*,
+	{
+		.name= "loadFn",
+		.cmd_fn=requestFn,
+		.help="usage: request"
+
+	},
+	{
+		.name= "request",
+		.cmd_fn=requestFn,
+		.help="usage: request"
+
+	}*/
 };
 
 const int num_commands=sizeof(commands)/sizeof(Command);
@@ -158,6 +170,7 @@ int executeCommand(void)//const char* line_)
 		else
 		{	printf("Packet transmitt\n");		}
 	}
+	else
 	{	printf("ERROR: no handler for command\n");	}
 	return retval;
 
