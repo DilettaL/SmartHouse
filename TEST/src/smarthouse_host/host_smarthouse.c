@@ -40,6 +40,9 @@ void printBanner(void)
 
 struct UART* uart;
 PacketHandler packet_handler;
+PacketType typePrint;
+PacketIndexed *idx_p;
+
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
 TestStatusPacket test_status_buffer;
@@ -95,7 +98,8 @@ void printPacket_analog(uint8_t pin)
 PacketStatus host_onReceive(PacketHeader* header,
 			       void* args __attribute__((unused))) {
 	++header->seq;
-	PacketIndexed *idx_p=(PacketHeader*)header;
+	typePrint=header->type;
+	idx_p=(PacketHeader*)header;
 	switch (header->type)
 	{ 
 		case TEST_CONFIG_PACKET_ID:
@@ -106,8 +110,8 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
-			printPacket_digital(idx_p->index);
-			pointer_packet=(PacketHeader*)&test_config;
+//			printPacket_digital(idx_p->index);
+//			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:
 			break;
@@ -119,6 +123,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 		default:
 			break;
 	}
+	lock=true;
 	return Success;
 }
 
@@ -180,6 +185,13 @@ void* keyboardFn()
 {
 	while(run)
 	{
+			while(lock!=true);	
+			if(typePrint==DIGITAL_STATUS_PACKET_ID)
+			{
+				printPacket_digital(idx_p->index);
+				pointer_packet=(PacketHeader*)&test_config;
+			}
+//		else if ()
 			printf("Smarthouse> ");
 			char *buffer = readline("");
 //			char *buffer = readline("Smarthouse> ");
@@ -193,6 +205,7 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}			
+			lock=false;
 	}
 	return 0;
 }
