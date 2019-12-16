@@ -173,7 +173,9 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-	executeCommand();
+//	executeCommand();
+	digital_config.pin_digital=10;
+	digital_config.set_digital=ledOn;
 	while(run)
 	{
 		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&digital_config);//pointer_packet);
