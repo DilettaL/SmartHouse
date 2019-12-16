@@ -6,7 +6,7 @@
 #include "smarthouse_shell.h"
 #include "packet_header.h"
 
-uint8_t pin;
+int pin;
 
 int quitFn(void)
 {
@@ -16,7 +16,7 @@ int quitFn(void)
 
 int ledOffFn(void)
 {
-	digital_config.pin_digital=pin;
+	digital_config.pin_digital=(uint8_t)pin;
 	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
@@ -24,8 +24,7 @@ int ledOffFn(void)
 
 int ledOnFn(void)
 {
-	
-	digital_config.pin_digital= pin;
+	digital_config.pin_digital= (uint8_t)pin;
 	digital_config.set_digital=ledOn;
 	pointer_packet=(PacketHeader*)&digital_config;
 	return 0;
@@ -33,60 +32,53 @@ int ledOnFn(void)
 
 int dimmerFn(void)
 {	
-	digital_config.pin_digital= pin;
+	int intensity;
+	digital_config.pin_digital= (uint8_t)pin;
 	digital_config.set_digital=dimmer;
-/*
-	digital_config.intensity=(uint8_t)intensity%256;
-	return 0;
-*/
+	printf("Insert intensity:\n");
+	if( scanf("%d", &intensity)<0){printf("Errore");} 
+	digital_config.intensity=(uint8_t)intensity;	
 return 0;
 }
 
 int digitalInputFn(void)
 {
-	digital_config.pin_digital=pin;
+	digital_config.pin_digital=(uint8_t)pin;
 	digital_config.set_digital=input_digital;
 	return 0;
 }
 
 int adcFn(void)
 {
-	digital_config.pin_digital=pin;
-	
-/*
-	int sample;
-	int pin;
-	printf ("Insert pin\n");
-
-	uint8_t pint = (uint8_t)pin;
+	digital_config.pin_digital=(uint8_t)pin;
+	int sample;	
 	printf("Insert number of samples:\n");
 	if(scanf("%d", &sample)>=0)
 	{
 		analog_config.samples=(uint8_t)sample;
+	}
 	return 0;
-*/
-return 0;
 }
 
 int requestFn(void)
 {
-	/*char insert[20];
+	char insert[20];
 	printf("Insert the status packet type\t(Es. digital\tor\tanalog)\n");
-	scanf("%s", insert);
+	if(scanf("%s", insert)<0){printf("Errore\n");}
 	if(strcmp(insert, "digital"))
 	{
-		digital_status.pin_digital=setPin();
+		digital_status.pin_digital=(uint8_t)pin;
 		pointer_packet=(PacketHeader*)&digital_status;
 	}
 	else if(strcmp(insert,"analog"))
 	{
-		analog_status.pin_analog=setPin();
+		analog_status.pin_analog=(uint8_t)pin;
 		pointer_packet=(PacketHeader*)&analog_status;
 	}
 	else
 	{
 		printf("Error status packet\n");
-	}*/
+	}
 	return 0;
 }
 Command commands[] =
@@ -144,34 +136,19 @@ Command* findCommand(const char* name)
 	return 0;
 }
 
-int executeCommand(const char* line_)
+int executeCommand(void)//const char* line_)
 {
-	char line[1024];
-	strcpy(line, line_);
-	printf ("%s\n",line);
-  	char* name=strtok(line," ");
-//	name=strtok(NULL," ");
-//		printf("[%s]\n", name);
-//	if (! name)
-//		return -1;
+	printf("Insert function:\n");
+	char name[20];
+	if(scanf("%s", name)<0){printf("Errore\n");}	
 	Command* cmd=findCommand(name);
   	if (! cmd)
 	{
 		printf("ERROR: unknown command [%s]\n", name);
 		return -1;
 	}
-//
-	char *pint=strtok(NULL, " "); 
-printf("pin inserito %s\n", pint);
-/*	if(pint[1]!=NULL)
-	{
-		pin=atoi(pint[0])*10+atoi(pint[1]);
-	}
-	else { pin=atoi(pint[0]);}
-	printf("Pin inserito=%d\n", pin);
-*/
-//	char *arg=strtok(NULL, " "); //intensity, samples, request type
-//
+	printf("Insert pin:\n");
+	if(scanf("%d", &pin)<0){printf("Errore\n");}
 	int retval=0;
 	if (cmd->cmd_fn)
 	{
@@ -181,8 +158,8 @@ printf("pin inserito %s\n", pint);
 		else
 		{	printf("Packet transmitt\n");		}
 	}
-	else
 	{	printf("ERROR: no handler for command\n");	}
 	return retval;
+
 }
 

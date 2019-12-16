@@ -158,11 +158,6 @@ PacketOperations analog_status_ops = {
 
 int main (int argc, char **argv)
 {
-	if(argc<1)
-	{
-		printBanner();
-		return -1;
-	}
 	int fd=serial_open("/dev/ttyACM0");
 	if(fd<0)
 		return 0;
@@ -178,7 +173,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
-	executeCommand(*argv);
+	executeCommand();
 	while(run)
 	{
 		PacketHandler_sendPacket(&packet_handler, pointer_packet);
