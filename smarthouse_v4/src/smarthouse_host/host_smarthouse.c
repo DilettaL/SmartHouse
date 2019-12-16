@@ -78,7 +78,8 @@ PacketStatus host_onReceive(PacketHeader* header,
 	{
 		case TEST_CONFIG_PACKET_ID:
 			break;
-		case TEST_STATUS_PACKET_ID:	
+		case TEST_STATUS_PACKET_ID:
+printf("Sync\n");	
 			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 /*DEBUG*/printf("Errore\n");
@@ -98,7 +99,6 @@ printf("Analog_status\n");
 		default:
 			break;
 	}
-	run =0;
 	return Success;
 }
 
