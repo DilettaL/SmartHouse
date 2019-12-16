@@ -176,7 +176,7 @@ int main (int argc, char **argv)
 	executeCommand();
 	while(run)
 	{
-		PacketHandler_sendPacket(&packet_handler, digital_config);//pointer_packet);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&digital_config);//pointer_packet);
 		while(packet_handler.tx_size)
 		{
 			uint8_t c=PacketHandler_txByte(&packet_handler);
