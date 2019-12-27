@@ -420,3 +420,21 @@ AnalogStatusPacket analog_status[NUM_ANALOG]=
 		.result= {0,0,0,0,0,0,0,0,0,0}
 	}
 };
+
+EepromWritePacket eeprom_write =
+{
+	.header.type=EEPROM_WRITE_PACKET_ID,
+	.header.size=sizeof(EepromWritePacket),
+	.header.seq=0,
+	.type=0,		//definisce se l'operazione va compiuta su un pin analogico o digitale
+	.pin=0
+};
+
+EepromReadPacket eeprom_read=
+{
+	.header.type=EEPROM_READ_PACKET_ID,
+	.header.size=sizeof(EepromReadPacket),
+	.header.seq=0,
+	.type=0,
+	.pin=0
+};

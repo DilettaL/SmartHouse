@@ -1,7 +1,43 @@
 #include "smarthouse_functions.h"
+#include "eeprom.h"
 #include "digio.h"
 #include "adc.h"
 #include "pwm.h"
+
+#define DIGITAL_PARAM_OFFSET      (32) 
+#define ANALOG_PARAM_OFFSET      (DIGITAL_PARAM_OFFSET+sizeof(DigitalStatusPacket)*NUM_DIGITAL)
+
+PacketStatus Smarthouse_paramSave()//uint8_t param_type, int8_t index)
+{
+	switch(eeprom_write.type)
+	{
+		case digital:
+			EEPROM_write(DIGITAL_PARAM_OFFSET+eeprom_write.pin*sizeof(DigitalStatusPacket), &digital_status[eeprom_write.pin], sizeof(DigitalStatusPacket));
+			break;
+		case analog:
+			EEPROM_write(ANALOG_PARAM_OFFSET+eeprom_write.pin*sizeof(AnalogStatusPacket), &analog_status[eeprom_write.pin], sizeof(AnalogStatusPacket));
+			break;
+		default:
+    			return GenericError;
+  	}
+	return Success;
+}
+
+PacketStatus Smarthouse_paramLoad()//uint8_t param_type, int8_t index)
+{
+	switch(eeprom_read.type)
+	{
+		case digital:
+			EEPROM_read(&digital_status[eeprom_read.pin], DIGITAL_PARAM_OFFSET+eeprom_read.pin*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
+			break;
+		case analog:
+			EEPROM_read(&analog_status[eeprom_read.pin], ANALOG_PARAM_OFFSET+eeprom_read.pin*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
+			break;
+		default:
+			return GenericError;
+	}
+	return Success;	
+}
 
 //digital functions
 void LedOff(uint8_t pin)

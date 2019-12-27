@@ -71,4 +71,28 @@ typedef struct AnalogStatusPacket{
 	uint16_t result[SAMPLE_MAX];
 }AnalogStatusPacket;
 #define ANALOG_STATUS_PACKET_ID 6
+
+typedef enum
+{
+	digital=0,
+	analog=1
+}EepromOperations;
+
+typedef struct EepromWritePacket
+{
+	PacketHeader header;
+	EepromOperations type;		//definisce se l'operazione va compiuta su un pin analogico o digitale
+	uint8_t pin;		//definisce su quale pin effettuare l'operazione	
+}EepromWritePacket;
+#define EEPROM_WRITE_PACKET_ID 7
+
+typedef struct EepromReadPacket
+{
+	PacketHeader header;
+	EepromOperations type;		//definisce se l'operazione va compiuta su un pin analogico o digitale
+	uint8_t pin;
+	DigitalStatusPacket digital_read;
+	AnalogStatusPacket analog_read;
+}EepromReadPacket;
+#define EEPROM_READ_PACKET_ID 8
 #pragma pack(pop)

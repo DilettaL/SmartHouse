@@ -24,6 +24,7 @@ AVRDUDE_FLAGS += -c wiring
 OBJS=	smarthouse_firmware_globals.o\
 	smarthouse_functions.o\
 	packet_handler.o\
+	eeprom.o\
 	digio.o\
 	adc.o\
 	pwm.o\
@@ -37,6 +38,7 @@ HEADERS=smarthouse_firmware_globals.h\
 	packet_operations.h\
 	packet_header.h\
 	smarthouse_packets.h\
+	eeprom.h\
 	digio.h\
 	adc.h\
 	pwm.h\
