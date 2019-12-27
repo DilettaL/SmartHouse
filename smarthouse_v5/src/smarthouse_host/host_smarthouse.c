@@ -181,7 +181,6 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			pthread_mutex_lock(&m1);
 			char *buffer = readline("Smarthouse> ");
 			if (buffer)
 			{
@@ -193,7 +192,6 @@ void* keyboardFn()
 				else
 				{	run=0;	}
 			}
-			pthread_mutex_unlock(&m2);
 	}
 	return 0;
 }
@@ -219,12 +217,10 @@ void* serialFn()
 					usleep(10);
 				}
 				volatile int packet_complete =0;
-				uint8_t c1;
 				while ( !packet_complete ) 
 				{
 					uint8_t c;
 					int n=read (fd, &c, 1);
-					if(c==DIGITAL_CONFIG_PACKET_ID || c==DIGITAL_STATUS_PACKET_ID || c==ANALOG_CONFIG_PACKET_ID || c==ANALOG_STATUS_PACKET_ID){ c1=c;pthread_mutex_lock(&m2);}
 					if (n) 
 					{
 						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
@@ -235,19 +231,12 @@ void* serialFn()
 						packet_complete = (status==SyncChecksum);
 					}
 				}
-				if(c1==DIGITAL_CONFIG_PACKET_ID || c1==DIGITAL_STATUS_PACKET_ID || c1==ANALOG_CONFIG_PACKET_ID || c1==ANALOG_STATUS_PACKET_ID)
-				{ pthread_mutex_unlock(&m1);}
 	}
 	return 0;
 }
 
 int main (int argc, char **argv)
 {
-	int rc1=pthread_mutex_init(&m1, NULL);
-	int rc2=pthread_mutex_init(&m2, NULL);
-	assert(rc1 == 0);
-	assert(rc2 == 0);
-	pthread_mutex_lock(&m2);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
 	PacketHandler_installPacket(&packet_handler, &test_status_ops);
