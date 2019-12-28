@@ -16,7 +16,9 @@ int quitFn(void)
 
 int ledOffFn(void)
 {
-	idx=10;
+	int control;
+	printf("Insert pin:\n");
+	if((control=scanf("%d", idx))<0){printf("Error\n");}
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -33,7 +35,9 @@ int ledOnFn(void)
 	if(*pinc)
 	{	free(pinc);	}
 */
-	idx=10;
+	int control;
+	printf("Insert pin:\n");
+	if((control=scanf("%d", idx))<0){printf("Error\n");}	
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOn;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -105,6 +109,23 @@ int requestFn(void)
 //	pointer_packet=(PacketHeader*)analog_status[idx];
 	return 0;
 }
+
+int saveFn(void)
+{
+	//decidere operazione se su digital o analog
+	//tipo di pin
+	pointer_packet=(PacketHeader*)&eeprom_write;
+	return 0;
+}
+
+int loadFn(void)
+{
+	//decidere operazione se su digital o analog
+	//tipo di pin
+	pointer_packet=(PacketHeader*)&eeprom_read;
+	return 0;
+}
+
 Command commands[] =
 {
 	{
@@ -141,7 +162,17 @@ Command commands[] =
 		.name= "request",
 		.cmd_fn=requestFn,
 		.help="usage: request"
-	}
+	},	
+	{
+		.name= "save",
+		.cmd_fn=saveFn,
+		.help="usage: save"
+	},	
+	{
+		.name= "load",
+		.cmd_fn=loadFn,
+		.help="usage: load"
+	},
 };
 
 const int num_commands=sizeof(commands)/sizeof(Command);
