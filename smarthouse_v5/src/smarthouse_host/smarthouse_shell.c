@@ -6,7 +6,7 @@
 #include "smarthouse_shell.h"
 #include "packet_header.h"
 
-uint8_t idx;
+int idx;
 
 int quitFn(void)
 {
@@ -18,7 +18,7 @@ int ledOffFn(void)
 {
 	int control;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -37,7 +37,8 @@ int ledOnFn(void)
 */
 	int control;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", idx))<0){printf("Error\n");}	
+scanf("%d", &idx);
+
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOn;
 	pointer_packet=(PacketHeader*)&digital_config;
