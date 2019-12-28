@@ -24,6 +24,10 @@ const char *banner[]={
 	"$>Smarthouse	adc",
 	"to request a status packet insert(then choice packet type):",
 	"$>Smarthouse	request",
+	"to access to eeprom insert(then choice pin and packet type):",
+	"$>Smarthouse	save",
+	"or",
+	"$>Smarthouse	load",	
 	"to exit insert:",
 	"$>Smarthouse	quit"
 };
