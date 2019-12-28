@@ -27,18 +27,9 @@ int ledOffFn(void)
 
 int ledOnFn(void)
 {
-/*	printf("insert pin:\n");
-	char *pinc = readline("");
-	int pin = atoi(pinc)+atoi(pinc+1);
-	printf("DEBUG:%s-%d\n", pinc, pin);
-	uint8_t pint = (uint8_t)pin;//(uint8_t)pin;
-	if(*pinc)
-	{	free(pinc);	}
-*/
 	int control;
 	printf("Insert pin:\n");
-scanf("%d", &idx);
-
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOn;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -46,83 +37,114 @@ scanf("%d", &idx);
 }
 
 int dimmerFn(void)
-{/*
-	int intensity=0;
-	int pin;
-	printf("insert pin:\n");
-	
-	uint8_t pint = (uint8_t)pin;
-	digital_config[index].pin_digital=index;
-	digital_config.set_digital=dimmer;
+{
+	int control;
+	int intensity;
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
 	printf("Insert intensity:\n");
-	if(control>=0)
-	{
-		digital_config.intensity=(uint8_t)intensity%256;
-		pointer_packet=(PacketHeader*)&digital_config;
-		return 0;
-	}
-	else
-	{	return -1;	}
-*/
-return 0;
+	if((control=scanf("%d", &intensity))<0){printf("Error\n");}
+	digital_config.set_digital=dimmer;
+	digital_config.pin_digital=idx;
+	digital_config.intensity=intensity;
+	pointer_packet=(PacketHeader*)&digital_config;
+	return 0;
 }
 
 int digitalInputFn(void)
 {
-/*	int pin;
-	printf("insert pin:\n");
-
-	uint8_t pint = (uint8_t)pin;
-	digital_config.pin_digital=pint;
+	int control;
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	digital_config.pin_digital=idx;
 	digital_config.set_digital=input_digital;
 	pointer_packet=(PacketHeader*)&digital_config;
-*/	return 0;
+	return 0;
 }
 
 int adcFn(void)
-{/*
-	int sample;
-	int pin;
-	printf ("Insert pin\n");
-
-	uint8_t pint = (uint8_t)pin;
-	digital_config.pin_digital=pint;
-	printf("Insert number of samples:\n");
-	if(scanf("%d", &sample)>=0)
-	{
-		analog_config.samples=(uint8_t)sample;
-		pointer_packet=(PacketHeader*)&analog_config;
-		return 0;
-	}
-	else
-	{	return -1;	}
-*/
-return 0;
+{
+	int control;
+	int samples;
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	printf("Insert samples:\n");
+	if((control=scanf("%d", &samples))<0){printf("Error\n");}
+	analog_config.pin_analog=idx;
+	analog_config.samples=samples;
+	pointer_packet=(PacketHeader*)&analog_config;
+	return 0;
 }
 
 int requestFn(void)
 {
-	//Inserimento tipo pin
-	//Inserimento pin
-	idx=10;
-	digital_status[idx].pin_digital=idx;
-	pointer_packet=(PacketHeader*)&digital_status[idx];
-//	pointer_packet=(PacketHeader*)analog_status[idx];
+	int control;
+	char string[8];
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	printf("Insert type of packet (analog or digital):\n");
+	if((control=scanf("%s", string))<0){printf("Error\n");}
+	if( (control=strcmp(string, "analog"))==0)
+	{
+		pointer_packet=(PacketHeader*)&analog_status[idx];
+	}
+	else if( (control=strcmp(string, "digital"))==0)
+	{
+		pointer_packet=(PacketHeader*)&digital_status[idx];
+	}
+	else
+	{
+		printf("Incorrect setting\n");
+	}
 	return 0;
 }
 
 int saveFn(void)
 {
-	//decidere operazione se su digital o analog
-	//tipo di pin
+	int control;
+	char string[8];
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	eeprom_write.pin=idx;	
+	printf("Insert type of packet (analog or digital):\n");
+	if((control=scanf("%s", string))<0){printf("Error\n");}
+	if( (control=strcmp(string, "analog"))==0)
+	{
+		eeprom_write.type=analog;
+	}
+	else if ( (control=strcmp(string, "digital"))==0)
+	{
+		eeprom_write.type=digital;
+	}
+	else
+	{
+		printf("Incorrect setting\n");
+	}
 	pointer_packet=(PacketHeader*)&eeprom_write;
 	return 0;
 }
 
 int loadFn(void)
 {
-	//decidere operazione se su digital o analog
-	//tipo di pin
+	int control;
+	char string[8];
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	eeprom_read.pin=idx;	
+	printf("Insert type of packet (analog or digital):\n");
+	if((control=scanf("%s", string))<0){printf("Error\n");}
+	if( (control=strcmp(string, "analog"))==0)
+	{
+		eeprom_read.type=analog;
+	}
+	else if ( (control=strcmp(string, "digital"))==0)
+	{
+		eeprom_read.type=digital;
+	}
+	else
+	{
+		printf("Incorrect setting\n");
+	}
 	pointer_packet=(PacketHeader*)&eeprom_read;
 	return 0;
 }
