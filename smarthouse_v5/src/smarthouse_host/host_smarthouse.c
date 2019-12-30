@@ -51,6 +51,8 @@ DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
 AnalogConfigPacket analog_config_buffer;
 AnalogStatusPacket analog_status_buffer;
+EepromWritePacket eeprom_write_buffer;
+EepromReadPacket eeprom_read_buffer;
 
 PacketHeader* host_initializeBuffer(PacketType type,
 				       PacketSize size,
@@ -67,7 +69,10 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	{	return (PacketHeader*) &analog_config_buffer;}
 	else if (type== ANALOG_STATUS_PACKET_ID && size==sizeof(AnalogStatusPacket))
 	{	return (PacketHeader*) &analog_status_buffer;}	
-	
+	else if (type==EEPROM_WRITE_PACKET_ID && size==sizeof(EepromWritePacket))
+	{	return (PacketHeader*) &eeprom_write_buffer;}	
+	else if (type==EEPROM_READ_PACKET_ID && size==sizeof(EepromReadPacket))
+	{	return (PacketHeader*) &eeprom_read_buffer;}
 	else
 	{
 		printf("Errore, nessun tipo di pacchetto è stato ricevuto\n");
@@ -111,12 +116,16 @@ PacketStatus host_onReceive(PacketHeader* header,
 			printPacket_digital(idx_p->index);
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
-		case ANALOG_CONFIG_PACKET_ID:
+		case ANALOG_CONFIG_PACKET_ID:	  
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status[idx_p->index], header, header->size);
 			printPacket_analog(idx_p->index);
 			pointer_packet=(PacketHeader*)&test_config;
+			break;
+		case EEPROM_WRITE_PACKET_ID:
+			break;
+		case EEPROM_READ_PACKET_ID:
 			break;
 		default:
 			break;
@@ -172,6 +181,24 @@ PacketOperations analog_config_ops = {
 PacketOperations analog_status_ops = {
 	ANALOG_STATUS_PACKET_ID,
 	sizeof(AnalogStatusPacket),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
+PacketOperations eeprom_write_ops = {
+	EEPROM_WRITE_PACKET_ID,
+	sizeof(EepromWritePacket),
+	host_initializeBuffer,
+	0,
+	host_onReceive,
+	0
+};
+
+PacketOperations eeprom_read_ops = {
+	EEPROM_READ_PACKET_ID,
+	sizeof(EepromReadPacket),
 	host_initializeBuffer,
 	0,
 	host_onReceive,
@@ -245,6 +272,8 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
+	PacketHandler_installPacket(&packet_handler, &eeprom_write_ops);
+	PacketHandler_installPacket(&packet_handler, &eeprom_read_ops);
 	pointer_packet=(PacketHeader*)&test_config;
 	printf("Shell Start\n");
 //Threads

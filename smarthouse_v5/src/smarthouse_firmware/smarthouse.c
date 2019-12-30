@@ -93,18 +93,23 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		case EEPROM_WRITE_PACKET_ID:
 			memcpy(&eeprom_write, header, header->size);
 			Smarthouse_paramSave();
-PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[eeprom_write.pin]);
+//PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[eeprom_write.pin]);
 			break;
 		case EEPROM_READ_PACKET_ID:
-			memcpy(&eeprom_read, header, header->size);
+//			memcpy(&eeprom_read, header, header->size);
 			Smarthouse_paramLoad();
-PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[eeprom_read.pin]);
+			if(eeprom_read.type==digital)
+			{
+				PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[eeprom_read.pin]);
+			}
+			else if(eeprom_read.type==analog)
+			{
+				PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[eeprom_read.pin]);
+			}
 			break;
 		default:
 			break;
 	}
-//	delayMs(10);
-//	flushOutputBuffers();
 	return Success;
 }
 

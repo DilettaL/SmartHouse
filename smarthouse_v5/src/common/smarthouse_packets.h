@@ -91,8 +91,6 @@ typedef struct EepromReadPacket
 	PacketHeader header;
 	EepromOperations type;		//definisce se l'operazione va compiuta su un pin analogico o digitale
 	uint8_t pin;
-	DigitalStatusPacket digital_read;
-	AnalogStatusPacket analog_read;
 }EepromReadPacket;
 #define EEPROM_READ_PACKET_ID 8
 #pragma pack(pop)
