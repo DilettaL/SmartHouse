@@ -102,7 +102,7 @@ int requestFn(void)
 int saveFn(void)
 {
 	int control;
-	char string[8];
+	char string[7];
 	printf("Insert pin:\n");
 	if((control=scanf("%d", &idx))<0){printf("Error\n");}
 	eeprom_write.pin=idx;	
