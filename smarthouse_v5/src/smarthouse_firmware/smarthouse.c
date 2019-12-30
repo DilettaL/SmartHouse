@@ -96,7 +96,7 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 //PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[eeprom_write.pin]);
 			break;
 		case EEPROM_READ_PACKET_ID:
-//			memcpy(&eeprom_read, header, header->size);
+			memcpy(&eeprom_read, header, header->size);
 			Smarthouse_paramLoad();
 			if(eeprom_read.type==digital)
 			{
