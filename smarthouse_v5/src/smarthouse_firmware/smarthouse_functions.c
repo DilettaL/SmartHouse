@@ -80,7 +80,7 @@ void Smarthouse_analog(void)
 PacketStatus Smarthouse_paramSave()//uint8_t param_type, int8_t index)
 {
 /*DEUG*/LedOn(11);
-	switch(eeprom_write.type)
+/*	switch(eeprom_write.type)
 	{
 		case digital:
 			EEPROM_write(DIGITAL_PARAM_OFFSET+eeprom_write.pin*sizeof(DigitalStatusPacket), &digital_status[eeprom_write.pin], sizeof(DigitalStatusPacket));
@@ -91,7 +91,7 @@ PacketStatus Smarthouse_paramSave()//uint8_t param_type, int8_t index)
 		default:
     			return GenericError;
   	}
-	return Success;
+*/	return Success;
 }
 
 PacketStatus Smarthouse_paramLoad()//uint8_t param_type, int8_t index)
