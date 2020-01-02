@@ -101,7 +101,7 @@ int requestFn(void)
 
 int saveFn(void)
 {
-	int control;
+/*	int control;
 	char string[7];
 	printf("Insert pin:\n");
 	if((control=scanf("%d", &idx))<0){printf("Error\n");}
@@ -113,14 +113,14 @@ int saveFn(void)
 		eeprom_write.type=analog;
 	}
 	else if ( (control=strcmp(string, "digital"))==0)
-	{
+	{*/
 		eeprom_write.type=digital;
-	}
+/*	}
 	else
 	{
 		printf("Incorrect setting\n");
 	}
-	pointer_packet=(PacketHeader*)&eeprom_write;
+*/	pointer_packet=(PacketHeader*)&eeprom_write;
 	return 0;
 }
 
