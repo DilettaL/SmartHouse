@@ -79,6 +79,7 @@ void Smarthouse_analog(void)
 //eeprom functions
 PacketStatus Smarthouse_paramSave()//uint8_t param_type, int8_t index)
 {
+/*DEUG*/LedOn(11);
 	switch(eeprom_write.type)
 	{
 		case digital:
