@@ -120,7 +120,10 @@ int saveFn(void)
 	{
 		printf("Incorrect setting\n");
 	}
-*/	pointer_packet=(PacketHeader*)&digital_status[10];
+
+*/
+	eeprom_write.pin=1;
+	pointer_packet=(PacketHeader*)&eeprom_write;
 	return 0;
 }
 

@@ -124,6 +124,9 @@ PacketStatus host_onReceive(PacketHeader* header,
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case EEPROM_WRITE_PACKET_ID:
+memcpy(&eeprom_write, header, header->size);
+printf("stampo eeprom_write.pin (mi aspetto 2)=%d\n", eeprom_write.pin);
+			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case EEPROM_READ_PACKET_ID:
 			break;
