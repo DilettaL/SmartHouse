@@ -99,7 +99,7 @@ PacketStatus Smarthouse_paramLoad()//uint8_t param_type, int8_t index)
 	{
 		case digital:
 			EEPROM_read(&digital_status[eeprom_read.pin], DIGITAL_PARAM_OFFSET+eeprom_read.pin*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
-/*DEBUG*/LedOn(11);
+
 			break;
 		case analog:
 			EEPROM_read(&analog_status[eeprom_read.pin], ANALOG_PARAM_OFFSET+eeprom_read.pin*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
