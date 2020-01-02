@@ -114,13 +114,13 @@ int saveFn(void)
 	}
 	else if ( (control=strcmp(string, "digital"))==0)
 	{*/
-		eeprom_write.type=digital;
+//		eeprom_write.type=digital;
 /*	}
 	else
 	{
 		printf("Incorrect setting\n");
 	}
-*/	pointer_packet=(PacketHeader*)&eeprom_write;
+*/	pointer_packet=(PacketHeader*)&digital_status[10];
 	return 0;
 }
 
