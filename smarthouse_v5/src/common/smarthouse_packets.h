@@ -44,12 +44,21 @@ typedef struct TestConfigPacket{
 } TestConfigPacket;
 #define TEST_CONFIG_PACKET_ID 1
 
-typedef struct TestStatusPacket{
+typedef struct EepromPacket
+{
+	PacketHeader header;
+	uint8_t action;
+	uint8_t type_pin;
+	uint8_t pin;
+}EepromPacket;
+#define EEPROM_PACKET_ID 2
+
+/*typedef struct TestStatusPacket{
 	PacketHeader header;
 	uint8_t sync;
 } TestStatusPacket;
 #define TEST_STATUS_PACKET_ID 2
-
+*/
 
 typedef struct DigitalConfigPacket{
 	PacketHeader header;
@@ -84,13 +93,5 @@ typedef struct AnalogStatusPacket{
 }AnalogStatusPacket;
 #define ANALOG_STATUS_PACKET_ID 6
 
-typedef struct EepromPacket
-{
-	PacketHeader header;
-	eepromOps action;
-	pinOps type_pin;
-	uint8_t pin;
-}EepromPacket;
-#define EEPROM_PACKET_ID 7
 
 #pragma pack(pop)

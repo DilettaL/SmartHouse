@@ -9,13 +9,13 @@ TestConfigPacket test_config=
 	.prova=0
 }; 
 
-TestStatusPacket test_status=
+/*TestStatusPacket test_status=
 {
 	.header.type=TEST_STATUS_PACKET_ID,
 	.header.size=sizeof(TestStatusPacket),
 	.header.seq=0,
 	.sync=0
-};
+};*/
 
 DigitalConfigPacket digital_config=
 {

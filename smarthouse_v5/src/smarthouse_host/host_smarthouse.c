@@ -46,7 +46,7 @@ struct UART* uart;
 PacketHandler packet_handler;
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
-TestStatusPacket test_status_buffer;
+//TestStatusPacket test_status_buffer;
 DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
 AnalogConfigPacket analog_config_buffer;
@@ -58,9 +58,9 @@ PacketHeader* host_initializeBuffer(PacketType type,
 				       void* args __attribute__((unused))) {
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
 	{	return (PacketHeader*) &test_config_buffer;}
-	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
+/*	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
 	{	return (PacketHeader*) &test_status_buffer;}
-	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
+*/	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
@@ -106,9 +106,9 @@ PacketStatus host_onReceive(PacketHeader* header,
 	{ 
 		case TEST_CONFIG_PACKET_ID:
 			break;
-		case TEST_STATUS_PACKET_ID:	
+/*		case TEST_STATUS_PACKET_ID:	
 			break;
-		case DIGITAL_CONFIG_PACKET_ID:
+*/		case DIGITAL_CONFIG_PACKET_ID:
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
@@ -142,7 +142,7 @@ PacketOperations test_config_ops = {
 	0
 };
 
-PacketOperations test_status_ops = {
+/*PacketOperations test_status_ops = {
 	TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
 	host_initializeBuffer,
@@ -150,7 +150,7 @@ PacketOperations test_status_ops = {
 	host_onReceive,
 	0
 };
-
+*/
 PacketOperations digital_config_ops = {
 	DIGITAL_CONFIG_PACKET_ID,
 	sizeof(DigitalConfigPacket),
@@ -258,7 +258,7 @@ int main (int argc, char **argv)
 {
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
-	PacketHandler_installPacket(&packet_handler, &test_status_ops);
+//	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
@@ -267,7 +267,6 @@ int main (int argc, char **argv)
 	pointer_packet=(PacketHeader*)&test_config;
 	printf("Shell Start\n");
 
-printf ("Size EepromPak %d\t-\tSize test_config %d\t-\tdigital:%d\n", sizeof(EepromPacket), sizeof(TestConfigPacket),sizeof(DigitalConfigPacket));
 //Threads
 	pthread_t serial, keyboard;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);

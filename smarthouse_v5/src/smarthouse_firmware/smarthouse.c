@@ -31,8 +31,8 @@ int flushOutputBuffers(void)
 }
 
 //variables for initializeBuffer
-TestStatusPacket test_config_buffer;
-TestStatusPacket test_status_buffer;
+TestConfigPacket test_config_buffer;
+//TestStatusPacket test_status_buffer;
 DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
 AnalogConfigPacket analog_config_buffer;
@@ -42,9 +42,9 @@ PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* 
 {
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
 	{	return (PacketHeader*) &test_config_buffer;	}
-	else if(type==TEST_STATUS_PACKET_ID && size==sizeof(TestStatusPacket))
+/*	else if(type==TEST_STATUS_PACKET_ID && size==sizeof(TestStatusPacket))
 	{	return (PacketHeader*) &test_status_buffer;	}
-	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
+*/	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
@@ -68,8 +68,8 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 	{
 		case TEST_CONFIG_PACKET_ID:
 			break;
-		case TEST_STATUS_PACKET_ID:
-			break;
+/*		case TEST_STATUS_PACKET_ID:
+*/			break;
 		case DIGITAL_CONFIG_PACKET_ID:
 			memcpy(&digital_config, header, header->size);
 			Smarthouse_digital();
@@ -109,14 +109,14 @@ PacketOperations test_config_ops = {
 	0
 };
 
-PacketOperations test_status_ops = {
+/*PacketOperations test_status_ops = {
 	TEST_STATUS_PACKET_ID,
 	sizeof(TestStatusPacket),
 	firmware_initializeBuffer,
 	0,
 	firmware_onReceive,
 	0
-};	
+};*/	
 
 PacketOperations digital_config_ops = {
 	DIGITAL_CONFIG_PACKET_ID,
@@ -171,7 +171,7 @@ int main (int argc, char** argv)
 	uart = UART_init(0,115200);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
-	PacketHandler_installPacket(&packet_handler, &test_status_ops);
+//	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
@@ -183,7 +183,7 @@ int main (int argc, char** argv)
 		flushInputBuffers();
 		test_config.header.seq = global_seq;
 		++global_seq;
-		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_status);
+		PacketHandler_sendPacket(&packet_handler, (PacketHeader*)&test_config);
 		delayMs(10);
 		flushOutputBuffers();
 	}	
