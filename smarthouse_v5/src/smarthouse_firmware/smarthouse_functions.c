@@ -96,7 +96,7 @@ PacketStatus Smarthouse_paramSave()//uint8_t param_type, int8_t index)
 
 PacketStatus Smarthouse_paramLoad()//uint8_t param_type, int8_t index)
 {
-	switch(eeprom_read.type)
+/*	switch(eeprom_read.type)
 	{
 		case digital:
 			EEPROM_read(&digital_status[eeprom_read.pin], DIGITAL_PARAM_OFFSET+eeprom_read.pin*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
@@ -108,5 +108,5 @@ PacketStatus Smarthouse_paramLoad()//uint8_t param_type, int8_t index)
 		default:
 			return GenericError;
 	}
-	return Success;	
+*/	return Success;	
 }

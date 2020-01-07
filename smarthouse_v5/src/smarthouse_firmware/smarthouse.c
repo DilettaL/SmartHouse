@@ -37,9 +37,7 @@ DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
 AnalogConfigPacket analog_config_buffer;
 AnalogStatusPacket analog_status_buffer;
-EepromWritePacket eeprom_write_buffer;
-EepromReadPacket eeprom_read_buffer;
-
+EepromPacket eeprom_buffer;
 PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* args __attribute__((unused))) 
 {
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
@@ -54,10 +52,10 @@ PacketHeader* firmware_initializeBuffer(PacketType type, PacketSize size, void* 
 	{	return (PacketHeader*) &analog_config_buffer;}
 	else if (type== ANALOG_STATUS_PACKET_ID && size==sizeof(AnalogStatusPacket))
 	{	return (PacketHeader*) &analog_status_buffer;}	
-	else if (type== EEPROM_WRITE_PACKET_ID && size==sizeof(EepromWritePacket))
-	{	return (PacketHeader*) &eeprom_write_buffer;}	
-	else if (type== EEPROM_READ_PACKET_ID && size==sizeof(EepromReadPacket))
-	{	return (PacketHeader*) &eeprom_read_buffer;}	
+else if (type== EEPROM_PACKET_ID && size==sizeof(EepromPacket))
+{
+	return (PacketHeader*)&eeprom_buffer;
+}
 	else
 	{	return 0; }
 }
@@ -90,24 +88,12 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 		case ANALOG_STATUS_PACKET_ID:
 			PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[idx_p->index]);
 			break;
-		case EEPROM_WRITE_PACKET_ID:
-			memcpy(&eeprom_write, header, header->size);
-//			Smarthouse_paramSave();
-eeprom_write.pin++;
-PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &eeprom_write);
-			break;
-		case EEPROM_READ_PACKET_ID:
-			memcpy(&eeprom_read, header, header->size);
-			Smarthouse_paramLoad();
-			if(eeprom_read.type==digital)
-			{
-				PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &digital_status[eeprom_read.pin]);
-			}
-			else if(eeprom_read.type==analog)
-			{
-				PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &analog_status[eeprom_read.pin]);
-			}
-			break;
+case EEPROM_PACKET_ID:
+	memcpy(&eeprom, header, header->size);
+	DigIO_setDirection(10, Output);
+	DigIO_setValue(10, 1);
+	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &eeprom);	
+break;
 		default:
 			break;
 	}
@@ -168,24 +154,13 @@ PacketOperations analog_status_ops = {
 	0
 };
 
-PacketOperations eeprom_write_ops = {
-	EEPROM_WRITE_PACKET_ID,
-	sizeof(EepromWritePacket),
+PacketOperations eeprom_ops = {
+	EEPROM_PACKET_ID,
+	sizeof(EepromPacket),
 	firmware_initializeBuffer,
 	0,
 	firmware_onReceive,
 	0
-
-};
-
-PacketOperations eeprom_read_ops = {
-	EEPROM_READ_PACKET_ID,
-	sizeof(EepromReadPacket),
-	firmware_initializeBuffer,
-	0,
-	firmware_onReceive,
-	0
-
 };
 
 int main (int argc, char** argv)
@@ -201,8 +176,7 @@ int main (int argc, char** argv)
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);	
-	PacketHandler_installPacket(&packet_handler, &eeprom_write_ops);	
-	PacketHandler_installPacket(&packet_handler, &eeprom_read_ops);	
+	PacketHandler_installPacket(&packet_handler, &eeprom_ops);	
 	int global_seq = 0;
 	while (1)
 	{

@@ -25,6 +25,18 @@ typedef enum
 	dimmer=2,
 	input_digital=3
 } DigitalOperations;
+
+typedef enum
+{
+	save=0,
+	load=1
+}eepromOps;
+
+typedef enum
+{
+	digital=0,
+	analog=1
+}pinOps;
 #pragma pack(push, 1)
 typedef struct TestConfigPacket{
 	PacketHeader header;
@@ -72,25 +84,13 @@ typedef struct AnalogStatusPacket{
 }AnalogStatusPacket;
 #define ANALOG_STATUS_PACKET_ID 6
 
-typedef enum
-{
-	digital=0,
-	analog=1
-}EepromOperations;
-
-typedef struct EepromWritePacket
+typedef struct EepromPacket
 {
 	PacketHeader header;
-	EepromOperations type;		//definisce se l'operazione va compiuta su un pin analogico o digitale
-	uint8_t pin;		//definisce su quale pin effettuare l'operazione	
-}EepromWritePacket;
-#define EEPROM_WRITE_PACKET_ID 7
-
-typedef struct EepromReadPacket
-{
-	PacketHeader header;
-	EepromOperations type;		//definisce se l'operazione va compiuta su un pin analogico o digitale
+	eepromOps action;
+	pinOps type_pin;
 	uint8_t pin;
-}EepromReadPacket;
-#define EEPROM_READ_PACKET_ID 8
+}EepromPacket;
+#define EEPROM_PACKET_ID 7
+
 #pragma pack(pop)

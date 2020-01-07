@@ -10,5 +10,4 @@ extern DigitalStatusPacket digital_status[NUM_DIGITAL];
 extern AnalogConfigPacket analog_config;
 extern AnalogStatusPacket analog_status[NUM_ANALOG];
 
-extern EepromWritePacket eeprom_write;
-extern EepromReadPacket eeprom_read;
+extern EepromPacket eeprom;

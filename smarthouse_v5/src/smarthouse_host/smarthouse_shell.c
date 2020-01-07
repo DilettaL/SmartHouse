@@ -101,6 +101,7 @@ int requestFn(void)
 
 int saveFn(void)
 {
+	pointer_packet=(PacketHeader*)&eeprom;
 /*	int control;
 	char string[7];
 	printf("Insert pin:\n");
@@ -122,14 +123,13 @@ int saveFn(void)
 	}
 
 */
-	eeprom_write.pin=1;
-	pointer_packet=(PacketHeader*)&eeprom_write;
 	return 0;
 }
 
 int loadFn(void)
 {
-	int control;
+	pointer_packet=(PacketHeader*)&eeprom;
+/*	int control;
 	char string[8];
 	printf("Insert pin:\n");
 	if((control=scanf("%d", &idx))<0){printf("Error\n");}
@@ -149,7 +149,7 @@ int loadFn(void)
 		printf("Incorrect setting\n");
 	}
 	pointer_packet=(PacketHeader*)&eeprom_read;
-	return 0;
+*/	return 0;
 }
 
 Command commands[] =
