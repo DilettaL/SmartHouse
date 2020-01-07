@@ -77,36 +77,35 @@ void Smarthouse_analog(void)
 }
 
 //eeprom functions
-PacketStatus Smarthouse_paramSave()//uint8_t param_type, int8_t index)
+PacketStatus Smarthouse_paramEeprom()//uint8_t param_type, int8_t index)
 {
-/*DEUG*/LedOn(11);
-/*	switch(eeprom_write.type)
+	if(eeprom.action==0) //save
 	{
-		case digital:
-			EEPROM_write(DIGITAL_PARAM_OFFSET+eeprom_write.pin*sizeof(DigitalStatusPacket), &digital_status[eeprom_write.pin], sizeof(DigitalStatusPacket));
+		switch(eeprom.type_pin)
+		{
+		case 1: //digital
+			EEPROM_write(DIGITAL_PARAM_OFFSET+eeprom.pin*sizeof(DigitalStatusPacket), &digital_status[eeprom.pin], sizeof(DigitalStatusPacket));
 			break;
-		case analog:
-			EEPROM_write(ANALOG_PARAM_OFFSET+eeprom_write.pin*sizeof(AnalogStatusPacket), &analog_status[eeprom_write.pin], sizeof(AnalogStatusPacket));
+		case 0: //analog
+			EEPROM_write(ANALOG_PARAM_OFFSET+eeprom.pin*sizeof(AnalogStatusPacket), &analog_status[eeprom.pin], sizeof(AnalogStatusPacket));
 			break;
 		default:
     			return GenericError;
-  	}
-*/	return Success;
-}
-
-PacketStatus Smarthouse_paramLoad()//uint8_t param_type, int8_t index)
-{
-/*	switch(eeprom_read.type)
+  		}
+	}
+	else if(eeprom.action==1) //load
 	{
-		case digital:
-			EEPROM_read(&digital_status[eeprom_read.pin], DIGITAL_PARAM_OFFSET+eeprom_read.pin*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
-
+		switch(eeprom.type_pin)
+		{
+		case 1://digital
+			EEPROM_read(&digital_status[eeprom.pin], DIGITAL_PARAM_OFFSET+eeprom.pin*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
 			break;
-		case analog:
-			EEPROM_read(&analog_status[eeprom_read.pin], ANALOG_PARAM_OFFSET+eeprom_read.pin*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
+		case 0://analog
+			EEPROM_read(&analog_status[eeprom.pin], ANALOG_PARAM_OFFSET+eeprom.pin*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
 			break;
 		default:
 			return GenericError;
+		}
 	}
-*/	return Success;	
-}
+	return Success;
+}	
