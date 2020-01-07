@@ -99,9 +99,16 @@ PacketStatus Smarthouse_paramEeprom()//uint8_t param_type, int8_t index)
 		{
 		case 1://digital
 			EEPROM_read(&digital_status[eeprom.pin], DIGITAL_PARAM_OFFSET+eeprom.pin*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
+			digital_config.pin_digital=eeprom.pin;
+			digital_config.set_digital=digital_status[eeprom.pin].set_digital;
+			digital_config.intensity=digital_status[eeprom.pin].intensity;
+			Smarthouse_digital();
 			break;
 		case 0://analog
 			EEPROM_read(&analog_status[eeprom.pin], ANALOG_PARAM_OFFSET+eeprom.pin*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
+			analog_config.pin_analog=eeprom.pin;
+			analog_config.samples=analog_status[eeprom.pin].samples;
+			Smarthouse_analog();
 			break;
 		default:
 			return GenericError;
