@@ -198,7 +198,7 @@ Command commands[] =
 		.name= "load",
 		.cmd_fn=loadFn,
 		.help="usage: load"
-	},
+	}
 };
 
 const int num_commands=sizeof(commands)/sizeof(Command);

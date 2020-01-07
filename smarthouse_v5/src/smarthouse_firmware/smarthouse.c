@@ -90,8 +90,8 @@ PacketStatus firmware_onReceive(PacketHeader* header, void* args __attribute__((
 			break;
 case EEPROM_PACKET_ID:
 	memcpy(&eeprom, header, header->size);
-	DigIO_setDirection(10, Output);
-	DigIO_setValue(10, 1);
+DigIO_setDirection(10, Output);
+DigIO_setValue(10, 1);
 	PacketHandler_sendPacket(&packet_handler, (PacketHeader*) &eeprom);	
 break;
 		default:

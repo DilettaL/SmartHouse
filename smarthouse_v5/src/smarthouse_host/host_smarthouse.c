@@ -266,6 +266,8 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &eeprom_ops);
 	pointer_packet=(PacketHeader*)&test_config;
 	printf("Shell Start\n");
+
+printf ("Size EepromPak %d\t-\tSize test_config %d\t-\tdigital:%d\n", sizeof(EepromPacket), sizeof(TestConfigPacket),sizeof(DigitalConfigPacket));
 //Threads
 	pthread_t serial, keyboard;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);
