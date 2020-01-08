@@ -8,6 +8,12 @@
 
 int idx;
 
+int helpFn (void)
+{
+	printBanner();	
+	return 0;
+}
+
 int quitFn(void)
 {
 	run=0;
@@ -197,6 +203,11 @@ Command commands[] =
 		.name= "load",
 		.cmd_fn=loadFn,
 		.help="usage: load"
+	},
+	{
+		.name= "help",
+		.cmd_fn=helpFn,
+		.help="usage: help"
 	}
 };
 

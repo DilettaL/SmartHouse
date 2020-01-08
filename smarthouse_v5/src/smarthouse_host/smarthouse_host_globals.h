@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include "smarthouse_packets.h"
 
+void printBanner(void);
+
 extern int run;
 extern PacketHeader *pointer_packet;
 

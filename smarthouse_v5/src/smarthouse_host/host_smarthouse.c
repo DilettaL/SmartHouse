@@ -12,35 +12,6 @@
 #include "packet_handler.h"
 #include "smarthouse_packets.h"
 
-const char *banner[]={
-	"Smarthouse",
-	"usage:",
-	"$>Smarthouse	...",
-	"to choice operation insert one of this commands(then choice the pin and other settings):",
-	"$>Smarthouse	ledOn",
-	"$>Smarthouse	dimmer",
-	"$>Smarthouse	digital input",
-	"$>Smarthouse	ledOff",
-	"$>Smarthouse	adc",
-	"to request a status packet insert(then choice packet type):",
-	"$>Smarthouse	request",
-	"to access to eeprom insert(then choice pin and packet type):",
-	"$>Smarthouse	save",
-	"or",
-	"$>Smarthouse	load",	
-	"to exit insert:",
-	"$>Smarthouse	quit"
-};
-
-void printBanner(void)
-{
-	const char*const* line=banner;
-	while (*line)
-	{
-		printf("%s\n",*line);
-		line++;
-	}
-}
 
 struct UART* uart;
 PacketHandler packet_handler;
@@ -200,17 +171,18 @@ void* keyboardFn()
 {
 	while(run)
 	{
-			char *buffer = readline("Smarthouse> ");
-			if (buffer)
-			{
-				executeCommand(buffer);
-				if (*buffer)
-				{//	add_history(buffer);
-					free(buffer);
-				}
-				else
-				{	run=0;	}
+		char *buffer = readline("\nSmarthouse> ");
+		if (buffer)
+		{
+			executeCommand(buffer);
+			if (*buffer)
+			{//	add_history(buffer);
+				free(buffer);
 			}
+			else
+			{	run=0;	}
+		}
+	usleep(100000);
 	}
 	return 0;
 }
@@ -228,28 +200,28 @@ void* serialFn()
 	{	return 0;	}
 	while(run)
 	{
-				PacketHandler_sendPacket(&packet_handler, pointer_packet);
-				while(packet_handler.tx_size)
-				{
-					uint8_t c=PacketHandler_txByte(&packet_handler);
-					ssize_t res = write(fd,&c,1);
-					usleep(10);
+		PacketHandler_sendPacket(&packet_handler, pointer_packet);
+		while(packet_handler.tx_size)
+		{
+			uint8_t c=PacketHandler_txByte(&packet_handler);
+			ssize_t res = write(fd,&c,1);
+			usleep(10);
+		}
+		volatile int packet_complete =0;
+		while ( !packet_complete ) 
+		{
+			uint8_t c;
+			int n=read (fd, &c, 1);
+			if (n) 
+			{
+				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				if (status<0)
+				{	printf("%d",status);
+					fflush(stdout);
 				}
-				volatile int packet_complete =0;
-				while ( !packet_complete ) 
-				{
-					uint8_t c;
-					int n=read (fd, &c, 1);
-					if (n) 
-					{
-						PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
-						if (status<0)
-						{	printf("%d",status);
-							fflush(stdout);
-						}
-						packet_complete = (status==SyncChecksum);
-					}
-				}
+				packet_complete = (status==SyncChecksum);
+			}
+		}
 	}
 	return 0;
 }
@@ -265,8 +237,9 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	PacketHandler_installPacket(&packet_handler, &eeprom_ops);
 	pointer_packet=(PacketHeader*)&test_config;
-	printf("Shell Start\n");
-
+	printBanner();
+	printf("\nShell Start\n");
+	
 //Threads
 	pthread_t serial, keyboard;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);
