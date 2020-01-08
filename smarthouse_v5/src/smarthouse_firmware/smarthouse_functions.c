@@ -12,12 +12,14 @@
 //digital functions
 void LedOff(uint8_t pin)
 {
+	PWM_enable(pin, 0);
 	DigIO_setDirection(pin, Output);
 	DigIO_setValue(pin, 0);
 }
 
 void LedOn(uint8_t pin)
 {
+	PWM_enable(pin, 0);
 	DigIO_setDirection(pin, Output);
 	DigIO_setValue(pin, 1);
 }
@@ -30,6 +32,7 @@ void Dimmer(uint8_t pin, uint8_t intensity)
 
 uint8_t InputDigital(uint8_t pin)
 {
+	PWM_enable(pin, 0);
 	DigIO_setDirection(pin, Input);
 	//DigIO_setValue(pin, 1);
 	uint8_t value=DigIO_getValue(pin);
