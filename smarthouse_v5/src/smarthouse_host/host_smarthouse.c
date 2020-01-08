@@ -17,7 +17,6 @@ struct UART* uart;
 PacketHandler packet_handler;
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
-//TestStatusPacket test_status_buffer;
 DigitalConfigPacket digital_config_buffer;
 DigitalStatusPacket digital_status_buffer;
 AnalogConfigPacket analog_config_buffer;
@@ -29,9 +28,7 @@ PacketHeader* host_initializeBuffer(PacketType type,
 				       void* args __attribute__((unused))) {
 	if (type==TEST_CONFIG_PACKET_ID && size==sizeof(TestConfigPacket))
 	{	return (PacketHeader*) &test_config_buffer;}
-/*	else if (type==TEST_STATUS_PACKET_ID && size == sizeof(TestStatusPacket))
-	{	return (PacketHeader*) &test_status_buffer;}
-*/	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
+	else if (type==DIGITAL_CONFIG_PACKET_ID && size==sizeof(DigitalConfigPacket))
 	{	return (PacketHeader*) &digital_config_buffer;}
 	else if (type== DIGITAL_STATUS_PACKET_ID && size==sizeof(DigitalStatusPacket))
 	{	return (PacketHeader*) &digital_status_buffer;}
@@ -39,10 +36,10 @@ PacketHeader* host_initializeBuffer(PacketType type,
 	{	return (PacketHeader*) &analog_config_buffer;}
 	else if (type== ANALOG_STATUS_PACKET_ID && size==sizeof(AnalogStatusPacket))
 	{	return (PacketHeader*) &analog_status_buffer;}	
-else if (type==EEPROM_PACKET_ID && size==sizeof(EepromPacket))
-{
-	return (PacketHeader*) &eeprom_buffer;
-}
+	else if (type==EEPROM_PACKET_ID && size==sizeof(EepromPacket))
+	{
+		return (PacketHeader*) &eeprom_buffer;
+	}
 	else
 	{
 		printf("Errore, nessun tipo di pacchetto è stato ricevuto\n");
@@ -77,9 +74,7 @@ PacketStatus host_onReceive(PacketHeader* header,
 	{ 
 		case TEST_CONFIG_PACKET_ID:
 			break;
-/*		case TEST_STATUS_PACKET_ID:	
-			break;
-*/		case DIGITAL_CONFIG_PACKET_ID:
+		case DIGITAL_CONFIG_PACKET_ID:
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
@@ -93,11 +88,8 @@ PacketStatus host_onReceive(PacketHeader* header,
 			printPacket_analog(idx_p->index);
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
-case EEPROM_PACKET_ID:
-memcpy(&eeprom, header, header->size);
-printf("Ho ricevuto l'eepromPacket\n");
-pointer_packet=(PacketHeader*)&test_config;
-break;
+		case EEPROM_PACKET_ID:
+			break;
 		default:
 			break;
 	}
@@ -113,15 +105,6 @@ PacketOperations test_config_ops = {
 	0
 };
 
-/*PacketOperations test_status_ops = {
-	TEST_STATUS_PACKET_ID,
-	sizeof(TestStatusPacket),
-	host_initializeBuffer,
-	0,
-	host_onReceive,
-	0
-};
-*/
 PacketOperations digital_config_ops = {
 	DIGITAL_CONFIG_PACKET_ID,
 	sizeof(DigitalConfigPacket),
@@ -182,7 +165,7 @@ void* keyboardFn()
 			else
 			{	run=0;	}
 		}
-	usleep(100000);
+		usleep(100000);
 	}
 	return 0;
 }
@@ -230,7 +213,6 @@ int main (int argc, char **argv)
 {
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
-//	PacketHandler_installPacket(&packet_handler, &test_status_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_config_ops);
 	PacketHandler_installPacket(&packet_handler, &digital_status_ops);
 	PacketHandler_installPacket(&packet_handler, &analog_config_ops);
@@ -238,8 +220,7 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &eeprom_ops);
 	pointer_packet=(PacketHeader*)&test_config;
 	printBanner();
-	printf("\nShell Start\n");
-	
+	printf("\nShell Start\n");	
 //Threads
 	pthread_t serial, keyboard;
 	pthread_create (&keyboard, NULL, keyboardFn, NULL);

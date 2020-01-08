@@ -8,7 +8,6 @@ extern int run;
 extern PacketHeader *pointer_packet;
 
 extern TestConfigPacket test_config;
-//extern TestStatusPacket test_status;
 
 extern DigitalConfigPacket digital_config;
 extern DigitalStatusPacket digital_status[NUM_DIGITAL];

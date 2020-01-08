@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include "smarthouse_host_globals.h"
 
-int run=1;
-PacketHeader *pointer_packet=(PacketHeader*)&test_config;
-
 void printBanner(void)
 {
 	printf ("Smarthouse\nusage:\n$>Smarthouse	...\nto choice operation insert one of this commands(then choice the pin and other settings):\n$>Smarthouse	ledOn\n$>Smarthouse	dimmer\n$>Smarthouse	InputDigital\n$>Smarthouse	ledOff\n$>Smarthouse	adc\nto request a status packet insert(then choice packet type):\n$>Smarthouse	request\nto access to eeprom insert(then choice pin and packet type):\n$>Smarthouse	save\nor\n$>Smarthouse	load\nto exit insert:\n$>Smarthouse	quit");
 }
 
+
+int run=1;
+PacketHeader *pointer_packet=(PacketHeader*)&test_config;
 
 TestConfigPacket test_config=
 {
@@ -18,14 +18,6 @@ TestConfigPacket test_config=
 	.header.seq=0,
 	.prova=0
 }; 
-/*
-TestStatusPacket test_status=
-{
-	.header.type=TEST_STATUS_PACKET_ID,
-	.header.size=sizeof(TestStatusPacket),
-	.header.seq=0,
-	.sync=0
-};*/
 
 DigitalConfigPacket digital_config=
 {

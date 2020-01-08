@@ -7,8 +7,6 @@
 #define DIGITAL_PARAM_OFFSET      (32) 
 #define ANALOG_PARAM_OFFSET      (DIGITAL_PARAM_OFFSET+sizeof(DigitalStatusPacket)*NUM_DIGITAL)
 
-
-
 //digital functions
 void LedOff(uint8_t pin)
 {
@@ -34,7 +32,6 @@ uint8_t InputDigital(uint8_t pin)
 {
 	PWM_enable(pin, 0);
 	DigIO_setDirection(pin, Input);
-	//DigIO_setValue(pin, 1);
 	uint8_t value=DigIO_getValue(pin);
 	return value;
 }
@@ -62,7 +59,6 @@ void Smarthouse_digital(void)
 	}
 	digital_status[pint].pin_digital=digital_config.pin_digital;
 	digital_status[pint].set_digital=digital_config.set_digital;
-//	return &digital_status;
 }
 
 //analog function

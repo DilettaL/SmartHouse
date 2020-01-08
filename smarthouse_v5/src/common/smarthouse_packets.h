@@ -53,13 +53,6 @@ typedef struct EepromPacket
 }EepromPacket;
 #define EEPROM_PACKET_ID 2
 
-/*typedef struct TestStatusPacket{
-	PacketHeader header;
-	uint8_t sync;
-} TestStatusPacket;
-#define TEST_STATUS_PACKET_ID 2
-*/
-
 typedef struct DigitalConfigPacket{
 	PacketHeader header;
 	uint8_t pin_digital;
