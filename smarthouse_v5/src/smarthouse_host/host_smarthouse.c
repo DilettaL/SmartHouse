@@ -15,6 +15,7 @@
 
 struct UART* uart;
 PacketHandler packet_handler;
+bool printVar=0;
 //variables for initializeBuffer
 TestConfigPacket test_config_buffer;
 DigitalConfigPacket digital_config_buffer;
@@ -78,14 +79,14 @@ PacketStatus host_onReceive(PacketHeader* header,
 			break;
 		case DIGITAL_STATUS_PACKET_ID:
 			memcpy(&digital_status[idx_p->index], header, header->size);
-			printPacket_digital(idx_p->index);
+			if(printVar==0){printPacket_digital(idx_p->index);printVar=1;}
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case ANALOG_CONFIG_PACKET_ID:	  
 			break;
 		case ANALOG_STATUS_PACKET_ID:
 			memcpy(&analog_status[idx_p->index], header, header->size);
-			printPacket_analog(idx_p->index);
+			if(printVar==0){printPacket_analog(idx_p->index);printVar=1;}
 			pointer_packet=(PacketHeader*)&test_config;
 			break;
 		case EEPROM_PACKET_ID:
@@ -158,6 +159,7 @@ void* keyboardFn()
 		if (buffer)
 		{
 			executeCommand(buffer);
+			printVar=0;
 			if (*buffer)
 			{//	add_history(buffer);
 				free(buffer);
