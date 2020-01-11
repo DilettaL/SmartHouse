@@ -4,7 +4,7 @@
 
 void printBanner(void)
 {
-	printf ("Smarthouse\nusage:\n$>Smarthouse	...\nto choice operation insert one of this commands(then choice the pin and other settings):\n$>Smarthouse	ledOn\n$>Smarthouse	dimmer\n$>Smarthouse	InputDigital\n$>Smarthouse	ledOff\n$>Smarthouse	adc\nto request a status packet insert(then choice packet type):\n$>Smarthouse	request\nto access to eeprom insert(then choice pin and packet type):\n$>Smarthouse	save\nor\n$>Smarthouse	load\nto exit insert:\n$>Smarthouse	quit");
+	printf ("Smarthouse\nusage:\n$>Smarthouse	...\nto choice operation insert one of this commands(then choice the pin and other settings):\n$>Smarthouse	ledOn\n$>Smarthouse	dimmer\n$>Smarthouse	digital_input\n$>Smarthouse	ledOff\n$>Smarthouse	adc\nto request a status packet insert(then choice packet type):\n$>Smarthouse	request\nto access to eeprom insert(then choice pin and packet type):\n$>Smarthouse	save\nor\n$>Smarthouse	load\nto exit insert:\n$>Smarthouse	quit");
 }
 
 

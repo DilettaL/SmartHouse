@@ -24,7 +24,11 @@ int ledOffFn(void)
 {
 	int control;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOff;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -35,7 +39,11 @@ int ledOnFn(void)
 {
 	int control;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	digital_config.pin_digital= idx;
 	digital_config.set_digital=ledOn;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -47,9 +55,17 @@ int dimmerFn(void)
 	int control;
 	int intensity;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	printf("Insert intensity:\n");
-	if((control=scanf("%d", &intensity))<0){printf("Error\n");}
+	if((control=scanf("%d", &intensity))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	digital_config.set_digital=dimmer;
 	digital_config.pin_digital=idx;
 	digital_config.intensity=intensity;
@@ -61,7 +77,11 @@ int digitalInputFn(void)
 {
 	int control;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	digital_config.pin_digital=idx;
 	digital_config.set_digital=input_digital;
 	pointer_packet=(PacketHeader*)&digital_config;
@@ -73,9 +93,13 @@ int adcFn(void)
 	int control;
 	int samples;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1){printf("Error\n");}
 	printf("Insert samples:\n");
-	if((control=scanf("%d", &samples))<0){printf("Error\n");}
+	if((control=scanf("%d", &samples))<0)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	analog_config.pin_analog=idx;
 	analog_config.samples=samples;
 	pointer_packet=(PacketHeader*)&analog_config;
@@ -87,7 +111,11 @@ int requestFn(void)
 	int control;
 	char string[8];
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	printf("Insert type of packet (analog or digital):\n");
 	if((control=scanf("%s", string))<0){printf("Error\n");}
 	if( (control=strcmp(string, "analog"))==0)
@@ -111,7 +139,11 @@ int saveFn(void)
 	char string[7];
 	eeprom.action=0;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	eeprom.pin=idx;	
 	printf("Insert type of packet (analog or digital):\n");
 	if((control=scanf("%s", string))<0){printf("Error\n");}
@@ -137,10 +169,18 @@ int loadFn(void)
 	char string[7];
 	eeprom.action=1;
 	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<0){printf("Error\n");}
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	eeprom.pin=idx;	
 	printf("Insert type of packet (analog or digital):\n");
-	if((control=scanf("%s", string))<0){printf("Error\n");}
+	if((control=scanf("%s", string))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
 	if( (control=strcmp(string, "analog"))==0)
 	{
 		eeprom.type_pin=0;
