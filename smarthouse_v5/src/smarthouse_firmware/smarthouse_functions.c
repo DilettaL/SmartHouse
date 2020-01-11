@@ -117,22 +117,4 @@ PacketStatus Smarthouse_paramEeprom()//uint8_t param_type, int8_t index)
 	return Success;
 }
 
-void Smarthouse_init(void)
-{
-	for(int i=0; i<NUM_DIGITAL; i++)
-	{
-		EEPROM_read(&digital_status[i], DIGITAL_PARAM_OFFSET+i*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
-			digital_config.pin_digital=i;
-			digital_config.set_digital=digital_status[i].set_digital;
-			digital_config.intensity=digital_status[i].intensity;
-			Smarthouse_digital();
-	}
-	for(int i=0; i<NUM_ANALOG; i++)
-	{
-		EEPROM_read(&analog_status[i], ANALOG_PARAM_OFFSET+i*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
-			analog_config.pin_analog=i;
-			analog_config.samples=analog_status[i].samples;
-			Smarthouse_analog();
-	}
-}
-	
+
