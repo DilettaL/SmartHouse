@@ -197,6 +197,38 @@ int loadFn(void)
 	return 0;
 }
 
+int deviceFn(void)
+{
+	int control;
+	char name_pin[10];
+	printf("Insert pin:\n");
+	if((control=scanf("%d", &idx))<1)
+	{	
+		printf("Error\n");
+		return 0;	
+	}
+	printf("Insert type of pin (analog or digital):\n");
+	if((control=scanf("%s", name_pin))<0){printf("Error\n");return 0;}
+	if( (control=strcmp(name_pin, "analog"))==0)
+	{
+		idx=idx+14;
+	}
+	else if ( (control=strcmp(name_pin, "digital"))==0)
+	{
+		idx=idx+1;
+	}
+	else
+	{
+		printf("Incorrect setting\n");
+	}
+	printf("Set the name of the pin:\n");
+	if( (control=scanf("%s", &name+idx))<1)
+	{
+		printf("Error\n");
+	}
+	return 0;	
+}
+
 Command commands[] =
 {
 	{
@@ -248,6 +280,11 @@ Command commands[] =
 		.name= "help",
 		.cmd_fn=helpFn,
 		.help="usage: help"
+	},
+	{
+		.name="set_device",
+		.cmd_fn=deviceFn,
+		.help="usage: set_device"
 	}
 };
 
