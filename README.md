@@ -7,24 +7,20 @@
             8 switches/dimmers (simulate tghem with LEDS).
             8 ADC channels
             8 Digital inputs
-
-            Define a protocol to
-            - Configure the device (give it a "name"),
-              set which channels are used, and what is the name of each channel
-              
-            - Send commands to the device (based on the "name");
-              Upon correct execution of a command, the device should send back
-              an "ack" message.
-              
-            - receive readings from the device (based on the "name");
-            
-            
-   From PC: Implement a "controller" program that can baptize the device,
-            and interact with it, from command line
-
-            eg
-
-            $> smart_house_host set_name kitchen_controller
-            $> smart_house set_channel_name kitchen_controller switch_0 "top_fridge"
-            $> smart_house set_channel_value "top_fridge" 1
-            $> smart_house kitchen_controller query_channels
+   Give name to the device:
+   es. $>Smarthouse
+   To use the device:
+"to choice operation insert one of this commands(then choice the pin and other settings):
+$>Smarthouse	ledOn
+$>Smarthouse	dimmer
+$>Smarthouse	digital_input
+$>Smarthouse	ledOff
+$>Smarthouse	adc
+to request a status packet insert(then choice packet type):
+$>Smarthouse	request
+to access to eeprom insert(then choice pin and packet type):
+$>Smarthouse	save
+or
+$>Smarthouse	load
+to exit insert:
+$>Smarthouse	quit"
