@@ -221,6 +221,9 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	PacketHandler_installPacket(&packet_handler, &eeprom_ops);
 	pointer_packet=(PacketHeader*)&test_config;
+	int control;
+	printf("Insert the name of the device:\n");
+	if((control=scanf("%s", arduino))<0){printf("Error\n");};
 	printBanner();
 	printf("\nShell Start\n");	
 //Threads

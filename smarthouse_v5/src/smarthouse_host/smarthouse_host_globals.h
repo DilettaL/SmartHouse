@@ -4,6 +4,8 @@
 
 void printBanner(void);
 
+char arduino[20];
+
 extern int run;
 extern PacketHeader *pointer_packet;
 
