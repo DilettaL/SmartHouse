@@ -155,7 +155,8 @@ void* keyboardFn()
 {
 	while(run)
 	{
-		char *buffer = readline("\nSmarthouse> ");
+		printf("%s", name.arduino);
+		char *buffer = readline(">\n ");
 		if (buffer)
 		{
 			executeCommand(buffer);
@@ -221,6 +222,9 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	PacketHandler_installPacket(&packet_handler, &eeprom_ops);
 	pointer_packet=(PacketHeader*)&test_config;
+	int control;
+	printf("Batpize the device. Insert the name:\n");
+	if((control=scanf("%s", name.arduino))<0){printf("Error\n");};
 	printBanner();
 	printf("\nShell Start\n");	
 //Threads

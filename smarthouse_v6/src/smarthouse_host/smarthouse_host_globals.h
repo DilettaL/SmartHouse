@@ -16,3 +16,12 @@ extern AnalogConfigPacket analog_config;
 extern AnalogStatusPacket analog_status[NUM_ANALOG];
 
 extern EepromPacket eeprom;
+
+typedef struct NameSet
+{
+	char arduino[10];
+	char digital_0[10];
+	char analog_0[10];
+}NameSet;
+
+extern NameSet name;

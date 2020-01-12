@@ -432,3 +432,10 @@ EepromPacket eeprom =
 	.type_pin=0,
 	.pin=0
 };
+
+NameSet name =
+{
+	.arduino={"Smarthouse"},//S',0,0,0,0,0,0,0,0,0},
+	.digital_0={0,0,0,0,0,0,0,0,0,0},
+	.analog_0={0,0,0,0,0,0,0,0,0,0}
+};
