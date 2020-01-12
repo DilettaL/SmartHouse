@@ -2,6 +2,7 @@ PREFIX=../
 CC=gcc
 INCLUDE_DIRS=-I $(PREFIX)/src/common -I $(PREFIX)/src/smarthouse_host/ 
 CC_OPTS=-Wall -Ofast -std=gnu99 $(INCLUDE_DIRS)
+#aggiungere allastringa di compilazione -D DEBUG_ERR_COMUNICATION per stampare le printf di debug
 
 LIBS=-lpthread -lreadline 
 

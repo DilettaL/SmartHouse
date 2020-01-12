@@ -155,7 +155,8 @@ void* keyboardFn()
 {
 	while(run)
 	{
-		char *buffer = readline("\nSmarthouse> ");
+		printf ("\n%s", arduino);
+		char *buffer = readline("> ");
 		if (buffer)
 		{
 			executeCommand(buffer);
@@ -200,10 +201,12 @@ void* serialFn()
 			if (n) 
 			{
 				PacketStatus status = PacketHandler_rxByte(&packet_handler, c);
+				#ifdef DEBUG_ERR_COMUNICATION
 				if (status<0)
 				{	printf("%d",status);
 					fflush(stdout);
 				}
+				#endif
 				packet_complete = (status==SyncChecksum);
 			}
 		}
@@ -221,6 +224,9 @@ int main (int argc, char **argv)
 	PacketHandler_installPacket(&packet_handler, &analog_status_ops);
 	PacketHandler_installPacket(&packet_handler, &eeprom_ops);
 	pointer_packet=(PacketHeader*)&test_config;
+	int control;
+	printf("Insert the name of the device:\n");
+	if((control=scanf("%s", arduino))<0){printf("Error\n");};
 	printBanner();
 	printf("\nShell Start\n");	
 //Threads

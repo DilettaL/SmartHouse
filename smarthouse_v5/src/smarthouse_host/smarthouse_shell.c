@@ -23,8 +23,8 @@ int quitFn(void)
 int ledOffFn(void)
 {
 	int control;
-	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<1)
+	printf("Insert pin (from 2 to 13):\n");
+	if((control=scanf("%d", &idx))<1 || idx <2 )
 	{	
 		printf("Error\n");
 		return 0;	
@@ -38,8 +38,8 @@ int ledOffFn(void)
 int ledOnFn(void)
 {
 	int control;
-	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<1)
+	printf("Insert pin (from 2 to 13):\n");
+	if((control=scanf("%d", &idx))<1 || idx <2 )
 	{	
 		printf("Error\n");
 		return 0;	
@@ -54,8 +54,8 @@ int dimmerFn(void)
 {
 	int control;
 	int intensity;
-	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<1)
+	printf("Insert pin (from 2 to 13):\n");
+	if((control=scanf("%d", &idx))<1 || idx <2 )
 	{	
 		printf("Error\n");
 		return 0;	
@@ -76,8 +76,8 @@ int dimmerFn(void)
 int digitalInputFn(void)
 {
 	int control;
-	printf("Insert pin:\n");
-	if((control=scanf("%d", &idx))<1)
+	printf("Insert pin (from 2 to 13):\n");
+	if((control=scanf("%d", &idx))<1 || idx <2 )
 	{	
 		printf("Error\n");
 		return 0;	
