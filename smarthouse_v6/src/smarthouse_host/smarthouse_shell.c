@@ -211,11 +211,11 @@ int deviceFn(void)
 	if((control=scanf("%s", name_pin))<0){printf("Error\n");return 0;}
 	if( (control=strcmp(name_pin, "analog"))==0)
 	{
-		idx=idx+14;
+		idx=idx+15;
 	}
 	else if ( (control=strcmp(name_pin, "digital"))==0)
 	{
-		idx=idx+1;
+		idx=idx+2;
 	}
 	else
 	{
@@ -226,6 +226,7 @@ int deviceFn(void)
 	{
 		printf("Error\n");
 	}
+printf("%s\n", &name.pt_pin+idx);
 	return 0;	
 }
 
