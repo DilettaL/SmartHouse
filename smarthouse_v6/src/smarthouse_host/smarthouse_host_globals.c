@@ -436,6 +436,7 @@ EepromPacket eeprom =
 NameSet name =
 {
 	.arduino={"Smarthouse"},//S',0,0,0,0,0,0,0,0,0},
+	.pt_pin = &name.digital_0[0],
 	.digital_0={"digital_0"},
 	.digital_1={"digital_1"},
 	.digital_2={"digital_2"},

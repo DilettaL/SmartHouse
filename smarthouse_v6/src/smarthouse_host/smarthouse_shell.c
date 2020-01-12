@@ -222,7 +222,7 @@ int deviceFn(void)
 		printf("Incorrect setting\n");
 	}
 	printf("Set the name of the pin:\n");
-	if( (control=scanf("%s", &name+idx))<1)
+	if( (control=scanf("%s", &name.pt_pin+idx))<1)
 	{
 		printf("Error\n");
 	}
