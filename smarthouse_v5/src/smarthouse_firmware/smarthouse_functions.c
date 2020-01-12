@@ -1,4 +1,5 @@
 #include "smarthouse_functions.h"
+#include "packet_handler.h"
 #include "eeprom.h"
 #include "digio.h"
 #include "adc.h"
@@ -117,4 +118,19 @@ PacketStatus Smarthouse_paramEeprom()//uint8_t param_type, int8_t index)
 	return Success;
 }
 
-
+void Smarthouse_ParamInit(void)
+{
+	PacketType example;
+	for(int i=0; i<NUM_DIGITAL; i++)
+	{
+		EEPROM_read(&example, DIGITAL_PARAM_OFFSET+i*sizeof(DigitalStatusPacket), sizeof(PacketType));
+		if (example==DIGITAL_STATUS_PACKET_ID)	
+		{
+			EEPROM_read(&digital_status[i], DIGITAL_PARAM_OFFSET+i*sizeof(DigitalStatusPacket), sizeof(DigitalStatusPacket));
+			digital_config.pin_digital=i;
+			digital_config.set_digital=digital_status[i].set_digital;
+			digital_config.intensity=digital_status[i].intensity;
+			Smarthouse_digital();
+		}
+	}
+}

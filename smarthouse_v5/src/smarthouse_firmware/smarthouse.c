@@ -162,7 +162,7 @@ int main (int argc, char** argv)
 	DigIO_init();
 	PWM_init();
 	Adc_init();
-	Smarthouse_init();
+	Smarthouse_ParamInit();
 	uart = UART_init(0,115200);
 	PacketHandler_initialize(&packet_handler);
 	PacketHandler_installPacket(&packet_handler, &test_config_ops);
