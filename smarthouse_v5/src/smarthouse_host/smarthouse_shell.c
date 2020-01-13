@@ -200,6 +200,11 @@ int loadFn(void)
 Command commands[] =
 {
 	{
+		.name= "help",
+		.cmd_fn=helpFn,
+		.help="usage: help"
+	},
+	{
 		.name = "quit",
 		.cmd_fn=quitFn,
 		.help="usage: quit"
@@ -243,11 +248,6 @@ Command commands[] =
 		.name= "load",
 		.cmd_fn=loadFn,
 		.help="usage: load"
-	},
-	{
-		.name= "help",
-		.cmd_fn=helpFn,
-		.help="usage: help"
 	}
 };
 
@@ -269,19 +269,21 @@ Command* findCommand(const char* name)
 
 int executeCommand(const char* line_)
 {
-
 	char line[1024];
+	int retval=0;
 	strcpy(line, line_);
   	char* name=strtok(line," ");
 	if (! name)
+	{	
+		printf ("Command not found. Reload the program and insert correct name command\n");
 		return -1;
-	Command* cmd=findCommand(name);
-  	if (! cmd)
+	} 
+	Command* cmd=findCommand(name); 	
+	if (! cmd)
 	{
 		printf("ERROR: unknown command [%s]\n", name);
 		return -1;
 	}
-	int retval=0;
 	if (cmd->cmd_fn)
 	{
 		retval=(*cmd->cmd_fn)();
