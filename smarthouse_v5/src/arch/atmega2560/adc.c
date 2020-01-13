@@ -8,6 +8,7 @@
 #include "pins.h"
 #include <avr/interrupt.h>
 
+uint8_t testProva;
 //ADMUX è stato completamente configurato in modo provvisorio
 //ADCSRA è stato completamente configurato in modo provvisorio
 //ADCSRB è stato completamente configurato in modo provvisorio
@@ -29,6 +30,7 @@ void SetAdc(uint8_t pin)
 	//pins set MUX5:0 of ADMUX and ADCSRB register
 	ADMUX |= (mapping->select_adc_mux);
 	ADCSRB |= (mapping->select_adc_adcsrb);
+testProva=pin;
 }
 
 uint16_t* RunAdc(uint8_t numb_samples)
@@ -45,6 +47,10 @@ uint16_t* RunAdc(uint8_t numb_samples)
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
 	}
+	const Pin_analog* mapping=pins_analog+testProva;
+	//pins set MUX5:0 of ADMUX and ADCSRB register
+	ADMUX |= (mapping->select_adc_mux);
+	ADCSRB &=~ (mapping->select_adc_adcsrb);
 	return result;	
 }
 

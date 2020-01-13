@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "smarthouse_functions.h"
 #include "packet_handler.h"
 #include "eeprom.h"
@@ -75,6 +76,7 @@ void Smarthouse_analog(void)
 	temp = RunAdc(analog_config.samples);
 	for (int k = 0; k < analog_config.samples ; k++)
 		analog_status[pint].result[k]=*(temp+k);
+	free(temp);
 }
 
 //eeprom functions
@@ -133,7 +135,7 @@ void Smarthouse_ParamInit(void)
 			Smarthouse_digital();
 		}
 	}
-	for(int i=0; i<NUM_ANALOG; i++)
+/*	for(int i=0; i<NUM_ANALOG; i++)
 	{
 		EEPROM_read(&example, ANALOG_PARAM_OFFSET+i*sizeof(AnalogStatusPacket), sizeof(PacketType));
 		if (example==ANALOG_STATUS_PACKET_ID)	
@@ -141,8 +143,9 @@ void Smarthouse_ParamInit(void)
 			EEPROM_read(&analog_status[i], ANALOG_PARAM_OFFSET+i*sizeof(AnalogStatusPacket), sizeof(AnalogStatusPacket));
 			analog_config.pin_analog=i;
 			analog_config.samples=analog_status[i].samples;
-			Smarthouse_analog();
+			//Smarthouse_analog();
 		}
 
 	}
+*/
 }

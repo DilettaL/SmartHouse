@@ -64,7 +64,7 @@ void printPacket_analog(uint8_t pin)
 	printf("Pin Analog:%d\n", analog_status[pin].pin_analog);	
 	for(int i=0; i<analog_status[pin].samples; i++)
 	{
-		printf("Sample[%d] = %d\n", i,analog_status[pin].result[i]);
+		printf("Sample_[%d] = %d\n", i,analog_status[pin].result[i]);
 	}
 }
 PacketStatus host_onReceive(PacketHeader* header,

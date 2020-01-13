@@ -95,9 +95,9 @@ int adcFn(void)
 	printf("Insert pin:\n");
 	if((control=scanf("%d", &idx))<1){printf("Error\n");}
 	printf("Insert samples:\n");
-	if((control=scanf("%d", &samples))<0)
+	if((control=scanf("%d", &samples))<0 || samples > 10)
 	{	
-		printf("Error\n");
+		printf("Error. max samples = 10\n");
 		return 0;	
 	}
 	analog_config.pin_analog=idx;
