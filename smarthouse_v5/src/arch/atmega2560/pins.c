@@ -164,6 +164,18 @@ const Pin_analog pins_analog[] =
 	//PinAVR 96 PinBoard 1
 	{
 		//MUX5:0=000001
+		.select_adc_mux = (1<<MUX0)
+		//.select_adc_adcsrb// = (0<<MUX5)
+	},
+	//PinAVR 95 PinBoard 2
+	{
+		//MUX5:0=000010
+		.select_adc_mux= (1<<MUX1)
+		//.select_adc_adcsrb=(0<<MUX5)
+	},
+/*	//PinAVR 96 PinBoard 1
+	{
+		//MUX5:0=000001
 		.select_adc_mux= (0<<MUX4)|(0<<MUX3)|(0<<MUX2)|(0<<MUX1)|(1<<MUX0),
 		.select_adc_adcsrb=(0<<MUX5)
 	},
@@ -173,6 +185,7 @@ const Pin_analog pins_analog[] =
 		.select_adc_mux= (0<<MUX4)|(0<<MUX3)|(0<<MUX2)|(1<<MUX1)|(0<<MUX0),
 		.select_adc_adcsrb=(0<<MUX5)
 	},
+*/
 	//PinAVR 94 PinBoard 3
 	{
 		//MUX5:0=000011

@@ -8,7 +8,6 @@
 #include "pins.h"
 #include <avr/interrupt.h>
 
-uint8_t testProva;
 //ADMUX è stato completamente configurato in modo provvisorio
 //ADCSRA è stato completamente configurato in modo provvisorio
 //ADCSRB è stato completamente configurato in modo provvisorio
@@ -24,18 +23,21 @@ void Adc_init()
 
 void SetAdc(uint8_t pin)
 {
-//MANCA CONTROLLO SUL NUMERO DI PIN INSERITO
 	//Define input adc channel
 	const Pin_analog* mapping=pins_analog+pin;
 	//pins set MUX5:0 of ADMUX and ADCSRB register
+ADMUX &=~ (1<<MUX4);
+ADMUX &=~ (1<<MUX3);
+ADMUX &=~ (1<<MUX2);
+ADMUX &=~ (1<<MUX1);
+ADMUX &=~ (1<<MUX0);
+ADCSRB &=~ (1<<MUX5);
 	ADMUX |= (mapping->select_adc_mux);
 	ADCSRB |= (mapping->select_adc_adcsrb);
-testProva=pin;
 }
 
 uint16_t* RunAdc(uint8_t numb_samples)
 {
-//MANCA CONTROLLO SUL NUMERO DI CAMPIONI RICHIESTO
 	//Each data is converts with n samples
 	uint16_t *result=(uint16_t*)malloc(sizeof(uint16_t)*numb_samples);
 	uint16_t count;
@@ -47,10 +49,6 @@ uint16_t* RunAdc(uint8_t numb_samples)
 		while( ADCSRA & (1<<ADSC) );
 		result[count]=ADC;
 	}
-	const Pin_analog* mapping=pins_analog+testProva;
-	//pins set MUX5:0 of ADMUX and ADCSRB register
-	ADMUX |= (mapping->select_adc_mux);
-	ADCSRB &=~ (mapping->select_adc_adcsrb);
 	return result;	
 }
 
