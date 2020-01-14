@@ -54,7 +54,7 @@ void printPacket_digital(uint8_t pin)
 	else if(digital_status[pin].set_digital==1) {printf("Led on\n");}
 	else if(digital_status[pin].set_digital==2) {printf("Dimmer\n"); printf("Intensity=%d\n", digital_status[pin].intensity);}
 	else if(digital_status[pin].set_digital==3) {printf("Input digital\n"); printf("Value=%d\n", digital_status[pin].inputs);}
-	else {printf("Error, mode not");}
+	else {printf("Error, mode not\n");}
 	printf("Pin Digital:%d\n", digital_status[pin].pin_digital);	
 }
 
@@ -166,7 +166,9 @@ void* keyboardFn()
 				free(buffer);
 			}
 			else
-			{	run=0;	}
+			{	
+				printf ("please insert command\n");
+			}
 		}
 		usleep(100000);
 	}
@@ -226,7 +228,7 @@ int main (int argc, char **argv)
 	pointer_packet=(PacketHeader*)&test_config;
 	int control;
 	printf("Insert the name of the device:\n");
-	if((control=scanf("%s", arduino))<0){printf("Error\n");};
+	if((control=scanf("%s", arduino))<=0){printf("Error\n");};
 	printBanner();
 	printf("\nShell Start\n");	
 //Threads
