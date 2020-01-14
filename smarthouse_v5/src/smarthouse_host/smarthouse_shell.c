@@ -276,7 +276,8 @@ int executeCommand(const char* line_)
 	if (! name)
 	{	
 		printf ("Command not found. Reload the program and insert correct name command\n");
-		return -1;
+		name="help";
+//		return -1;
 	} 
 	Command* cmd=findCommand(name); 	
 	if (! cmd)
