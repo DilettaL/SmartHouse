@@ -1,0 +1,71 @@
+Test di esempio:
+
+es.
+Insert the name of the device:
+Smarthouse
+
+[	NOTA: nella shell se non si inserisce alcun comando e si va a capo apre l'help	]
+
+-Test dei pin digitali
+$>Smarthouse ledOn
+insert pin (from 2 to 13):
+10
+
+$>Smarthouse ledOff
+insert pin (from 2 to 13):
+10
+
+$>Smarthouse dimmer
+insert pin (from 2 to 13):
+10
+insert intensity
+30
+
+$>Smarthouse ledOff
+insert pin (from 2 to 13):
+10
+
+$>Smarthouse digital_input
+insert pin (from 2 to 13):
+9 
+
+$>Smarthouse request
+insert pin (from 2 to 13):
+10
+insert type of packet(digital or analog)
+digital
+
+$>Smarthouse dimmer
+insert pin (from 2 to 13):
+10
+insert intensity
+5
+
+$>Smrthouse save
+insert pin (from 2 to 13):
+10
+insert type of packet(digital or analog)
+digital
+
+$>Smarthouse ledOff
+insert pin (from 2 to 13):
+10
+
+$>Smarthouse load
+insert pin (from 2 to 13):
+10
+insert type of packet(digital or analog)
+digital
+
+[	NOTA: spegnendo il dispositivo all'accensione verranno ricaricate le ultime impostazioni salvate in eeprom, avendole precedentemente salvate 	]
+
+-Test dei pin analogici
+
+[	NOTA: nell'adc è possibile inserire un numero massimo di campioni pari a 10, poiché altrimenti non verrebbe rispettata la grandezza massima del pacchetto	]
+
+$>Smarthouse adc
+insert pin:
+0
+insert samples (MAX NUMBER OF SAMPLES IS 10):
+5
+
